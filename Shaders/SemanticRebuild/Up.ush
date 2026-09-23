@@ -1,0 +1,66 @@
+#ifndef MINGCHAO_SEMANTIC_UP
+#define MINGCHAO_SEMANTIC_UP
+#include "/MingchaoSemantic/Cloth.ush"
+
+struct SR_UpSettings
+{
+    float UpperRegionHalfWidth;
+    float TangentPower;
+    float TangentSuppression;
+    float3 TangentColor;
+    float ViewTintLow;
+    float ViewTintHigh;
+    float3 ViewLowColor;
+    float3 ViewHighColor;
+    float ViewTintBlend;
+    float SheenLow;
+    float SheenHigh;
+    float3 SheenColor;
+    float SheenSuppression;
+};
+
+// E528 24-39, 132-135, 235-304, 342-372. ID.R is a region signal;
+// ID.G blends the intrinsic skin ramp; ID.B suppresses the view-facing sheen.
+// The two proximity controls cb2[31].y/cb2[32].y are both zero in this capture.
+// Their inactive distance modulation is not advertised as a runtime feature.
+float3 SR_UpSurface(Texture2D PackedMap, SamplerState PackedSampler,
+    Texture2D IDMap, SamplerState IDSampler, Texture2D ColorMap, SamplerState ColorSampler,
+    Texture2D LookupMap, SamplerState LookupSampler, Texture2D SkinRamp, SamplerState SkinSampler,
+    float2 UV, float VertexEmission, float3 Tangent, float3 Bitangent, float3 VertexNormal, float3 View,
+    float3 StyleLight, float3 FlatLight, float3 ViewRight, float3 ViewUp, float3 ViewForward,
+    SR_ClothSettings S, SR_UpSettings U, out float3 Normal, out float3 SecondaryTint,
+    out float3 Emission, out float LightMask, out float2 Regions, out float Highlight, out float2 LookupUV)
+{
+    float3 ID = IDMap.SampleLevel(IDSampler,UV,S.MipBias).rgb;
+    Regions = SR_ClothRegions(ID.r,S.UseVertexRegion,S.RegionOverride,S.RegionRestore);
+    S.ThresholdHalfWidth = saturate(lerp(S.ThresholdHalfWidth,U.UpperRegionHalfWidth,Regions.y));
+    float Desaturation = S.Desaturation;
+    S.Desaturation = 0.0;
+    S.RampBlend = ID.g;
+    float3 RampColor; float SurfaceRegion;
+    float3 Base = SR_ClothSurface(PackedMap,PackedSampler,ColorMap,ColorSampler,LookupMap,LookupSampler,
+        SkinRamp,SkinSampler,UV,ID.r,VertexEmission,Tangent,Bitangent,VertexNormal,View,
+        StyleLight,FlatLight,ViewRight,ViewUp,ViewForward,S,Normal,SecondaryTint,Emission,
+        LightMask,Regions,Highlight,LookupUV,RampColor,SurfaceRegion);
+    float3 RawBase = SR_CLOTH_SAMPLE(ColorMap,ColorSampler,UV,S.MipBias).rgb*S.BaseTint*lerp(float3(1,1,1),S.RegionTint,Regions.x);
+    float3 Light = normalize(lerp(StyleLight,FlatLight,S.FlattenLightEnabled>=0.5 ? S.FlattenLightWeight : 0.0));
+    float TangentHalf = dot(Tangent,normalize(View+Light));
+    float TangentSineSquared = 1.0-TangentHalf*TangentHalf;
+    float TangentLobe = TangentSineSquared<=0 ? 0.0 : pow(TangentSineSquared,U.TangentPower)*SR_CubicWeight(TangentHalf+1.0);
+    float SlopeX = (2.0*SR_CLOTH_SAMPLE(PackedMap,PackedSampler,UV,S.MipBias).r-1.0)*S.NormalStrength;
+    TangentLobe = saturate(TangentLobe-SlopeX*U.TangentSuppression);
+    float ViewFacing = dot(lerp(Normal,VertexNormal,S.NormalFlatten),View);
+    float TintWeight = SR_CubicWeight((ViewFacing-U.ViewTintLow)/max(U.ViewTintHigh-U.ViewTintLow,0.000001));
+    float3 ViewTint = lerp(U.ViewLowColor,U.ViewHighColor,TintWeight);
+    float3 RegionBase = RawBase*lerp(float3(1,1,1),ViewTint,U.ViewTintBlend);
+    float SheenWeight = SR_CubicWeight((saturate(ViewFacing)-U.SheenLow)/max(U.SheenHigh-U.SheenLow,0.000001));
+    RegionBase += SheenWeight*U.SheenColor*(1.0-ID.b*U.SheenSuppression);
+    RegionBase += TangentLobe*U.TangentColor;
+    Base += (1.0-SurfaceRegion)*Regions.y*(RegionBase-RawBase)*S.BaseGain;
+    float RampWeight = (S.RampEnabled>=0.05 ? 1.0 : 0.0)*ID.g;
+    Base = lerp(Base,RampColor,0.5*Regions.x*RampWeight);
+    Base = lerp(Base,dot(Base,float3(0.3,0.59,0.11)).xxx,Desaturation);
+    SecondaryTint = lerp(SecondaryTint,dot(SecondaryTint,float3(0.3,0.59,0.11)).xxx,Desaturation);
+    return Base;
+}
+#endif

@@ -1,0 +1,28 @@
+#ifndef MINGCHAO_SEMANTIC_OUTLINE
+#define MINGCHAO_SEMANTIC_OUTLINE
+#include "/MingchaoSemantic/Common.ush"
+
+// E655 VS245-340. Reuse the validated inverted-winding shell and octahedral
+// extrusion, now evaluated in the actual rendering view (including reflection).
+float3 SR_OutlineOffset(float2 OctUV,float VertexGreen,float VertexBlue,
+    float3 Tangent,float3 Bitangent,float3 Normal,float3 ViewFromSurface,float ViewDepth,
+    float3 ViewRight,float3 ViewUp,float2 TanHalfFov,float2 ViewSize,
+    float WidthFloor,float Width,float WidthClamp,float WidthScale,float DepthBias,float DepthScale)
+{
+    float3 Oct=float3(OctUV,1.0-abs(OctUV.x)-abs(OctUV.y));
+    float Fold=saturate(-Oct.z);
+    Oct.xy+=float2(Oct.x>=0 ? -Fold : Fold,Oct.y>=0 ? -Fold : Fold);
+    float3 Direction=normalize(Tangent*Oct.x+Bitangent*Oct.y+Normal*Oct.z);
+    float2 Projected=float2(dot(Direction,ViewRight),dot(Direction,ViewUp))/TanHalfFov;
+    Projected/=max(length(Projected),0.000001);
+    float Thickness=lerp(WidthFloor,1.0,VertexGreen)*Width*WidthScale;
+    float2 Raw=Projected*Thickness*0.1*(0.767327/TanHalfFov.y);
+    float2 PixelSize=2.0*max(ViewDepth,0.001)/ViewSize;
+    float2 Clamped=clamp(abs(Raw),PixelSize,PixelSize*999.0);
+    float2 Blend=saturate(abs(Raw)/max(PixelSize*WidthClamp*0.1,0.000001));
+    Blend=Blend*Blend*(3.0-2.0*Blend);
+    float2 Offset=lerp(abs(Raw),Clamped,Blend)*sign(Raw);
+    return ViewRight*Offset.x*TanHalfFov.x+ViewUp*Offset.y*TanHalfFov.y
+        -normalize(ViewFromSurface)*(VertexBlue*DepthBias*DepthScale*0.01);
+}
+#endif

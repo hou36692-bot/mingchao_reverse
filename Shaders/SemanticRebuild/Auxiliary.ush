@@ -1,0 +1,60 @@
+#ifndef MINGCHAO_SEMANTIC_AUXILIARY
+#define MINGCHAO_SEMANTIC_AUXILIARY
+#include "/MingchaoSemantic/Eye.ush"
+
+struct SR_HETSettings
+{
+    float ScreenGateEnabled;
+    float ScreenStartA;
+    float ScreenStartB;
+    float2 ScreenAxisA;
+    float2 ScreenAxisB;
+    float ScreenRegionScale;
+    float ScreenRegionBlend;
+    float2 InnerScale;
+    float CoverageGain;
+    float FadeEnabled;
+    float FadeAmount;
+    float MipBias;
+    float3 ViewOffsetGreen0;
+    float3 ViewOffsetGreen1;
+    float ParallaxDepth;
+};
+
+// E565 16-46 / E577 24-53. Source half-plane screen gate; current capture view.
+float SR_HETScreenGate(float2 UV,float2 ViewSize,SR_HETSettings S)
+{
+    if(S.ScreenGateEnabled<0.1)return 1.0;
+    float Aspect=max(ViewSize.x/ViewSize.y,1.0);
+    float A=dot(float2((UV.x-S.ScreenStartA)*Aspect,UV.y-0.5),S.ScreenAxisA)>=0 ? 1.0 : 0.0;
+    float B=dot(float2((UV.x-S.ScreenStartB)*Aspect,UV.y-0.5),S.ScreenAxisB)>=0 ? 1.0 : 0.0;
+    float Region=S.ScreenRegionScale*(max(A-B,0.0)+A)+1.0-A;
+    return lerp(Region,B,S.ScreenRegionBlend);
+}
+
+// E565 60-75 / E577 115-130. The source fade hash is per 4x4 pixel block.
+float SR_HETFade(float2 Pixel,SR_HETSettings S)
+{
+    float Fade=S.FadeEnabled>0 ? saturate(S.FadeAmount) : 1.0;
+    float Noise=frac(52.982918*frac(dot(floor(Pixel*0.25),float2(0.067111,0.005837))));
+    return Fade<1.0 ? 2.0*Fade/(Fade+1.0)-Noise : 1.0;
+}
+
+// t0.A controls contraction; t1.R selects the retained region. No source texture
+// is repurposed as a final image, and no depth value is stored in these textures.
+float SR_HETCoverage(Texture2D Control,SamplerState ControlSampler,
+    Texture2D Region,SamplerState RegionSampler,float2 UV,float2 ScreenUV,float2 ViewSize,
+    float3 ViewTangent,float VertexGreen,float IsEye,SR_HETSettings S,out float2 SampleUV)
+{
+    SampleUV=UV;
+    if(IsEye>0.5)
+        SampleUV=SR_EyeSearchUV(Control,ControlSampler,UV,ViewTangent,
+            lerp(S.ViewOffsetGreen0,S.ViewOffsetGreen1,VertexGreen),S.ParallaxDepth,0.0,SR_DDX(UV),SR_DDY(UV));
+    float Alpha=SR_SAMPLE_BIAS(Control,ControlSampler,UV,S.MipBias).a;
+    float Contract=SR_CubicWeight((0.9-Alpha)*1.428571);
+    SampleUV=(SampleUV-0.5)*lerp(float2(1,1),S.InnerScale,Contract)+0.5;
+    float RegionMask=SR_SAMPLE_BIAS(Region,RegionSampler,SampleUV,S.MipBias).r;
+    float SignedCoverage=min(min(SR_HETScreenGate(ScreenUV,ViewSize,S),1.0)-0.333,RegionMask)*S.CoverageGain-0.333300;
+    return min(SignedCoverage,SR_HETFade(ScreenUV*ViewSize,S))>=0 ? 1.0 : 0.0;
+}
+#endif

@@ -1,0 +1,220 @@
+#pragma once
+#include "/MingchaoSemantic/BackgroundSettings.ush"
+#include "/MingchaoSemantic/Eye.ush"
+
+// Positive-base source log2/exp2 convention. Zero is explicitly zero.
+float SR_BackgroundPower(float Value,float Exponent)
+{
+    return Value>0 ? exp2(log2(Value)*Exponent) : 0;
+}
+float3 SR_BackgroundDesaturate(float3 Color,float Amount)
+{
+    return lerp(Color,dot(Color,float3(.299,.587,.114)).xxx,Amount);
+}
+float3 SR_BackgroundPower(float3 Value,float Exponent)
+{
+    return float3(SR_BackgroundPower(Value.r,Exponent),SR_BackgroundPower(Value.g,Exponent),SR_BackgroundPower(Value.b,Exponent));
+}
+float2 SR_BackgroundRotate(float2 UV,float2 AxisX,float2 AxisY)
+{
+    return float2(dot(UV-.5,AxisX),dot(UV-.5,AxisY))+.5;
+}
+// Preserve the source's signed fractional 3600-second phase, including its rounded multiplier.
+float SR_BackgroundPhase(float SourceTime)
+{
+    float Phase=SourceTime*.000278;
+    return (Phase>=0?frac(abs(Phase)):-frac(abs(Phase)))*3600;
+}
+float3 SR_BackgroundGrade(float3 Color,float3 SceneScale,float Desaturation,float3 ColorScale,float SecondaryDesaturation,float3 SecondaryScale)
+{
+    Color=SR_BackgroundDesaturate(max(Color,0)*SceneScale,Desaturation)*ColorScale;
+    return max(SR_BackgroundDesaturate(Color,SecondaryDesaturation)*SecondaryScale,0);
+}
+
+// E415 PS 8-73,105-131: native generated curve atlas, stars, curl-distorted cloud.
+// UV is mesh UV0; ScreenY belongs to the current rendering view. SourceTime is seconds.
+float4 SR_Sky(Texture2D Atlas,SamplerState AtlasSampler,Texture2D Stars,SamplerState StarsSampler,
+    Texture2D StarMask,SamplerState StarMaskSampler,Texture2D Curl,SamplerState CurlSampler,
+    Texture2D Cloud,SamplerState CloudSampler,float2 UV,float ScreenY,float3 WorldRay,float SourceTime,SR_SkySettings S)
+{
+    float Height=min(SR_BackgroundPower(ScreenY,S.GradientPower),1);
+    float DirectionHeight=lerp(UV.y,saturate(dot(S.GradientDirection,normalize(WorldRay))),S.GradientDirectionBlend);
+    float GradientU=lerp(Height,DirectionHeight,S.GradientBlend);
+    float3 Gradient=saturate(SR_SAMPLE_BIAS(Atlas,AtlasSampler,float2(GradientU,S.GradientRow/S.AtlasHeight),0).rgb);
+    float Star=SR_SAMPLE_BIAS(Stars,StarsSampler,UV*S.StarTiling+frac(SourceTime*S.StarScroll),S.MipBias).r;
+    float StarShape=lerp(SR_BackgroundPower(Star,S.StarPower)*S.StarGain,Star*S.StarLinearGain,S.StarLinearBlend);
+    float Mask=SR_SAMPLE_BIAS(StarMask,StarMaskSampler,UV*S.StarMaskTiling+frac(SourceTime*S.StarMaskScroll),S.MipBias).r;
+    float3 StarColor=StarShape*S.StarColor*S.StarIntensity*Mask*S.StarLayerIntensity;
+    float2 Distortion=SR_SAMPLE_BIAS(Curl,CurlSampler,UV*S.CurlTiling+frac(SourceTime*S.CurlScroll),S.MipBias).rg;
+    float3 CloudColor=SR_SAMPLE_BIAS(Cloud,CloudSampler,UV*S.CloudTiling+S.CloudOffset+Distortion*S.CurlStrength,S.MipBias).rgb;
+    CloudColor*=lerp(S.LowerCloudGain,S.UpperCloudGain,saturate((UV.y-.45)*10))*S.CloudColor*S.CloudIntensity;
+    CloudColor*=lerp(1,SR_BackgroundPower(UV.y*UV.y*UV.y,S.CloudVerticalPower),S.CloudVerticalBlend);
+    float3 Color=lerp(Gradient*S.GradientIntensity+StarColor+CloudColor,S.OverrideColor,S.OverrideBlend);
+    return float4(SR_BackgroundGrade(Color,S.SceneScale,S.Desaturation,S.ColorScale,0,1),0);
+}
+
+// E1589 PS 6-73,94-125. The two source UV pairs are identical on this source mesh.
+// The captured volumetric-fog branch is disabled; FogTransmission is VS v3.w.
+float4 SR_Nebula(Texture2D Noise,SamplerState NoiseSampler,Texture2D Cloud,SamplerState CloudSampler,
+    Texture2D Stars,SamplerState StarsSampler,Texture2D Mask,SamplerState MaskSampler,
+    float2 UV,float FogTransmission,float SourceTime,SR_NebulaSettings S)
+{
+    float2 NoiseUV=UV*lerp(S.NoiseTilingA,S.NoiseTilingB,S.StateBlend)+frac(SourceTime*lerp(S.NoiseScrollA,S.NoiseScrollB,S.StateBlend));
+    float3 NoiseValue=SR_SAMPLE_BIAS(Noise,NoiseSampler,NoiseUV,S.MipBias).rgb;
+    float2 Distortion=(NoiseValue.rg-.5)*NoiseValue.b;
+    float2 CloudUV=(UV+Distortion*S.Distortion)/S.CloudScale+.5-S.CloudPivot+S.CloudOffset;
+    float3 CloudColor=SR_SAMPLE_BIAS(Cloud,CloudSampler,CloudUV,S.MipBias).rgb*S.CloudColor;
+    float2 StarsUV=UV*lerp(S.StarsTilingA,S.StarsTilingB,S.StateBlend)*float2(20,10)+lerp(S.StarsOffsetA,S.StarsOffsetB,S.StateBlend);
+    float Star=SR_SAMPLE_BIAS(Stars,StarsSampler,StarsUV,S.MipBias).r;
+    float MaskValue=SR_SAMPLE_BIAS(Mask,MaskSampler,UV+Distortion*S.MaskDistortion,S.MipBias).r;
+    float StarsShape=SR_BackgroundPower(Star*Star*Star*Star,(1-MaskValue)*4+1)*MaskValue*5;
+    float3 Color=lerp(CloudColor*S.CloudIntensity+StarsShape*S.StarsColor*S.StarsIntensity,S.OverrideColor,S.OverrideBlend);
+    float Visibility=saturate((1-2*S.VisibilityControl)*lerp(S.VisibilityA,S.VisibilityB,S.StateBlend)-.2);
+    float Night=(S.Hour>=6 && S.Hour<=18)?0:((S.Hour>18 && S.Hour<24)?(S.Hour-18)*.166667:((S.Hour>=0 && S.Hour<6)?1-S.Hour*.166667:1));
+    Visibility=saturate(lerp(Visibility,Night,S.StateBlend))*(S.FadeEnabled>0?saturate(S.FadeAmount):1);
+    Color=max(Color,0)*S.SceneScale*Visibility*FogTransmission;
+    Color=SR_BackgroundGrade(Color,1,S.Desaturation,S.ColorScale,S.SecondaryDesaturation,S.SecondaryScale);
+    return float4(Color,0); // Premultiplied additive RGB; the UE opacity input stays at LayerEnabled.
+}
+
+// E1674/E1683/E1692/E1701: one identical captured material, four separate instances.
+// Captured specialization: screen UV mixing, noise distortion, UV clamp, mask inversion,
+// secondary mask-to-dissolve mixing, material color remap and volume fog are disabled.
+// The frozen constant-buffer fingerprints and shared Cloud constants are guarded by
+// prepare_background_validation.py. This specialization does not implement disabled branches.
+float4 SR_Cloud(Texture2D Base,SamplerState BaseSampler,Texture2D Detail,SamplerState DetailSampler,
+    Texture2D Dissolve,SamplerState DissolveSampler,Texture2D Mask,SamplerState MaskSampler,
+    float2 UV,float SourceTime,float DepthCm,float SceneDepthCm,float3 ViewDirection,float3 Normal,
+    float4 InstanceColor,SR_CloudSettings S)
+{
+    float Time=SR_BackgroundPhase(SourceTime);
+    float2 BaseUV=SR_BackgroundRotate(UV,S.BaseAxisX,S.BaseAxisY)*S.BaseTiling+(Time+1)*S.BaseScroll;
+    float3 BaseColor=SR_SAMPLE_BIAS(Base,BaseSampler,BaseUV,S.MipBias).rgb*S.BaseIntensity;
+    float2 DetailUV=SR_BackgroundRotate(UV+S.DetailOffset,S.DetailAxisX,S.DetailAxisY)*S.DetailTiling+Time*S.DetailScroll;
+    float4 DetailSample=SR_SAMPLE_BIAS(Detail,DetailSampler,DetailUV,S.MipBias);
+    float DetailValue=dot(DetailSample,S.DetailChannels);
+    float DetailShape=lerp(SR_BackgroundPower(DetailValue,S.DetailPower)*S.DetailGain,DetailValue*S.DetailLinearGain,S.DetailLinearBlend)+S.DetailBias;
+    float3 Color=lerp(BaseColor*DetailShape,BaseColor+DetailShape,S.AddBlend)*S.Tint*InstanceColor.rgb;
+    float2 DissolveUV=SR_BackgroundRotate(UV,S.DissolveAxisX,S.DissolveAxisY)*S.DissolveTiling+Time*S.DissolveScroll+S.DissolveOffset;
+    float DissolveValue=dot(SR_SAMPLE_BIAS(Dissolve,DissolveSampler,DissolveUV,S.MipBias),S.DissolveChannels);
+    float2 MaskUV=SR_BackgroundRotate(UV,S.MaskAxisX,S.MaskAxisY)*S.MaskTiling+Time*S.MaskScroll+S.MaskOffset;
+    float MaskValue=dot(Mask.SampleLevel(MaskSampler,MaskUV,S.MipBias-1),S.MaskChannels)*S.MaskGain;
+    float Coverage=DissolveValue*S.DissolveSharpness-(S.DissolveSharpness-S.DissolveAmount*(S.DissolveSharpness+1));
+    float Edge=1-min(abs(Coverage-1),1);
+    Color+=Edge*S.EdgeColor;
+    Color*=lerp(1,(S.SceneTintA+S.SceneTintB)*.5,S.SceneTintBlend);
+    float Facing=SR_BackgroundPower(abs(dot(ViewDirection,Normal)),S.FacingPower);
+    float Alpha=saturate(Coverage)*MaskValue*dot(DetailSample,S.OpacityChannels)*S.OpacityGain*InstanceColor.a;
+    Alpha*=lerp(1,Facing,S.FacingBlend)*saturate((SceneDepthCm-DepthCm)/S.IntersectionWidth);
+    Alpha=saturate(Alpha*saturate((DepthCm-S.NearStart)/S.NearWidth)*S.OpacityScale);
+    return float4(SR_BackgroundGrade(max(Color,0)*S.SceneScale*Alpha,1,S.Desaturation,S.ColorScale,S.SecondaryDesaturation,S.SecondaryScale),0);
+}
+
+// E1718/E1793 are single-phase noise distortion, not dual-phase flow advection.
+// E1743 adds a noise mask whose captured 50% inversion reduces exactly to .5.
+float4 SR_Flow(Texture2D Noise,SamplerState NoiseSampler,Texture2D Base,SamplerState BaseSampler,
+    Texture2D Detail,SamplerState DetailSampler,Texture2D Mask,SamplerState MaskSampler,
+    float2 UV,float2 ScreenUV,float SourceTime,float DepthCm,float SceneDepthCm,float3 ViewDirection,
+    float3 Normal,float4 InstanceColor,float4 InstanceMotion,bool AlphaBlend,SR_FlowSettings S)
+{
+    float Time=SR_BackgroundPhase(SourceTime);
+    float2 NoiseUV=SR_BackgroundRotate(UV,S.NoiseAxisX,S.NoiseAxisY)*S.NoiseTiling+Time*S.NoiseScroll;
+    float2 Distortion=(SR_SAMPLE_BIAS(Noise,NoiseSampler,NoiseUV,S.MipBias).rg+S.NoiseBias)*S.NoiseGain*InstanceMotion.z;
+    if(AlphaBlend)Distortion*=.5;
+    float2 BaseUV=SR_BackgroundRotate(lerp(UV,ScreenUV,S.BaseScreenBlend),S.BaseAxisX,S.BaseAxisY)*S.BaseTiling;
+    BaseUV+=(InstanceMotion.w+Time*(1-S.BaseClamp))*S.BaseScroll+Distortion*S.BaseDistortion;
+    BaseUV=lerp(BaseUV,saturate(BaseUV),S.BaseClamp);
+    float3 BaseColor=SR_SAMPLE_BIAS(Base,BaseSampler,BaseUV,S.MipBias).rgb;
+    BaseColor=lerp(BaseColor,dot(BaseColor,float3(.3,.59,.11)).xxx,S.BaseDesaturation)*S.BaseIntensity;
+    float2 DetailUV=SR_BackgroundRotate(UV+S.DetailOffset,S.DetailAxisX,S.DetailAxisY)*S.DetailTiling+Distortion*S.DetailDistortion;
+    DetailUV+=(InstanceMotion.x+Time*(1-S.DetailClamp))*S.DetailScroll;
+    DetailUV=lerp(DetailUV,saturate(DetailUV),S.DetailClamp);
+    float4 DetailSample=SR_SAMPLE_BIAS(Detail,DetailSampler,DetailUV,S.MipBias);
+    float DetailValue=dot(DetailSample,S.DetailChannels);
+    float DetailShape=lerp(SR_BackgroundPower(DetailValue,S.DetailPower)*S.DetailGain,DetailValue*S.DetailLinearGain,S.DetailLinearBlend)+S.DetailBias;
+    float3 Color=lerp(BaseColor*DetailShape,BaseColor+DetailShape,S.AddBlend)*S.Tint*InstanceColor.rgb;
+    Color*=lerp(1,(S.SceneTintA+S.SceneTintB)*.5,S.SceneTintBlend);
+    float2 MaskUV=SR_BackgroundRotate(UV,S.MaskAxisX,S.MaskAxisY)*S.MaskTiling+(InstanceMotion.y+Time*(1-S.MaskClamp))*S.MaskScroll+S.MaskOffset;
+    MaskUV=lerp(MaskUV,saturate(MaskUV),S.MaskClamp);
+    float MaskValue=dot(Mask.SampleLevel(MaskSampler,MaskUV,S.MipBias-1),S.MaskChannels)*S.MaskGain;
+    float Facing=SR_BackgroundPower(abs(dot(ViewDirection,Normal)),S.FacingPower);
+    float Alpha=MaskValue*dot(DetailSample,S.OpacityChannels)*S.OpacityGain*InstanceColor.a;
+    Alpha*=lerp(1,Facing,S.FacingBlend)*saturate((SceneDepthCm-DepthCm)/S.IntersectionWidth);
+    Alpha=saturate(Alpha*saturate((DepthCm-S.NearStart)/S.NearWidth)*S.OpacityScale);
+    Color=max(Color,0)*S.SceneScale*(AlphaBlend?1:Alpha);
+    return float4(SR_BackgroundGrade(Color,1,S.Desaturation,S.ColorScale,S.SecondaryDesaturation,S.SecondaryScale),AlphaBlend?Alpha:0);
+}
+
+// E1768/E1772 PS27-52: actual dual-phase advection, decoded RG vector and triangle blend.
+// Source mesh has identical UV combinations for both v2/v3; instance offsets remain separate.
+float4 SR_Fog(Texture2D Flow,SamplerState FlowSampler,Texture2D ColorMap,SamplerState ColorMapSampler,
+    Texture2D Mask,SamplerState MaskSampler,float2 UV,float SourceTime,float4 InstanceColor,
+    float2 InstanceMotion,SR_FogSettings S)
+{
+    float2 BaseUV=SR_BackgroundRotate(UV,S.BaseAxisX,S.BaseAxisY)*S.BaseTiling+(SourceTime+InstanceMotion.x)*S.BaseScroll+S.BaseOffset+S.BaseFinalOffset;
+    float2 FlowUV=UV*S.FlowTiling+SourceTime*S.FlowScroll;
+    float2 Vector=(SR_SAMPLE_BIAS(Flow,FlowSampler,FlowUV,S.MipBias).rg*2-1)*S.FlowStrength;
+    float Phase=frac(SourceTime*S.FlowSpeed);
+    float4 First=SR_SAMPLE_BIAS(ColorMap,ColorMapSampler,BaseUV+Vector*frac(SourceTime*S.FlowSpeed-.5),S.MipBias);
+    float4 Second=SR_SAMPLE_BIAS(ColorMap,ColorMapSampler,BaseUV+Vector*Phase,S.MipBias);
+    float4 ColorSample=lerp(First,Second,1-abs(Phase*2-1));
+    float3 Color=lerp(SR_BackgroundPower(ColorSample.rgb,S.ColorPower)*S.ColorGain,ColorSample.rgb*S.ColorLinearGain,S.ColorLinearBlend)*S.Tint*InstanceColor.rgb;
+    Color*=lerp(1,(S.SceneTintA+S.SceneTintB)*.5,S.SceneTintBlend);
+    float2 MaskUV=SR_BackgroundRotate(UV,S.MaskAxisX,S.MaskAxisY)*S.MaskTiling+(SourceTime+InstanceMotion.y)*S.MaskScroll+S.MaskOffset+S.MaskOffset2+S.MaskFinalOffset;
+    float MaskValue=dot(Mask.SampleLevel(MaskSampler,MaskUV,S.MipBias-1),S.MaskChannels)*S.MaskGain;
+    float Alpha=saturate(dot(ColorSample,S.OpacityChannels)*S.OpacityGain*MaskValue*InstanceColor.a);
+    Color=max(Color,0)*S.SceneScale*Alpha;
+    return float4(SR_BackgroundGrade(Color,1,S.Desaturation,S.ColorScale,S.SecondaryDesaturation,S.SecondaryScale),0);
+}
+
+// E1817/E1821 PS: fixed SRV state supplies instance color, phase offset and dissolution.
+// UV is UV1, the atlas coordinates already generated by the retained source geometry.
+float4 SR_Particle(Texture2D Base,SamplerState BaseSampler,Texture2D Dissolve,SamplerState DissolveSampler,
+    float2 UV,float SourceTime,float DepthCm,float4 InstanceColor,float InstanceOffset,float3 InstanceDissolve,SR_ParticleSettings S)
+{
+    float Time=SR_BackgroundPhase(SourceTime);
+    float2 BaseUV=SR_BackgroundRotate(UV,S.BaseAxisX,S.BaseAxisY)*S.BaseTiling+(Time+InstanceOffset)*S.BaseScroll+S.BaseOffset+S.BaseOffset2+S.BaseFinalOffset;
+    float4 BaseSample=SR_SAMPLE_BIAS(Base,BaseSampler,BaseUV,S.MipBias);
+    float3 Color=lerp(SR_BackgroundPower(BaseSample.rgb,S.ColorPower)*S.ColorGain,BaseSample.rgb*S.ColorLinearGain,S.ColorLinearBlend)*S.Tint*InstanceColor.rgb;
+    float2 DissolveUV=SR_BackgroundRotate(UV,S.DissolveAxisX,S.DissolveAxisY)*S.DissolveTiling+(Time+InstanceDissolve.z)*S.DissolveScroll+S.DissolveOffset+S.DissolveOffset2+S.DissolveOffset3;
+    float DissolveValue=dot(SR_SAMPLE_BIAS(Dissolve,DissolveSampler,DissolveUV,S.MipBias),S.DissolveChannels);
+    float Coverage=DissolveValue*S.DissolveSharpness-(S.DissolveSharpness-InstanceDissolve.x*S.DissolveAmount*(S.DissolveSharpness+1));
+    float Edge=1-min(abs(Coverage-1),1);
+    Color+=Edge*S.EdgeColor*InstanceDissolve.y;
+    Color*=lerp(1,(S.SceneTintA+S.SceneTintB)*.5,S.SceneTintBlend);
+    float Alpha=saturate(saturate(Coverage)*dot(BaseSample,S.OpacityChannels)*S.OpacityGain*InstanceColor.a*saturate((DepthCm-S.NearStart)/S.NearWidth));
+    return float4(SR_BackgroundGrade(Color,S.SceneScale,S.Desaturation,S.ColorScale,S.SecondaryDesaturation,S.SecondaryScale),Alpha);
+}
+
+// E1638 interpolant fit from the retained source mesh (material_specs.json, v2).
+float2 SR_FloorUV(float2 UV0,float2 UV1)
+{
+    return UV0.x*float2(.502456002,9.686065612e-7)+UV0.y*float2(9.686065611e-7,.502456002)
+        +UV1.x*float2(.4999929994,-9.733742181e-7)+UV1.y*float2(-9.73374218e-7,.4999929994)-.0009841761987;
+}
+
+float4 SR_Floor(Texture2D Reflection,SamplerState ReflectionSampler,Texture2D Noise,SamplerState NoiseSampler,
+    Texture2D Shape,SamplerState ShapeSampler,float2 UV,float2 ReflectionUV,float ReflectionValid,float SourceTime,SR_FloorSettings S)
+{
+    float Angle=SourceTime*S.RotationSpeed*.25,SinAngle,CosAngle;sincos(Angle,SinAngle,CosAngle);
+    float2 NoiseUV=UV*S.NoiseTiling-.5;
+    NoiseUV=float2(dot(NoiseUV,float2(CosAngle,-SinAngle)),dot(NoiseUV,float2(SinAngle,CosAngle)))+.5;
+    float3 NoiseValue=SR_SAMPLE_BIAS(Noise,NoiseSampler,NoiseUV,S.MipBias).rgb;
+    float2 ShapeUV=(UV+(NoiseValue.rg-.5)*NoiseValue.b*S.Distortion)/S.ShapeScale+.5-S.ShapePivot+S.ShapeOffset;
+    float Radius=length(UV-.5);
+    float3 ShapeColor=SR_SAMPLE_BIAS(Shape,ShapeSampler,ShapeUV,S.MipBias).rgb*saturate((1-Radius*S.ShapeRadius)*S.ShapeEdgeGain)*S.ShapeIntensity*S.ShapeColor;
+    float3 Glow=saturate((1-Radius*S.GlowRadius)*S.GlowEdgeGain)*S.GlowIntensity*S.GlowColor;
+    float3 Reflected=Reflection.SampleLevel(ReflectionSampler,ReflectionUV,0).rgb*ReflectionValid*S.ReflectionIntensity;
+    float3 Color=lerp(ShapeColor+Glow+Reflected,S.OverrideColor,S.OverrideBlend);
+    return float4(SR_BackgroundGrade(Color,S.SceneScale,S.Desaturation,S.ColorScale,S.SecondaryDesaturation,S.SecondaryScale),max(1-Radius*3.333333,0));
+}
+
+// The collection is written by the actual reflection producer, never the viewing camera.
+float2 SR_ReflectionUV(float3 WorldPosition,float3 Position,float3 Right,float3 Up,float3 Forward,float FOV,float Aspect,out float Valid)
+{
+    float3 Delta=WorldPosition-Position;
+    float Depth=dot(Delta,Forward),TanHalf=tan(FOV*.008726646259971648);
+    float2 UV=.5+float2(dot(Delta,Right),-dot(Delta,Up)*Aspect)/(2*max(Depth,.0001)*TanHalf);
+    Valid=(Depth>0 && all(UV>=0) && all(UV<1))?1:0;
+    return UV;
+}

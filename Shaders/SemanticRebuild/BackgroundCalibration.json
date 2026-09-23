@@ -1,0 +1,2433 @@
+{
+  "Floor": {
+    "NoiseTiling": {
+      "value": [
+        2.0,
+        2.0
+      ],
+      "source": "E1638 cb3[3].xy"
+    },
+    "RotationSpeed": {
+      "value": 0.05000000074505806,
+      "source": "E1638 cb3[14].x"
+    },
+    "Distortion": {
+      "value": 0.019999999552965164,
+      "source": "E1638 cb3[14].y"
+    },
+    "ShapeScale": {
+      "value": [
+        0.20000000298023224,
+        0.20000000298023224
+      ],
+      "source": "E1638 cb3[6].xy"
+    },
+    "ShapePivot": {
+      "value": [
+        2.5,
+        2.5
+      ],
+      "source": "E1638 cb3[7].xy"
+    },
+    "ShapeOffset": {
+      "value": [
+        0.0,
+        0.0
+      ],
+      "source": "E1638 cb3[8].xy"
+    },
+    "ShapeRadius": {
+      "value": 10.0,
+      "source": "E1638 cb3[15].x"
+    },
+    "ShapeEdgeGain": {
+      "value": 2.0,
+      "source": "E1638 cb3[16].x"
+    },
+    "ShapeIntensity": {
+      "value": 21.87151527404785,
+      "source": "E1638 cb3[16].y"
+    },
+    "ShapeColor": {
+      "value": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "source": "E1638 cb3[10].xyz"
+    },
+    "GlowRadius": {
+      "value": 3.3333332538604736,
+      "source": "E1638 cb3[17].x"
+    },
+    "GlowEdgeGain": {
+      "value": 0.5,
+      "source": "E1638 cb3[18].x"
+    },
+    "GlowIntensity": {
+      "value": 0.30476200580596924,
+      "source": "E1638 cb3[18].y"
+    },
+    "GlowColor": {
+      "value": [
+        0.9270849823951721,
+        0.9537580013275146,
+        1.0
+      ],
+      "source": "E1638 cb3[12].xyz"
+    },
+    "ReflectionIntensity": {
+      "value": 1.0,
+      "source": "E1638 cb3[18].z"
+    },
+    "OverrideColor": {
+      "value": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "source": "E1638 cb3[13].xyz"
+    },
+    "OverrideBlend": {
+      "value": 0.0,
+      "source": "E1638 cb3[18].w"
+    },
+    "SceneScale": {
+      "value": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "source": "E1638 cb0[282].xyz"
+    },
+    "Desaturation": {
+      "value": 0.0,
+      "source": "E1638 cb0[280].x"
+    },
+    "ColorScale": {
+      "value": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "source": "E1638 cb0[278].xyz"
+    },
+    "SecondaryDesaturation": {
+      "value": 0.0,
+      "source": "E1638 cb0[283].x"
+    },
+    "SecondaryScale": {
+      "value": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "source": "E1638 cb0[281].xyz"
+    },
+    "MipBias": {
+      "value": 0.0,
+      "source": "E1638 cb0[149].y"
+    }
+  },
+  "Fog": {
+    "BaseAxisX": {
+      "value": [
+        1.0,
+        -0.0
+      ],
+      "source": "E1768 cb5[3].xy"
+    },
+    "BaseAxisY": {
+      "value": [
+        0.0,
+        1.0
+      ],
+      "source": "E1768 cb5[4].xy"
+    },
+    "BaseTiling": {
+      "value": [
+        6.0,
+        0.550000011920929
+      ],
+      "source": "E1768 cb5[7].xy"
+    },
+    "BaseScroll": {
+      "value": [
+        0.004999999888241291,
+        0.0
+      ],
+      "source": "E1768 cb5[8].xy"
+    },
+    "BaseOffset": {
+      "value": [
+        0.0,
+        0.0
+      ],
+      "source": "E1768 cb5[10].xy"
+    },
+    "BaseFinalOffset": {
+      "value": [
+        0.0,
+        0.0
+      ],
+      "source": "E1768 cb5[11].xy"
+    },
+    "FlowSpeed": {
+      "value": 0.15000000596046448,
+      "source": "E1768 cb5[46].x"
+    },
+    "FlowTiling": {
+      "value": [
+        6.0,
+        0.6285709738731384
+      ],
+      "source": "E1768 cb5[14].xy"
+    },
+    "FlowScroll": {
+      "value": [
+        0.0,
+        0.0
+      ],
+      "source": "E1768 cb5[15].xy"
+    },
+    "FlowStrength": {
+      "value": 0.10000000149011612,
+      "source": "E1768 cb5[48].y"
+    },
+    "ColorPower": {
+      "value": 3.01676607131958,
+      "source": "E1768 cb5[48].z"
+    },
+    "ColorGain": {
+      "value": 3.0,
+      "source": "E1768 cb5[48].w"
+    },
+    "ColorLinearGain": {
+      "value": 1.0,
+      "source": "E1768 cb5[49].x"
+    },
+    "ColorLinearBlend": {
+      "value": 0.5,
+      "source": "E1768 cb5[49].y"
+    },
+    "Tint": {
+      "value": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "source": "E1768 cb5[19].xyz"
+    },
+    "MaskAxisX": {
+      "value": [
+        -4.371138828673793e-08,
+        -1.0
+      ],
+      "source": "E1768 cb5[30].xy"
+    },
+    "MaskAxisY": {
+      "value": [
+        1.0,
+        -4.371138828673793e-08
+      ],
+      "source": "E1768 cb5[31].xy"
+    },
+    "MaskTiling": {
+      "value": [
+        1.0,
+        1.0
+      ],
+      "source": "E1768 cb5[36].xy"
+    },
+    "MaskScroll": {
+      "value": [
+        0.0,
+        0.0
+      ],
+      "source": "E1768 cb5[37].xy"
+    },
+    "MaskOffset": {
+      "value": [
+        0.0,
+        0.0
+      ],
+      "source": "E1768 cb5[38].xy"
+    },
+    "MaskOffset2": {
+      "value": [
+        0.0,
+        0.0
+      ],
+      "source": "E1768 cb5[40].xy"
+    },
+    "MaskFinalOffset": {
+      "value": [
+        0.0,
+        0.0
+      ],
+      "source": "E1768 cb5[41].xy"
+    },
+    "MaskChannels": {
+      "value": [
+        1.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "source": "E1768 cb5[43].xyzw"
+    },
+    "MaskGain": {
+      "value": 1.0,
+      "source": "E1768 cb5[55].z"
+    },
+    "OpacityChannels": {
+      "value": [
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ],
+      "source": "E1768 cb5[26].xyzw"
+    },
+    "OpacityGain": {
+      "value": 1.0,
+      "source": "E1768 cb5[50].y"
+    },
+    "SceneTintBlend": {
+      "value": 0.10000000149011612,
+      "source": "E1768 cb5[49].z"
+    },
+    "SceneTintA": {
+      "value": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "source": "E1768 cb0[193].xyz"
+    },
+    "SceneTintB": {
+      "value": [
+        0.9969359636306763,
+        0.8494532108306885,
+        0.911675751209259
+      ],
+      "source": "E1768 cb0[289].xyz"
+    },
+    "SceneScale": {
+      "value": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "source": "E1768 cb0[282].xyz"
+    },
+    "Desaturation": {
+      "value": 0.0,
+      "source": "E1768 cb0[280].x"
+    },
+    "ColorScale": {
+      "value": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "source": "E1768 cb0[278].xyz"
+    },
+    "SecondaryDesaturation": {
+      "value": 0.0,
+      "source": "E1768 cb0[283].x"
+    },
+    "SecondaryScale": {
+      "value": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "source": "E1768 cb0[281].xyz"
+    },
+    "MipBias": {
+      "value": 0.0,
+      "source": "E1768 cb0[149].y"
+    }
+  },
+  "Particle": {
+    "BaseAxisX": {
+      "value": [
+        1.0,
+        -0.0
+      ],
+      "source": "E1817 cb5[6].xy"
+    },
+    "BaseAxisY": {
+      "value": [
+        0.0,
+        1.0
+      ],
+      "source": "E1817 cb5[7].xy"
+    },
+    "BaseTiling": {
+      "value": [
+        2.5,
+        2.5
+      ],
+      "source": "E1817 cb5[12].xy"
+    },
+    "BaseScroll": {
+      "value": [
+        0.0,
+        0.0
+      ],
+      "source": "E1817 cb5[13].xy"
+    },
+    "BaseOffset": {
+      "value": [
+        0.0,
+        0.0
+      ],
+      "source": "E1817 cb5[14].xy"
+    },
+    "BaseOffset2": {
+      "value": [
+        0.0,
+        0.0
+      ],
+      "source": "E1817 cb5[16].xy"
+    },
+    "BaseFinalOffset": {
+      "value": [
+        0.0,
+        0.0
+      ],
+      "source": "E1817 cb5[17].xy"
+    },
+    "ColorPower": {
+      "value": 1.0,
+      "source": "E1817 cb5[58].y"
+    },
+    "ColorGain": {
+      "value": 1.0,
+      "source": "E1817 cb5[58].z"
+    },
+    "ColorLinearGain": {
+      "value": 1.0,
+      "source": "E1817 cb5[58].w"
+    },
+    "ColorLinearBlend": {
+      "value": 0.5,
+      "source": "E1817 cb5[59].x"
+    },
+    "Tint": {
+      "value": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "source": "E1817 cb5[22].xyz"
+    },
+    "DissolveAxisX": {
+      "value": [
+        1.0,
+        -0.0
+      ],
+      "source": "E1817 cb5[25].xy"
+    },
+    "DissolveAxisY": {
+      "value": [
+        0.0,
+        1.0
+      ],
+      "source": "E1817 cb5[26].xy"
+    },
+    "DissolveTiling": {
+      "value": [
+        1.0,
+        1.0
+      ],
+      "source": "E1817 cb5[31].xy"
+    },
+    "DissolveScroll": {
+      "value": [
+        0.0,
+        0.0
+      ],
+      "source": "E1817 cb5[32].xy"
+    },
+    "DissolveOffset": {
+      "value": [
+        0.0,
+        0.0
+      ],
+      "source": "E1817 cb5[34].xy"
+    },
+    "DissolveOffset2": {
+      "value": [
+        0.0,
+        0.0
+      ],
+      "source": "E1817 cb5[35].xy"
+    },
+    "DissolveOffset3": {
+      "value": [
+        0.0,
+        0.0
+      ],
+      "source": "E1817 cb5[36].xy"
+    },
+    "DissolveChannels": {
+      "value": [
+        1.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "source": "E1817 cb5[38].xyzw"
+    },
+    "DissolveSharpness": {
+      "value": 5.0,
+      "source": "E1817 cb5[65].y"
+    },
+    "DissolveAmount": {
+      "value": 1.0,
+      "source": "E1817 cb5[65].z"
+    },
+    "EdgeColor": {
+      "value": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "source": "E1817 cb5[40].xyz"
+    },
+    "OpacityChannels": {
+      "value": [
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ],
+      "source": "E1817 cb5[47].xyzw"
+    },
+    "OpacityGain": {
+      "value": 3.0,
+      "source": "E1817 cb5[66].z"
+    },
+    "NearStart": {
+      "value": 12.0,
+      "source": "E1817 cb5[67].x"
+    },
+    "NearWidth": {
+      "value": 30.0,
+      "source": "E1817 cb5[67].y"
+    },
+    "SceneTintBlend": {
+      "value": 0.10000000149011612,
+      "source": "E1817 cb5[65].w"
+    },
+    "SceneTintA": {
+      "value": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "source": "E1817 cb0[193].xyz"
+    },
+    "SceneTintB": {
+      "value": [
+        0.9969359636306763,
+        0.8494532108306885,
+        0.911675751209259
+      ],
+      "source": "E1817 cb0[289].xyz"
+    },
+    "SceneScale": {
+      "value": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "source": "E1817 cb0[282].xyz"
+    },
+    "Desaturation": {
+      "value": 0.0,
+      "source": "E1817 cb0[280].x"
+    },
+    "ColorScale": {
+      "value": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "source": "E1817 cb0[278].xyz"
+    },
+    "SecondaryDesaturation": {
+      "value": 0.0,
+      "source": "E1817 cb0[283].x"
+    },
+    "SecondaryScale": {
+      "value": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "source": "E1817 cb0[281].xyz"
+    },
+    "MipBias": {
+      "value": 0.0,
+      "source": "E1817 cb0[149].y"
+    }
+  },
+  "Flow": {
+    "BaseScreenBlend": {
+      "value": 1.0,
+      "source": "E1718 cb5[62].y"
+    },
+    "BaseAxisX": {
+      "value": [
+        1.0,
+        -0.0
+      ],
+      "source": "E1718 cb5[5].xy"
+    },
+    "BaseAxisY": {
+      "value": [
+        0.0,
+        1.0
+      ],
+      "source": "E1718 cb5[6].xy"
+    },
+    "BaseTiling": {
+      "value": [
+        1.0,
+        0.0
+      ],
+      "source": "E1718 cb5[9].xy"
+    },
+    "BaseScroll": {
+      "value": [
+        -0.11428599804639816,
+        -0.10000000149011612
+      ],
+      "source": "E1718 cb5[10].xy"
+    },
+    "BaseClamp": {
+      "value": 0.0,
+      "source": "E1718 cb5[64].z"
+    },
+    "NoiseAxisX": {
+      "value": [
+        1.0,
+        -0.0
+      ],
+      "source": "E1718 cb5[19].xy"
+    },
+    "NoiseAxisY": {
+      "value": [
+        0.0,
+        1.0
+      ],
+      "source": "E1718 cb5[20].xy"
+    },
+    "NoiseTiling": {
+      "value": [
+        2.0,
+        0.0
+      ],
+      "source": "E1718 cb5[21].xy"
+    },
+    "NoiseScroll": {
+      "value": [
+        0.0,
+        0.0
+      ],
+      "source": "E1718 cb5[67].xy"
+    },
+    "NoiseGain": {
+      "value": 2.0,
+      "source": "E1718 cb5[64].w"
+    },
+    "NoiseBias": {
+      "value": 0.0,
+      "source": "E1718 cb5[69].y"
+    },
+    "BaseDistortion": {
+      "value": 1.0,
+      "source": "E1718 cb5[69].z"
+    },
+    "BaseDesaturation": {
+      "value": 0.0,
+      "source": "E1718 cb5[69].w"
+    },
+    "BaseIntensity": {
+      "value": 1.0,
+      "source": "E1718 cb5[70].x"
+    },
+    "DetailOffset": {
+      "value": [
+        0.0,
+        0.0
+      ],
+      "source": "E1718 cb5[25].xy"
+    },
+    "DetailAxisX": {
+      "value": [
+        1.0,
+        -0.0
+      ],
+      "source": "E1718 cb5[26].xy"
+    },
+    "DetailAxisY": {
+      "value": [
+        0.0,
+        1.0
+      ],
+      "source": "E1718 cb5[27].xy"
+    },
+    "DetailTiling": {
+      "value": [
+        1.0,
+        1.0
+      ],
+      "source": "E1718 cb5[32].xy"
+    },
+    "DetailScroll": {
+      "value": [
+        0.0,
+        0.0
+      ],
+      "source": "E1718 cb5[33].xy"
+    },
+    "DetailDistortion": {
+      "value": 0.0,
+      "source": "E1718 cb5[70].y"
+    },
+    "DetailClamp": {
+      "value": 1.0,
+      "source": "E1718 cb5[74].w"
+    },
+    "DetailChannels": {
+      "value": [
+        0.0,
+        0.0,
+        1.0,
+        0.0
+      ],
+      "source": "E1718 cb5[35].xyzw"
+    },
+    "DetailPower": {
+      "value": 1.0,
+      "source": "E1718 cb5[76].x"
+    },
+    "DetailGain": {
+      "value": 1.0,
+      "source": "E1718 cb5[76].y"
+    },
+    "DetailLinearGain": {
+      "value": 1.0,
+      "source": "E1718 cb5[76].z"
+    },
+    "DetailLinearBlend": {
+      "value": 0.5,
+      "source": "E1718 cb5[76].w"
+    },
+    "DetailBias": {
+      "value": 0.0,
+      "source": "E1718 cb5[77].x"
+    },
+    "AddBlend": {
+      "value": 0.0,
+      "source": "E1718 cb5[77].y"
+    },
+    "Tint": {
+      "value": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "source": "E1718 cb5[38].xyz"
+    },
+    "MaskAxisX": {
+      "value": [
+        -4.371138828673793e-08,
+        -1.0
+      ],
+      "source": "E1718 cb5[51].xy"
+    },
+    "MaskAxisY": {
+      "value": [
+        1.0,
+        -4.371138828673793e-08
+      ],
+      "source": "E1718 cb5[52].xy"
+    },
+    "MaskTiling": {
+      "value": [
+        1.0,
+        1.0
+      ],
+      "source": "E1718 cb5[57].xy"
+    },
+    "MaskScroll": {
+      "value": [
+        0.0,
+        0.0
+      ],
+      "source": "E1718 cb5[58].xy"
+    },
+    "MaskOffset": {
+      "value": [
+        0.0,
+        0.0
+      ],
+      "source": "E1718 cb5[59].xy"
+    },
+    "MaskClamp": {
+      "value": 1.0,
+      "source": "E1718 cb5[85].x"
+    },
+    "MaskChannels": {
+      "value": [
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ],
+      "source": "E1718 cb5[61].xyzw"
+    },
+    "MaskGain": {
+      "value": 0.30000001192092896,
+      "source": "E1718 cb5[85].w"
+    },
+    "SceneTintBlend": {
+      "value": 0.10000000149011612,
+      "source": "E1718 cb5[77].w"
+    },
+    "SceneTintA": {
+      "value": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "source": "E1718 cb0[193].xyz"
+    },
+    "SceneTintB": {
+      "value": [
+        0.9969359636306763,
+        0.8494532108306885,
+        0.911675751209259
+      ],
+      "source": "E1718 cb0[289].xyz"
+    },
+    "IntersectionWidth": {
+      "value": 50.0,
+      "source": "E1718 cb5[78].z"
+    },
+    "FacingPower": {
+      "value": 0.0,
+      "source": "E1718 cb5[86].y"
+    },
+    "FacingBlend": {
+      "value": 0.0,
+      "source": "E1718 cb5[86].z"
+    },
+    "OpacityChannels": {
+      "value": [
+        0.0,
+        0.0,
+        1.0,
+        0.0
+      ],
+      "source": "E1718 cb5[47].xyzw"
+    },
+    "OpacityGain": {
+      "value": 1.0,
+      "source": "E1718 cb5[80].z"
+    },
+    "NearStart": {
+      "value": 12.0,
+      "source": "E1718 cb5[87].x"
+    },
+    "NearWidth": {
+      "value": 30.0,
+      "source": "E1718 cb5[87].y"
+    },
+    "OpacityScale": {
+      "value": 1.0,
+      "source": "E1718 cb5[87].z"
+    },
+    "SceneScale": {
+      "value": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "source": "E1718 cb0[282].xyz"
+    },
+    "Desaturation": {
+      "value": 0.0,
+      "source": "E1718 cb0[280].x"
+    },
+    "ColorScale": {
+      "value": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "source": "E1718 cb0[278].xyz"
+    },
+    "SecondaryDesaturation": {
+      "value": 0.0,
+      "source": "E1718 cb0[283].x"
+    },
+    "SecondaryScale": {
+      "value": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "source": "E1718 cb0[281].xyz"
+    },
+    "MipBias": {
+      "value": 0.0,
+      "source": "E1718 cb0[149].y"
+    }
+  },
+  "Cloud": {
+    "BaseAxisX": {
+      "value": [
+        1.0,
+        -0.0
+      ],
+      "source": "E1674 cb5[5].xy"
+    },
+    "BaseAxisY": {
+      "value": [
+        0.0,
+        1.0
+      ],
+      "source": "E1674 cb5[6].xy"
+    },
+    "BaseTiling": {
+      "value": [
+        3.0,
+        0.0
+      ],
+      "source": "E1674 cb5[9].xy"
+    },
+    "BaseScroll": {
+      "value": [
+        -0.10000000149011612,
+        0.0
+      ],
+      "source": "E1674 cb5[10].xy"
+    },
+    "BaseIntensity": {
+      "value": 5.0,
+      "source": "E1674 cb5[85].x"
+    },
+    "DetailOffset": {
+      "value": [
+        0.0,
+        0.0
+      ],
+      "source": "E1674 cb5[25].xy"
+    },
+    "DetailAxisX": {
+      "value": [
+        1.0,
+        -0.0
+      ],
+      "source": "E1674 cb5[26].xy"
+    },
+    "DetailAxisY": {
+      "value": [
+        0.0,
+        1.0
+      ],
+      "source": "E1674 cb5[27].xy"
+    },
+    "DetailTiling": {
+      "value": [
+        3.0,
+        1.0
+      ],
+      "source": "E1674 cb5[32].xy"
+    },
+    "DetailScroll": {
+      "value": [
+        -0.009999999776482582,
+        0.0
+      ],
+      "source": "E1674 cb5[33].xy"
+    },
+    "DetailChannels": {
+      "value": [
+        1.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "source": "E1674 cb5[35].xyzw"
+    },
+    "DetailPower": {
+      "value": 1.0,
+      "source": "E1674 cb5[91].x"
+    },
+    "DetailGain": {
+      "value": 1.0,
+      "source": "E1674 cb5[91].y"
+    },
+    "DetailLinearGain": {
+      "value": 1.0,
+      "source": "E1674 cb5[91].z"
+    },
+    "DetailLinearBlend": {
+      "value": 0.5,
+      "source": "E1674 cb5[91].w"
+    },
+    "DetailBias": {
+      "value": 0.0,
+      "source": "E1674 cb5[92].x"
+    },
+    "AddBlend": {
+      "value": 0.12381000071763992,
+      "source": "E1674 cb5[92].y"
+    },
+    "Tint": {
+      "value": [
+        0.13013599812984467,
+        0.22322799265384674,
+        0.2663559913635254
+      ],
+      "source": "E1674 cb5[38].xyz"
+    },
+    "DissolveAxisX": {
+      "value": [
+        1.0,
+        -0.0
+      ],
+      "source": "E1674 cb5[41].xy"
+    },
+    "DissolveAxisY": {
+      "value": [
+        0.0,
+        1.0
+      ],
+      "source": "E1674 cb5[42].xy"
+    },
+    "DissolveTiling": {
+      "value": [
+        1.0,
+        1.0
+      ],
+      "source": "E1674 cb5[47].xy"
+    },
+    "DissolveScroll": {
+      "value": [
+        0.0,
+        0.0
+      ],
+      "source": "E1674 cb5[48].xy"
+    },
+    "DissolveOffset": {
+      "value": [
+        0.0,
+        0.0
+      ],
+      "source": "E1674 cb5[49].xy"
+    },
+    "DissolveChannels": {
+      "value": [
+        1.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "source": "E1674 cb5[51].xyzw"
+    },
+    "MaskAxisX": {
+      "value": [
+        1.0,
+        -0.0
+      ],
+      "source": "E1674 cb5[55].xy"
+    },
+    "MaskAxisY": {
+      "value": [
+        0.0,
+        1.0
+      ],
+      "source": "E1674 cb5[56].xy"
+    },
+    "MaskTiling": {
+      "value": [
+        1.0,
+        0.913017988204956
+      ],
+      "source": "E1674 cb5[61].xy"
+    },
+    "MaskScroll": {
+      "value": [
+        0.0,
+        0.0
+      ],
+      "source": "E1674 cb5[62].xy"
+    },
+    "MaskOffset": {
+      "value": [
+        0.0,
+        0.0
+      ],
+      "source": "E1674 cb5[63].xy"
+    },
+    "MaskChannels": {
+      "value": [
+        1.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "source": "E1674 cb5[65].xyzw"
+    },
+    "MaskGain": {
+      "value": 1.0,
+      "source": "E1674 cb5[102].z"
+    },
+    "DissolveSharpness": {
+      "value": 5.0,
+      "source": "E1674 cb5[103].y"
+    },
+    "DissolveAmount": {
+      "value": 0.8445810079574585,
+      "source": "E1674 cb5[103].z"
+    },
+    "EdgeColor": {
+      "value": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "source": "E1674 cb5[67].xyz"
+    },
+    "SceneTintBlend": {
+      "value": 0.10000000149011612,
+      "source": "E1674 cb5[104].x"
+    },
+    "SceneTintA": {
+      "value": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "source": "E1674 cb0[193].xyz"
+    },
+    "SceneTintB": {
+      "value": [
+        0.9969359636306763,
+        0.8494532108306885,
+        0.911675751209259
+      ],
+      "source": "E1674 cb0[289].xyz"
+    },
+    "IntersectionWidth": {
+      "value": 50.0,
+      "source": "E1674 cb5[104].w"
+    },
+    "FacingPower": {
+      "value": 0.699999988079071,
+      "source": "E1674 cb5[107].y"
+    },
+    "FacingBlend": {
+      "value": 1.2000000476837158,
+      "source": "E1674 cb5[107].z"
+    },
+    "OpacityGain": {
+      "value": 0.4000000059604645,
+      "source": "E1674 cb5[106].w"
+    },
+    "NearStart": {
+      "value": 12.0,
+      "source": "E1674 cb5[108].x"
+    },
+    "NearWidth": {
+      "value": 30.0,
+      "source": "E1674 cb5[108].y"
+    },
+    "OpacityScale": {
+      "value": 1.0,
+      "source": "E1674 cb5[108].z"
+    },
+    "OpacityChannels": {
+      "value": [
+        1.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "source": "E1674 cb5[76].xyzw"
+    },
+    "SceneScale": {
+      "value": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "source": "E1674 cb0[282].xyz"
+    },
+    "Desaturation": {
+      "value": 0.0,
+      "source": "E1674 cb0[280].x"
+    },
+    "ColorScale": {
+      "value": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "source": "E1674 cb0[278].xyz"
+    },
+    "SecondaryDesaturation": {
+      "value": 0.0,
+      "source": "E1674 cb0[283].x"
+    },
+    "SecondaryScale": {
+      "value": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "source": "E1674 cb0[281].xyz"
+    },
+    "MipBias": {
+      "value": 0.0,
+      "source": "E1674 cb0[149].y"
+    }
+  },
+  "Sky": {
+    "GradientPower": {
+      "value": 1.059999942779541,
+      "source": "E415 cb3[28].x"
+    },
+    "GradientBlend": {
+      "value": -0.30000001192092896,
+      "source": "E415 cb3[29].x"
+    },
+    "GradientRow": {
+      "value": 0.5,
+      "source": "E415 cb3[29].z"
+    },
+    "AtlasHeight": {
+      "value": 128.0,
+      "source": "E415 cb3[1].x"
+    },
+    "GradientDirectionBlend": {
+      "value": 0.0,
+      "source": "E415 cb3[28].w"
+    },
+    "GradientDirection": {
+      "value": [
+        -0.0,
+        -0.0,
+        -1.0
+      ],
+      "source": "E415 cb3[5].xyz"
+    },
+    "StarTiling": {
+      "value": [
+        40.0,
+        15.0
+      ],
+      "source": "E415 cb3[7].xy"
+    },
+    "StarScroll": {
+      "value": [
+        -0.0020000000949949026,
+        0.0
+      ],
+      "source": "E415 cb3[30].zw"
+    },
+    "StarPower": {
+      "value": 1.830731987953186,
+      "source": "E415 cb3[31].x"
+    },
+    "StarGain": {
+      "value": 105.50787353515625,
+      "source": "E415 cb3[31].y"
+    },
+    "StarLinearGain": {
+      "value": 2.0,
+      "source": "E415 cb3[31].z"
+    },
+    "StarLinearBlend": {
+      "value": 0.5,
+      "source": "E415 cb3[31].w"
+    },
+    "StarColor": {
+      "value": [
+        0.3499999940395355,
+        0.4583339989185333,
+        1.0
+      ],
+      "source": "E415 cb3[12].xyz"
+    },
+    "StarIntensity": {
+      "value": 0.20000000298023224,
+      "source": "E415 cb3[32].x"
+    },
+    "StarMaskTiling": {
+      "value": [
+        16.0,
+        10.0
+      ],
+      "source": "E415 cb3[15].xy"
+    },
+    "StarMaskScroll": {
+      "value": [
+        0.0020000000949949026,
+        0.0
+      ],
+      "source": "E415 cb3[16].xy"
+    },
+    "GradientIntensity": {
+      "value": 1.0,
+      "source": "E415 cb2[1].z"
+    },
+    "StarLayerIntensity": {
+      "value": 1.0,
+      "source": "E415 cb2[1].w"
+    },
+    "CurlTiling": {
+      "value": [
+        2.0,
+        1.0
+      ],
+      "source": "E415 cb3[19].xy"
+    },
+    "CurlScroll": {
+      "value": [
+        0.009999999776482582,
+        0.0
+      ],
+      "source": "E415 cb3[20].xy"
+    },
+    "CloudTiling": {
+      "value": [
+        5.0,
+        2.0
+      ],
+      "source": "E415 cb3[23].xy"
+    },
+    "CloudOffset": {
+      "value": [
+        0.0,
+        -0.1904750019311905
+      ],
+      "source": "E415 cb3[24].xy"
+    },
+    "CurlStrength": {
+      "value": 0.20000000298023224,
+      "source": "E415 cb3[32].y"
+    },
+    "LowerCloudGain": {
+      "value": 1.0,
+      "source": "E415 cb3[32].w"
+    },
+    "UpperCloudGain": {
+      "value": 1.0,
+      "source": "E415 cb3[32].z"
+    },
+    "CloudColor": {
+      "value": [
+        1.09375,
+        1.5372170209884644,
+        3.0
+      ],
+      "source": "E415 cb3[26].xyz"
+    },
+    "CloudIntensity": {
+      "value": 0.07999999821186066,
+      "source": "E415 cb3[33].x"
+    },
+    "CloudVerticalPower": {
+      "value": 5.0,
+      "source": "E415 cb3[33].y"
+    },
+    "CloudVerticalBlend": {
+      "value": 1.0,
+      "source": "E415 cb3[33].z"
+    },
+    "OverrideColor": {
+      "value": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "source": "E415 cb3[27].xyz"
+    },
+    "OverrideBlend": {
+      "value": 0.0,
+      "source": "E415 cb3[33].w"
+    },
+    "SceneScale": {
+      "value": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "source": "E415 cb0[282].xyz"
+    },
+    "Desaturation": {
+      "value": 0.0,
+      "source": "E415 cb0[279].z"
+    },
+    "ColorScale": {
+      "value": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "source": "E415 cb0[277].xyz"
+    },
+    "MipBias": {
+      "value": 0.0,
+      "source": "E415 cb0[149].y"
+    }
+  },
+  "Nebula": {
+    "StateBlend": {
+      "value": 0.0,
+      "source": "E1589 cb5[26].y"
+    },
+    "NoiseScrollA": {
+      "value": [
+        0.004999999888241291,
+        0.0
+      ],
+      "source": "E1589 cb5[3].xy"
+    },
+    "NoiseScrollB": {
+      "value": [
+        -0.004999999888241291,
+        -0.0
+      ],
+      "source": "E1589 cb5[4].xy"
+    },
+    "NoiseTilingA": {
+      "value": [
+        1.0,
+        1.0
+      ],
+      "source": "E1589 cb5[5].xy"
+    },
+    "NoiseTilingB": {
+      "value": [
+        -1.0,
+        -1.0
+      ],
+      "source": "E1589 cb5[6].xy"
+    },
+    "Distortion": {
+      "value": 0.030000001192092896,
+      "source": "E1589 cb5[26].w"
+    },
+    "CloudScale": {
+      "value": [
+        1.0,
+        1.0
+      ],
+      "source": "E1589 cb5[9].xy"
+    },
+    "CloudPivot": {
+      "value": [
+        0.5,
+        0.5
+      ],
+      "source": "E1589 cb5[10].xy"
+    },
+    "CloudOffset": {
+      "value": [
+        0.0,
+        0.0
+      ],
+      "source": "E1589 cb5[11].xy"
+    },
+    "CloudColor": {
+      "value": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "source": "E1589 cb5[13].xyz"
+    },
+    "StarsTilingA": {
+      "value": [
+        2.0,
+        2.0
+      ],
+      "source": "E1589 cb5[16].xy"
+    },
+    "StarsTilingB": {
+      "value": [
+        -2.0,
+        -2.0
+      ],
+      "source": "E1589 cb5[17].xy"
+    },
+    "StarsOffsetA": {
+      "value": [
+        0.0,
+        0.0
+      ],
+      "source": "E1589 cb5[18].xy"
+    },
+    "StarsOffsetB": {
+      "value": [
+        -0.0,
+        -0.0
+      ],
+      "source": "E1589 cb5[19].xy"
+    },
+    "MaskDistortion": {
+      "value": 0.015000000596046448,
+      "source": "E1589 cb5[27].y"
+    },
+    "StarsColor": {
+      "value": [
+        0.2581459879875183,
+        0.3590039908885956,
+        1.0
+      ],
+      "source": "E1589 cb5[21].xyz"
+    },
+    "StarsIntensity": {
+      "value": 0.07000000029802322,
+      "source": "E1589 cb5[27].z"
+    },
+    "CloudIntensity": {
+      "value": 0.5380949974060059,
+      "source": "E1589 cb5[27].x"
+    },
+    "OverrideColor": {
+      "value": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "source": "E1589 cb5[22].xyz"
+    },
+    "OverrideBlend": {
+      "value": 0.0,
+      "source": "E1589 cb5[27].w"
+    },
+    "VisibilityControl": {
+      "value": 0.0,
+      "source": "E1589 cb3[6].x"
+    },
+    "VisibilityA": {
+      "value": 1.0,
+      "source": "E1589 cb5[24].z"
+    },
+    "VisibilityB": {
+      "value": -1.0,
+      "source": "E1589 cb5[25].z"
+    },
+    "Hour": {
+      "value": 19.65241241455078,
+      "source": "E1589 cb4[12].z"
+    },
+    "FadeEnabled": {
+      "value": 0.0,
+      "source": "E1589 cb2[43].x"
+    },
+    "FadeAmount": {
+      "value": 1.0,
+      "source": "E1589 cb2[43].y"
+    },
+    "SceneScale": {
+      "value": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "source": "E1589 cb0[282].xyz"
+    },
+    "Desaturation": {
+      "value": 0.0,
+      "source": "E1589 cb0[280].x"
+    },
+    "ColorScale": {
+      "value": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "source": "E1589 cb0[278].xyz"
+    },
+    "SecondaryDesaturation": {
+      "value": 0.0,
+      "source": "E1589 cb0[283].x"
+    },
+    "SecondaryScale": {
+      "value": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "source": "E1589 cb0[281].xyz"
+    },
+    "MipBias": {
+      "value": 0.0,
+      "source": "E1589 cb0[149].y"
+    }
+  },
+  "Ribbon": {
+    "BaseScreenBlend": {
+      "value": 0.0,
+      "source": "E1793 cb5[62].y"
+    },
+    "BaseAxisX": {
+      "value": [
+        1.0,
+        -0.0
+      ],
+      "source": "E1793 cb5[5].xy"
+    },
+    "BaseAxisY": {
+      "value": [
+        0.0,
+        1.0
+      ],
+      "source": "E1793 cb5[6].xy"
+    },
+    "BaseTiling": {
+      "value": [
+        2.0,
+        0.0
+      ],
+      "source": "E1793 cb5[9].xy"
+    },
+    "BaseScroll": {
+      "value": [
+        0.019999999552965164,
+        -0.004999999888241291
+      ],
+      "source": "E1793 cb5[10].xy"
+    },
+    "BaseClamp": {
+      "value": 0.0,
+      "source": "E1793 cb5[64].z"
+    },
+    "NoiseAxisX": {
+      "value": [
+        1.0,
+        -0.0
+      ],
+      "source": "E1793 cb5[19].xy"
+    },
+    "NoiseAxisY": {
+      "value": [
+        0.0,
+        1.0
+      ],
+      "source": "E1793 cb5[20].xy"
+    },
+    "NoiseTiling": {
+      "value": [
+        5.0,
+        1.0
+      ],
+      "source": "E1793 cb5[21].xy"
+    },
+    "NoiseScroll": {
+      "value": [
+        0.20000000298023224,
+        0.009999999776482582
+      ],
+      "source": "E1793 cb5[67].xy"
+    },
+    "NoiseGain": {
+      "value": 0.15000000596046448,
+      "source": "E1793 cb5[64].w"
+    },
+    "NoiseBias": {
+      "value": 0.0,
+      "source": "E1793 cb5[69].y"
+    },
+    "BaseDistortion": {
+      "value": 0.30000001192092896,
+      "source": "E1793 cb5[69].z"
+    },
+    "BaseDesaturation": {
+      "value": 0.8500000238418579,
+      "source": "E1793 cb5[69].w"
+    },
+    "BaseIntensity": {
+      "value": 3.0,
+      "source": "E1793 cb5[70].x"
+    },
+    "DetailOffset": {
+      "value": [
+        0.0,
+        0.0
+      ],
+      "source": "E1793 cb5[25].xy"
+    },
+    "DetailAxisX": {
+      "value": [
+        1.0,
+        -0.0
+      ],
+      "source": "E1793 cb5[26].xy"
+    },
+    "DetailAxisY": {
+      "value": [
+        0.0,
+        1.0
+      ],
+      "source": "E1793 cb5[27].xy"
+    },
+    "DetailTiling": {
+      "value": [
+        5.0,
+        1.0
+      ],
+      "source": "E1793 cb5[32].xy"
+    },
+    "DetailScroll": {
+      "value": [
+        0.0020000000949949026,
+        0.0
+      ],
+      "source": "E1793 cb5[33].xy"
+    },
+    "DetailDistortion": {
+      "value": 0.20000000298023224,
+      "source": "E1793 cb5[70].y"
+    },
+    "DetailClamp": {
+      "value": 0.0,
+      "source": "E1793 cb5[74].w"
+    },
+    "DetailChannels": {
+      "value": [
+        1.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "source": "E1793 cb5[35].xyzw"
+    },
+    "DetailPower": {
+      "value": 23.18993377685547,
+      "source": "E1793 cb5[76].x"
+    },
+    "DetailGain": {
+      "value": 17.54644203186035,
+      "source": "E1793 cb5[76].y"
+    },
+    "DetailLinearGain": {
+      "value": 1.0,
+      "source": "E1793 cb5[76].z"
+    },
+    "DetailLinearBlend": {
+      "value": 0.5,
+      "source": "E1793 cb5[76].w"
+    },
+    "DetailBias": {
+      "value": 0.0,
+      "source": "E1793 cb5[77].x"
+    },
+    "AddBlend": {
+      "value": 0.0,
+      "source": "E1793 cb5[77].y"
+    },
+    "Tint": {
+      "value": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "source": "E1793 cb5[38].xyz"
+    },
+    "MaskAxisX": {
+      "value": [
+        1.0,
+        -0.0
+      ],
+      "source": "E1793 cb5[51].xy"
+    },
+    "MaskAxisY": {
+      "value": [
+        0.0,
+        1.0
+      ],
+      "source": "E1793 cb5[52].xy"
+    },
+    "MaskTiling": {
+      "value": [
+        1.0,
+        0.913017988204956
+      ],
+      "source": "E1793 cb5[57].xy"
+    },
+    "MaskScroll": {
+      "value": [
+        0.0,
+        0.0
+      ],
+      "source": "E1793 cb5[58].xy"
+    },
+    "MaskOffset": {
+      "value": [
+        0.0,
+        0.0
+      ],
+      "source": "E1793 cb5[59].xy"
+    },
+    "MaskClamp": {
+      "value": 0.0,
+      "source": "E1793 cb5[85].x"
+    },
+    "MaskChannels": {
+      "value": [
+        1.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "source": "E1793 cb5[61].xyzw"
+    },
+    "MaskGain": {
+      "value": 1.0,
+      "source": "E1793 cb5[85].w"
+    },
+    "SceneTintBlend": {
+      "value": 0.10000000149011612,
+      "source": "E1793 cb5[77].w"
+    },
+    "SceneTintA": {
+      "value": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "source": "E1793 cb0[193].xyz"
+    },
+    "SceneTintB": {
+      "value": [
+        0.9969359636306763,
+        0.8494532108306885,
+        0.911675751209259
+      ],
+      "source": "E1793 cb0[289].xyz"
+    },
+    "IntersectionWidth": {
+      "value": 50.0,
+      "source": "E1793 cb5[78].z"
+    },
+    "FacingPower": {
+      "value": 0.699999988079071,
+      "source": "E1793 cb5[86].y"
+    },
+    "FacingBlend": {
+      "value": 1.2000000476837158,
+      "source": "E1793 cb5[86].z"
+    },
+    "OpacityChannels": {
+      "value": [
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ],
+      "source": "E1793 cb5[47].xyzw"
+    },
+    "OpacityGain": {
+      "value": 5.0,
+      "source": "E1793 cb5[80].z"
+    },
+    "NearStart": {
+      "value": 12.0,
+      "source": "E1793 cb5[87].x"
+    },
+    "NearWidth": {
+      "value": 30.0,
+      "source": "E1793 cb5[87].y"
+    },
+    "OpacityScale": {
+      "value": 1.0,
+      "source": "E1793 cb5[87].z"
+    },
+    "SceneScale": {
+      "value": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "source": "E1793 cb0[282].xyz"
+    },
+    "Desaturation": {
+      "value": 0.0,
+      "source": "E1793 cb0[280].x"
+    },
+    "ColorScale": {
+      "value": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "source": "E1793 cb0[278].xyz"
+    },
+    "SecondaryDesaturation": {
+      "value": 0.0,
+      "source": "E1793 cb0[283].x"
+    },
+    "SecondaryScale": {
+      "value": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "source": "E1793 cb0[281].xyz"
+    },
+    "MipBias": {
+      "value": 0.0,
+      "source": "E1793 cb0[149].y"
+    }
+  },
+  "FogBack": {
+    "BaseAxisX": {
+      "value": [
+        1.0,
+        -0.0
+      ],
+      "source": "E1772 cb5[3].xy"
+    },
+    "BaseAxisY": {
+      "value": [
+        0.0,
+        1.0
+      ],
+      "source": "E1772 cb5[4].xy"
+    },
+    "BaseTiling": {
+      "value": [
+        6.0,
+        0.550000011920929
+      ],
+      "source": "E1772 cb5[7].xy"
+    },
+    "BaseScroll": {
+      "value": [
+        0.004999999888241291,
+        0.0
+      ],
+      "source": "E1772 cb5[8].xy"
+    },
+    "BaseOffset": {
+      "value": [
+        0.0,
+        0.0
+      ],
+      "source": "E1772 cb5[10].xy"
+    },
+    "BaseFinalOffset": {
+      "value": [
+        0.0,
+        0.0
+      ],
+      "source": "E1772 cb5[11].xy"
+    },
+    "FlowSpeed": {
+      "value": 0.15000000596046448,
+      "source": "E1772 cb5[46].x"
+    },
+    "FlowTiling": {
+      "value": [
+        6.0,
+        0.6285709738731384
+      ],
+      "source": "E1772 cb5[14].xy"
+    },
+    "FlowScroll": {
+      "value": [
+        0.0,
+        0.0
+      ],
+      "source": "E1772 cb5[15].xy"
+    },
+    "FlowStrength": {
+      "value": 0.10000000149011612,
+      "source": "E1772 cb5[48].y"
+    },
+    "ColorPower": {
+      "value": 3.01676607131958,
+      "source": "E1772 cb5[48].z"
+    },
+    "ColorGain": {
+      "value": 3.0,
+      "source": "E1772 cb5[48].w"
+    },
+    "ColorLinearGain": {
+      "value": 1.0,
+      "source": "E1772 cb5[49].x"
+    },
+    "ColorLinearBlend": {
+      "value": 0.5,
+      "source": "E1772 cb5[49].y"
+    },
+    "Tint": {
+      "value": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "source": "E1772 cb5[19].xyz"
+    },
+    "MaskAxisX": {
+      "value": [
+        -4.371138828673793e-08,
+        -1.0
+      ],
+      "source": "E1772 cb5[30].xy"
+    },
+    "MaskAxisY": {
+      "value": [
+        1.0,
+        -4.371138828673793e-08
+      ],
+      "source": "E1772 cb5[31].xy"
+    },
+    "MaskTiling": {
+      "value": [
+        1.0,
+        1.0
+      ],
+      "source": "E1772 cb5[36].xy"
+    },
+    "MaskScroll": {
+      "value": [
+        0.0,
+        0.0
+      ],
+      "source": "E1772 cb5[37].xy"
+    },
+    "MaskOffset": {
+      "value": [
+        0.0,
+        0.0
+      ],
+      "source": "E1772 cb5[38].xy"
+    },
+    "MaskOffset2": {
+      "value": [
+        0.0,
+        0.0
+      ],
+      "source": "E1772 cb5[40].xy"
+    },
+    "MaskFinalOffset": {
+      "value": [
+        0.0,
+        0.0
+      ],
+      "source": "E1772 cb5[41].xy"
+    },
+    "MaskChannels": {
+      "value": [
+        1.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "source": "E1772 cb5[43].xyzw"
+    },
+    "MaskGain": {
+      "value": 1.0,
+      "source": "E1772 cb5[55].z"
+    },
+    "OpacityChannels": {
+      "value": [
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ],
+      "source": "E1772 cb5[26].xyzw"
+    },
+    "OpacityGain": {
+      "value": 1.0,
+      "source": "E1772 cb5[50].y"
+    },
+    "SceneTintBlend": {
+      "value": 0.10000000149011612,
+      "source": "E1772 cb5[49].z"
+    },
+    "SceneTintA": {
+      "value": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "source": "E1772 cb0[193].xyz"
+    },
+    "SceneTintB": {
+      "value": [
+        0.9969359636306763,
+        0.8494532108306885,
+        0.911675751209259
+      ],
+      "source": "E1772 cb0[289].xyz"
+    },
+    "SceneScale": {
+      "value": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "source": "E1772 cb0[282].xyz"
+    },
+    "Desaturation": {
+      "value": 0.0,
+      "source": "E1772 cb0[280].x"
+    },
+    "ColorScale": {
+      "value": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "source": "E1772 cb0[278].xyz"
+    },
+    "SecondaryDesaturation": {
+      "value": 0.0,
+      "source": "E1772 cb0[283].x"
+    },
+    "SecondaryScale": {
+      "value": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "source": "E1772 cb0[281].xyz"
+    },
+    "MipBias": {
+      "value": 0.0,
+      "source": "E1772 cb0[149].y"
+    }
+  },
+  "AlphaFlow": {
+    "BaseScreenBlend": {
+      "value": 0.0,
+      "source": "E1743 cb5[70].y"
+    },
+    "BaseAxisX": {
+      "value": [
+        1.0,
+        -0.0
+      ],
+      "source": "E1743 cb5[5].xy"
+    },
+    "BaseAxisY": {
+      "value": [
+        0.0,
+        1.0
+      ],
+      "source": "E1743 cb5[6].xy"
+    },
+    "BaseTiling": {
+      "value": [
+        8.098651885986328,
+        1.8645210266113281
+      ],
+      "source": "E1743 cb5[9].xy"
+    },
+    "BaseScroll": {
+      "value": [
+        -0.009999999776482582,
+        0.0
+      ],
+      "source": "E1743 cb5[10].xy"
+    },
+    "BaseClamp": {
+      "value": 0.0,
+      "source": "E1743 cb5[72].z"
+    },
+    "NoiseAxisX": {
+      "value": [
+        1.0,
+        -0.0
+      ],
+      "source": "E1743 cb5[19].xy"
+    },
+    "NoiseAxisY": {
+      "value": [
+        0.0,
+        1.0
+      ],
+      "source": "E1743 cb5[20].xy"
+    },
+    "NoiseTiling": {
+      "value": [
+        30.0,
+        5.0
+      ],
+      "source": "E1743 cb5[21].xy"
+    },
+    "NoiseScroll": {
+      "value": [
+        0.0,
+        0.06666699796915054
+      ],
+      "source": "E1743 cb5[75].xy"
+    },
+    "NoiseGain": {
+      "value": 1.0,
+      "source": "E1743 cb5[72].w"
+    },
+    "NoiseBias": {
+      "value": 0.0,
+      "source": "E1743 cb5[77].y"
+    },
+    "BaseDistortion": {
+      "value": 0.029999999329447746,
+      "source": "E1743 cb5[80].x"
+    },
+    "BaseDesaturation": {
+      "value": 0.5,
+      "source": "E1743 cb5[80].y"
+    },
+    "BaseIntensity": {
+      "value": 9.231843948364258,
+      "source": "E1743 cb5[80].z"
+    },
+    "DetailOffset": {
+      "value": [
+        0.0,
+        0.0
+      ],
+      "source": "E1743 cb5[33].xy"
+    },
+    "DetailAxisX": {
+      "value": [
+        1.0,
+        -0.0
+      ],
+      "source": "E1743 cb5[34].xy"
+    },
+    "DetailAxisY": {
+      "value": [
+        0.0,
+        1.0
+      ],
+      "source": "E1743 cb5[35].xy"
+    },
+    "DetailTiling": {
+      "value": [
+        1.0,
+        1.0
+      ],
+      "source": "E1743 cb5[40].xy"
+    },
+    "DetailScroll": {
+      "value": [
+        0.0,
+        0.0
+      ],
+      "source": "E1743 cb5[41].xy"
+    },
+    "DetailDistortion": {
+      "value": -0.019999999552965164,
+      "source": "E1743 cb5[80].w"
+    },
+    "DetailClamp": {
+      "value": 0.0,
+      "source": "E1743 cb5[85].y"
+    },
+    "DetailChannels": {
+      "value": [
+        0.0,
+        1.0,
+        0.0,
+        2.0
+      ],
+      "source": "E1743 cb5[43].xyzw"
+    },
+    "DetailPower": {
+      "value": 2.0,
+      "source": "E1743 cb5[86].z"
+    },
+    "DetailGain": {
+      "value": 2.0,
+      "source": "E1743 cb5[86].w"
+    },
+    "DetailLinearGain": {
+      "value": 1.0,
+      "source": "E1743 cb5[87].x"
+    },
+    "DetailLinearBlend": {
+      "value": 0.5,
+      "source": "E1743 cb5[87].y"
+    },
+    "DetailBias": {
+      "value": 0.0,
+      "source": "E1743 cb5[87].z"
+    },
+    "AddBlend": {
+      "value": 0.30000001192092896,
+      "source": "E1743 cb5[87].w"
+    },
+    "Tint": {
+      "value": [
+        0.25415199995040894,
+        0.40724000334739685,
+        0.4793199896812439
+      ],
+      "source": "E1743 cb5[46].xyz"
+    },
+    "MaskAxisX": {
+      "value": [
+        -1.0,
+        8.742277657347586e-08
+      ],
+      "source": "E1743 cb5[59].xy"
+    },
+    "MaskAxisY": {
+      "value": [
+        -8.742277657347586e-08,
+        -1.0
+      ],
+      "source": "E1743 cb5[60].xy"
+    },
+    "MaskTiling": {
+      "value": [
+        1.0,
+        1.0
+      ],
+      "source": "E1743 cb5[65].xy"
+    },
+    "MaskScroll": {
+      "value": [
+        0.0,
+        0.0
+      ],
+      "source": "E1743 cb5[66].xy"
+    },
+    "MaskOffset": {
+      "value": [
+        0.0,
+        -0.15238000452518463
+      ],
+      "source": "E1743 cb5[67].xy"
+    },
+    "MaskClamp": {
+      "value": 0.0,
+      "source": "E1743 cb5[95].z"
+    },
+    "MaskChannels": {
+      "value": [
+        1.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "source": "E1743 cb5[69].xyzw"
+    },
+    "MaskGain": {
+      "value": 1.0,
+      "source": "E1743 cb5[96].y"
+    },
+    "SceneTintBlend": {
+      "value": 0.10000000149011612,
+      "source": "E1743 cb5[88].y"
+    },
+    "SceneTintA": {
+      "value": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "source": "E1743 cb0[193].xyz"
+    },
+    "SceneTintB": {
+      "value": [
+        0.9969359636306763,
+        0.8494532108306885,
+        0.911675751209259
+      ],
+      "source": "E1743 cb0[289].xyz"
+    },
+    "IntersectionWidth": {
+      "value": 200.0,
+      "source": "E1743 cb5[89].x"
+    },
+    "FacingPower": {
+      "value": 0.0,
+      "source": "E1743 cb5[96].w"
+    },
+    "FacingBlend": {
+      "value": 0.0,
+      "source": "E1743 cb5[97].x"
+    },
+    "OpacityChannels": {
+      "value": [
+        0.0,
+        0.800000011920929,
+        0.0,
+        2.5
+      ],
+      "source": "E1743 cb5[55].xyzw"
+    },
+    "OpacityGain": {
+      "value": 1.0,
+      "source": "E1743 cb5[91].x"
+    },
+    "NearStart": {
+      "value": 12.0,
+      "source": "E1743 cb5[97].z"
+    },
+    "NearWidth": {
+      "value": 30.0,
+      "source": "E1743 cb5[97].w"
+    },
+    "OpacityScale": {
+      "value": 1.0,
+      "source": "E1743 cb5[98].x"
+    },
+    "SceneScale": {
+      "value": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "source": "E1743 cb0[282].xyz"
+    },
+    "Desaturation": {
+      "value": 0.0,
+      "source": "E1743 cb0[280].x"
+    },
+    "ColorScale": {
+      "value": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "source": "E1743 cb0[278].xyz"
+    },
+    "SecondaryDesaturation": {
+      "value": 0.0,
+      "source": "E1743 cb0[283].x"
+    },
+    "SecondaryScale": {
+      "value": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "source": "E1743 cb0[281].xyz"
+    },
+    "MipBias": {
+      "value": 0.0,
+      "source": "E1743 cb0[149].y"
+    }
+  }
+}

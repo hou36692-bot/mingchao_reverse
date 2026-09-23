@@ -1,0 +1,11 @@
+#ifndef MINGCHAO_SEMANTIC_COMMON
+#define MINGCHAO_SEMANTIC_COMMON
+
+// E548 69-72 and E1401 254-256: cubic smoothing of an already normalized weight.
+float SR_CubicWeight(float Weight)
+{
+    float UnitWeight = saturate(Weight);
+    return UnitWeight * UnitWeight * (3.0 - 2.0 * UnitWeight);
+}
+
+#endif

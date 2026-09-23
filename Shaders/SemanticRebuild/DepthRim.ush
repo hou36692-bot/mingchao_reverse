@@ -1,0 +1,114 @@
+#ifndef MINGCHAO_SEMANTIC_DEPTH_RIM
+#define MINGCHAO_SEMANTIC_DEPTH_RIM
+#include "/MingchaoSemantic/Common.ush"
+
+struct SR_DepthRimSettings
+{
+    float RimStrength;
+    float RimWidth;
+    float3 RimDirection;
+    float3 RimColor;
+    float RimBaseMix;
+    float RimProjectionScale;
+};
+
+// E1401 436-561, active shading-ID 12 and cb0[0].w == 0 branch.
+// R32F depth is linear centimetres. All depth, offsets and normals refer to
+// the capture producer's view, even when the consumer is a reflection view.
+float3 SR_EvaluateDepthRim(Texture2D CharacterDepth, SamplerState DepthSampler,
+    float3 WorldPosition, float3 Normal, float3 Base, float3 CaptureOrigin,
+    float3 CaptureForward, float3 CaptureRight, float3 CaptureUp, float2 CaptureTanHalfFov,
+    SR_DepthRimSettings S, out float EdgeMask)
+{
+    float3 Delta = WorldPosition-CaptureOrigin;
+    float Depth = dot(Delta,CaptureForward);
+    float2 UV = 0.5 + float2(dot(Delta,CaptureRight),-dot(Delta,CaptureUp)) /
+        (2.0*max(Depth,0.0001)*CaptureTanHalfFov);
+    bool Valid = Depth>0 && all(UV>=0) && all(UV<1);
+    float3 View = normalize(-Delta);
+    float Excess = saturate(S.RimStrength-0.1);
+    float SpanCm = 50.0+2000.0*Excess;
+    float Width = 0.8*saturate(10.0*S.RimStrength)*S.RimWidth+2.0*Excess;
+    float3 NormalView = float3(dot(Normal,CaptureRight),dot(Normal,CaptureUp),dot(Normal,CaptureForward));
+    float LightFacing = dot(S.RimDirection,Normal);
+    float LightBand = SR_CubicWeight((LightFacing+0.2)*5.0);
+    float HalfDot = saturate(dot(Normal,normalize(View+S.RimDirection)));
+    float Distribution = 1.0-0.8*HalfDot*HalfDot;
+    Distribution = 0.2/(3.141593*Distribution*Distribution);
+    float LightView = dot(S.RimDirection,View);
+    float BackBoost = 1.0+SR_CubicWeight(2.0*(-0.5-LightView));
+    float Grazing = 1.5*max(0.8-saturate(dot(View,Normal)),0.0);
+    float DistanceLong = (3000.0-clamp(Depth,0.0,3000.0))*0.000333;
+    float DistanceNear = (50.0-clamp(Depth,0.0,50.0))*0.02;
+    float DistancePower = DistanceLong*DistanceLong;
+    DistancePower *= DistancePower;
+    DistancePower = DistancePower*DistancePower+DistanceNear;
+    float Projection = clamp(S.RimProjectionScale,0.0,1.745329)*0.572958;
+    float DistanceScale = lerp(1.0,DistancePower,Projection);
+    DistanceScale = lerp(DistanceScale,1.0,Excess);
+    float OffsetScale = Grazing*(0.25*(LightFacing+1.0)+0.5)*DistanceScale*BackBoost*0.01;
+    float2 OffsetDirection = normalize(NormalView.xy+0.0001);
+    float2 SampleUV = UV+OffsetScale*Width*OffsetDirection*float2(1.0,-0.5);
+    #if PIXELSHADER
+    float SampleDepth = CharacterDepth.Sample(DepthSampler,saturate(SampleUV)).r;
+    #else
+    float SampleDepth = CharacterDepth.SampleLevel(DepthSampler,saturate(SampleUV),0).r;
+    #endif
+    EdgeMask = SR_CubicWeight((max(SampleDepth-Depth,0.0001)-1000.0*Excess)/SpanCm);
+    float AngularEnergy = 0.4*(1.0-LightView)*(0.2+0.8*LightBand)+1.5*LightBand*Distribution;
+    float3 Energy = S.RimColor*AngularEnergy*0.1;
+    float3 DarkWeight = saturate(1.0-1.2*Base);
+    DarkWeight = DarkWeight*DarkWeight*(3.0-2.0*DarkWeight);
+    float3 BaseResponse = lerp(Energy*(Base+1.0),Energy*(1.0+14.0*DarkWeight)*Base,S.RimBaseMix);
+    float FarFade = 1.0-clamp(Depth-10000.0,0.0,5000.0)*0.0002;
+    return max(BaseResponse*EdgeMask*FarFade,0.0)*(Valid ? 1.0 : 0.0);
+}
+
+// Native additive overlay: the same skinned section is rendered after opaque
+// depth, before DOF/tonemapping. No fixed-camera RT participates in this path.
+#if MATERIALBLENDING_ADDITIVE && PIXELSHADER
+float3 SR_EvaluateCurrentViewDepthRim(FMaterialPixelParameters Parameters,
+    float3 Normal, float3 Base, float3 View, float CenterDepthCm,
+    SR_DepthRimSettings S, out float EdgeMask)
+{
+    float Depth = GetPixelDepth(Parameters);
+    float2 UV = GetViewportUV(Parameters);
+    bool Valid = Depth > 0 && CenterDepthCm > 0;
+    if (S.RimStrength <= 0) { EdgeMask = 0; return 0; }
+    float Excess = saturate(S.RimStrength-0.1);
+    float SpanCm = 50.0+2000.0*Excess;
+    float Width = 0.8*saturate(10.0*S.RimStrength)*S.RimWidth+2.0*Excess;
+    float3 NormalView = mul(Normal,(float3x3)ResolvedView.TranslatedWorldToView);
+    float LightFacing = dot(S.RimDirection,Normal);
+    float LightBand = SR_CubicWeight((LightFacing+0.2)*5.0);
+    float HalfDot = saturate(dot(Normal,normalize(View+S.RimDirection)));
+    float Distribution = 1.0-0.8*HalfDot*HalfDot;
+    Distribution = 0.2/(3.141593*Distribution*Distribution);
+    float LightView = dot(S.RimDirection,View);
+    float BackBoost = 1.0+SR_CubicWeight(2.0*(-0.5-LightView));
+    float Grazing = 1.5*max(0.8-saturate(dot(View,Normal)),0.0);
+    float DistanceLong = (3000.0-clamp(Depth,0.0,3000.0))*0.000333;
+    float DistanceNear = (50.0-clamp(Depth,0.0,50.0))*0.02;
+    float DistancePower = DistanceLong*DistanceLong;
+    DistancePower *= DistancePower;
+    DistancePower = DistancePower*DistancePower+DistanceNear;
+    float Projection = clamp(S.RimProjectionScale,0.0,1.745329)*0.572958;
+    float DistanceScale = lerp(1.0,DistancePower,Projection);
+    DistanceScale = lerp(DistanceScale,1.0,Excess);
+    float OffsetScale = Grazing*(0.25*(LightFacing+1.0)+0.5)*DistanceScale*BackBoost*0.01;
+    float2 OffsetDirection = normalize(NormalView.xy+0.0001);
+    float2 SampleUV = UV+OffsetScale*Width*OffsetDirection*float2(1.0,-0.5);
+    // Offset is in viewport UV; scene textures can have a larger backing buffer.
+    float2 BufferUV = ViewportUVToSceneTextureUV(saturate(SampleUV),PPI_SceneDepth);
+    float SampleDepth = CalcSceneDepth(ClampSceneTextureUV(BufferUV,PPI_SceneDepth));
+    EdgeMask = SR_CubicWeight((max(SampleDepth-Depth,0.0001)-1000.0*Excess)/SpanCm);
+    float AngularEnergy = 0.4*(1.0-LightView)*(0.2+0.8*LightBand)+1.5*LightBand*Distribution;
+    float3 Energy = S.RimColor*AngularEnergy*0.1;
+    float3 DarkWeight = saturate(1.0-1.2*Base);
+    DarkWeight = DarkWeight*DarkWeight*(3.0-2.0*DarkWeight);
+    float3 BaseResponse = lerp(Energy*(Base+1.0),Energy*(1.0+14.0*DarkWeight)*Base,S.RimBaseMix);
+    float FarFade = 1.0-clamp(Depth-10000.0,0.0,5000.0)*0.0002;
+    return max(BaseResponse*EdgeMask*FarFade,0.0)*(Valid ? 1.0 : 0.0);
+}
+#endif
+#endif

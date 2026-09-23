@@ -1,0 +1,462 @@
+{
+  "RimStrength": {
+    "value": 0.029999999329447746,
+    "source": "E621 cb4[99].x",
+    "group": "07 Depth rim",
+    "meaning": "RimStrength"
+  },
+  "ShadowNear": {
+    "value": [
+      0.5,
+      0.5,
+      0.5
+    ],
+    "source": "E1401 cb1[303].xyz",
+    "group": "06 Lighting",
+    "meaning": "ShadowNear"
+  },
+  "ShadowFar": {
+    "value": [
+      0.30000001192092896,
+      0.40508604049682617,
+      0.5
+    ],
+    "source": "E1401 cb1[296].xyz",
+    "group": "06 Lighting",
+    "meaning": "ShadowFar"
+  },
+  "LightNear": {
+    "value": [
+      1.0,
+      1.0,
+      1.0
+    ],
+    "source": "E1401 cb1[302].xyz",
+    "group": "06 Lighting",
+    "meaning": "LightNear"
+  },
+  "LightFar": {
+    "value": [
+      1.0,
+      1.0,
+      1.0
+    ],
+    "source": "E1401 cb1[297].xyz",
+    "group": "06 Lighting",
+    "meaning": "LightFar"
+  },
+  "ColorDistanceCm": {
+    "value": 0.0,
+    "source": "E1401 cb1[301].x",
+    "group": "06 Lighting",
+    "meaning": "ColorDistanceCm"
+  },
+  "DistanceExponent": {
+    "value": 1.0,
+    "source": "E1401 cb1[301].y",
+    "group": "06 Lighting",
+    "meaning": "DistanceExponent"
+  },
+  "SecondaryStrength": {
+    "value": 1.0,
+    "source": "E1401 cb1[295].x",
+    "group": "06 Lighting",
+    "meaning": "SecondaryStrength"
+  },
+  "ShadowMix": {
+    "value": 0.6499999761581421,
+    "source": "E1401 cb1[295].y",
+    "group": "06 Lighting",
+    "meaning": "ShadowMix"
+  },
+  "VisibilityScale": {
+    "value": 1.0,
+    "source": "E1401 cb1[283].z",
+    "group": "06 Lighting",
+    "meaning": "VisibilityScale"
+  },
+  "VisibilityLower": {
+    "value": 0.0,
+    "source": "E1401 cb1[300].x",
+    "group": "06 Lighting",
+    "meaning": "VisibilityLower"
+  },
+  "VisibilityUpper": {
+    "value": 0.10000000149011612,
+    "source": "E1401 cb1[300].y",
+    "group": "06 Lighting",
+    "meaning": "VisibilityUpper"
+  },
+  "VisibilityRemap": {
+    "value": 1.0,
+    "source": "E1401 cb1[300].z",
+    "group": "06 Lighting",
+    "meaning": "VisibilityRemap"
+  },
+  "CaptureForward": {
+    "value": [
+      0.9975630875833955,
+      0,
+      -0.0697702392935752
+    ],
+    "source": "E548 cb3 style direction / existing U52 fixed capture projection",
+    "group": "07 Auxiliary",
+    "meaning": "CaptureForward"
+  },
+  "CaptureRight": {
+    "value": [
+      0,
+      1,
+      0
+    ],
+    "source": "E548 cb3 style direction / existing U52 fixed capture projection",
+    "group": "07 Auxiliary",
+    "meaning": "CaptureRight"
+  },
+  "CaptureUp": {
+    "value": [
+      0.0697702392935752,
+      0,
+      0.9975630875833955
+    ],
+    "source": "E548 cb3 style direction / existing U52 fixed capture projection",
+    "group": "07 Auxiliary",
+    "meaning": "CaptureUp"
+  },
+  "CaptureTanHalfFov": {
+    "value": [
+      0.4663076581549986,
+      0.2622980577121867
+    ],
+    "source": "E548 cb3 style direction / existing U52 fixed capture projection",
+    "group": "07 Auxiliary",
+    "meaning": "CaptureTanHalfFov"
+  },
+  "ExtraControl": {
+    "value": 0,
+    "source": "E1401 t4.B; full frame R44888 B verified zero",
+    "group": "06 Lighting",
+    "meaning": "Extra secondary contribution"
+  },
+  "Visibility": {
+    "value": 1,
+    "source": "E1401 t5.R^2*t5.B^2; full frame R44986 verified white",
+    "group": "06 Lighting",
+    "meaning": "Source scene visibility input"
+  },
+  "BangsShadowEnabled": {
+    "value": 1,
+    "source": "Existing U52 eye binding",
+    "group": "07 Auxiliary",
+    "meaning": "Use generated depth shadow"
+  },
+  "RimWidth": {
+    "value": 0.5,
+    "source": "E1401 cb0[0].x",
+    "group": "07 Depth rim",
+    "meaning": "RimWidth"
+  },
+  "RimDirection": {
+    "value": [
+      -0.7094064950942993,
+      -0.49673181772232056,
+      0.5
+    ],
+    "source": "E1401 cb1[299].xyz",
+    "group": "07 Depth rim",
+    "meaning": "RimDirection"
+  },
+  "RimColor": {
+    "value": [
+      2.5999999046325684,
+      3.4546399116516113,
+      4.0
+    ],
+    "source": "E1401 cb1[298].xyz",
+    "group": "07 Depth rim",
+    "meaning": "RimColor"
+  },
+  "RimBaseMix": {
+    "value": 1.0,
+    "source": "E1401 cb1[295].z",
+    "group": "07 Depth rim",
+    "meaning": "RimBaseMix"
+  },
+  "RimProjectionScale": {
+    "value": 0.8726645112037659,
+    "source": "E1401 cb1[133].x",
+    "group": "07 Depth rim",
+    "meaning": "RimProjectionScale"
+  },
+  "DebugMode": {
+    "value": 0,
+    "source": "0 final, 1 base, 2 tint, 3 normal, 4 mask, 5 emission, 6 region, 7 highlight, 8 lookup UV, 9 rim, 10 occlusion",
+    "group": "08 Diagnostics",
+    "meaning": "DebugMode"
+  },
+  "UseVertexRegion": {
+    "value": 0.0,
+    "source": "E621 cb4[69].x",
+    "group": "01 Hair colors",
+    "meaning": "UseVertexRegion"
+  },
+  "RegionOverride": {
+    "value": 0.0,
+    "source": "E621 cb4[68].w",
+    "group": "01 Hair colors",
+    "meaning": "RegionOverride"
+  },
+  "RegionRestore": {
+    "value": 0.0,
+    "source": "E621 cb4[69].y",
+    "group": "01 Hair colors",
+    "meaning": "RegionRestore"
+  },
+  "RegionTint": {
+    "value": [
+      0.9375,
+      0.8780980110168457,
+      0.8874660134315491
+    ],
+    "source": "E621 cb4[9].xyz",
+    "group": "01 Hair colors",
+    "meaning": "RegionTint"
+  },
+  "BaseTint": {
+    "value": [
+      1.0,
+      1.0,
+      1.0
+    ],
+    "source": "E621 cb4[11].xyz",
+    "group": "01 Hair colors",
+    "meaning": "BaseTint"
+  },
+  "MaskAtlasOffset": {
+    "value": [
+      -1.0,
+      -1.0
+    ],
+    "source": "E621 cb4[12].xy",
+    "group": "01 Hair colors",
+    "meaning": "MaskAtlasOffset"
+  },
+  "MaskAtlasEnabled": {
+    "value": 0.0,
+    "source": "E621 cb4[69].z",
+    "group": "01 Hair colors",
+    "meaning": "MaskAtlasEnabled"
+  },
+  "MaskBaseLow": {
+    "value": 1.0,
+    "source": "E621 cb4[83].x",
+    "group": "01 Hair colors",
+    "meaning": "MaskBaseLow"
+  },
+  "MaskBaseHigh": {
+    "value": 1.0,
+    "source": "E621 cb4[83].y",
+    "group": "01 Hair colors",
+    "meaning": "MaskBaseHigh"
+  },
+  "Desaturation": {
+    "value": 0.0,
+    "source": "E621 cb4[84].y",
+    "group": "01 Hair colors",
+    "meaning": "Desaturation"
+  },
+  "SecondaryRegionTint": {
+    "value": [
+      0.5,
+      0.22808100283145905,
+      0.03385400027036667
+    ],
+    "source": "E621 cb4[62].xyz",
+    "group": "01 Hair colors",
+    "meaning": "SecondaryRegionTint"
+  },
+  "SecondaryOtherTint": {
+    "value": [
+      0.75,
+      0.6924290060997009,
+      0.41409099102020264
+    ],
+    "source": "E621 cb4[63].xyz",
+    "group": "01 Hair colors",
+    "meaning": "SecondaryOtherTint"
+  },
+  "NormalFlatten": {
+    "value": 0.0,
+    "source": "E621 cb4[68].z",
+    "group": "02 View highlight",
+    "meaning": "NormalFlatten"
+  },
+  "HighlightStrength": {
+    "value": 0.10000000149011612,
+    "source": "E621 cb4[82].w",
+    "group": "02 View highlight",
+    "meaning": "HighlightStrength"
+  },
+  "MaskBiasStart": {
+    "value": 0.10000000149011612,
+    "source": "E621 cb4[93].y",
+    "group": "03 Hair lighting",
+    "meaning": "MaskBiasStart"
+  },
+  "MaskBiasGain": {
+    "value": 1.0,
+    "source": "E621 cb4[93].z",
+    "group": "03 Hair lighting",
+    "meaning": "MaskBiasGain"
+  },
+  "MaskBiasPower": {
+    "value": 1.0,
+    "source": "E621 cb4[93].w",
+    "group": "03 Hair lighting",
+    "meaning": "MaskBiasPower"
+  },
+  "MaskBiasStrength": {
+    "value": 0.30000001192092896,
+    "source": "E621 cb4[94].x",
+    "group": "03 Hair lighting",
+    "meaning": "MaskBiasStrength"
+  },
+  "FlattenLightEnabled": {
+    "value": 0.0,
+    "source": "E621 cb4[94].y",
+    "group": "03 Hair lighting",
+    "meaning": "FlattenLightEnabled"
+  },
+  "FlattenLightWeight": {
+    "value": 0.0,
+    "source": "E621 cb4[94].w",
+    "group": "03 Hair lighting",
+    "meaning": "FlattenLightWeight"
+  },
+  "RampLightCap": {
+    "value": 0.4000000059604645,
+    "source": "E621 cb4[95].x",
+    "group": "03 Hair lighting",
+    "meaning": "RampLightCap"
+  },
+  "MaskGateDivisor": {
+    "value": 0.10000000149011612,
+    "source": "E621 cb4[95].y",
+    "group": "03 Hair lighting",
+    "meaning": "MaskGateDivisor"
+  },
+  "RampThresholdBias": {
+    "value": 0.75,
+    "source": "E621 cb4[96].x",
+    "group": "03 Hair lighting",
+    "meaning": "RampThresholdBias"
+  },
+  "RampOtherRow": {
+    "value": 0.30000001192092896,
+    "source": "E621 cb4[96].y",
+    "group": "03 Hair lighting",
+    "meaning": "RampOtherRow"
+  },
+  "RampBlend": {
+    "value": 0.5,
+    "source": "E621 cb4[96].z",
+    "group": "03 Hair lighting",
+    "meaning": "RampBlend"
+  },
+  "MaskSuppression": {
+    "value": 0.20000000298023224,
+    "source": "E621 cb4[96].w",
+    "group": "03 Hair lighting",
+    "meaning": "MaskSuppression"
+  },
+  "BandLow": {
+    "value": 0.7200000286102295,
+    "source": "E621 cb4[97].z",
+    "group": "03 Hair lighting",
+    "meaning": "BandLow"
+  },
+  "BandHigh": {
+    "value": 0.7799999713897705,
+    "source": "E621 cb4[97].y",
+    "group": "03 Hair lighting",
+    "meaning": "BandHigh"
+  },
+  "MaskGateStart": {
+    "value": 0.8999999761581421,
+    "source": "E621 cb4[98].x",
+    "group": "03 Hair lighting",
+    "meaning": "MaskGateStart"
+  },
+  "MaskGateWidth": {
+    "value": 0.10000002384185791,
+    "source": "E621 cb4[98].z",
+    "group": "03 Hair lighting",
+    "meaning": "MaskGateWidth"
+  },
+  "MaskEmissionColor": {
+    "value": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "source": "E621 cb4[13].xyz",
+    "group": "04 Emission",
+    "meaning": "MaskEmissionColor"
+  },
+  "VertexEmissionColor": {
+    "value": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "source": "E621 cb4[48].xyz",
+    "group": "04 Emission",
+    "meaning": "VertexEmissionColor"
+  },
+  "OverrideEmissionColor": {
+    "value": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "source": "E621 cb4[49].xyz",
+    "group": "04 Emission",
+    "meaning": "OverrideEmissionColor"
+  },
+  "OverrideEmissionBlend": {
+    "value": 0.0,
+    "source": "E621 cb4[82].z",
+    "group": "04 Emission",
+    "meaning": "OverrideEmissionBlend"
+  },
+  "RampEnabled": {
+    "value": 3.0,
+    "source": "E621 cb3[1].w",
+    "group": "03 Hair lighting",
+    "meaning": "RampEnabled"
+  },
+  "MipBias": {
+    "value": 0.0,
+    "source": "E621 cb0[149].y",
+    "group": "01 Hair colors",
+    "meaning": "MipBias"
+  },
+  "HairAlphaScale": {
+    "value": 1.0,
+    "source": "E621 cb4[98].w",
+    "group": "05 Auxiliary",
+    "meaning": "HairAlphaScale"
+  },
+  "HairBlendEnabled": {
+    "value": 1,
+    "source": "UE local E711 blend switch",
+    "group": "05 Auxiliary",
+    "meaning": "Local bangs blend"
+  },
+  "VertexEmission": {
+    "value": 0,
+    "source": "E621 all postVS TEXCOORD4.x are zero",
+    "group": "04 Emission",
+    "meaning": "Vertex emission weight"
+  }
+}

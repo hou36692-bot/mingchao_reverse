@@ -1,0 +1,215 @@
+#ifndef MINGCHAO_SEMANTIC_CLOTH
+#define MINGCHAO_SEMANTIC_CLOTH
+#include "/MingchaoSemantic/Common.ush"
+
+#if PIXELSHADER
+#define SR_CLOTH_SAMPLE(T,S,U,B) T.SampleBias(S,U,B)
+#else
+#define SR_CLOTH_SAMPLE(T,S,U,B) T.SampleLevel(S,U,0)
+#endif
+
+// E488 12-23. RG are tangent-plane slopes; Z is 1, not sqrt(1-x*x-y*y).
+float3 SR_DecodeClothNormal(float2 PackedRG, float3 Tangent, float3 Bitangent,
+    float3 Normal, float Strength, float GlobalBlend)
+{
+    float2 Slope = (2.0 * PackedRG - 1.0) * Strength * GlobalBlend;
+    return normalize(Normal + Slope.x * Tangent + Slope.y * Bitangent);
+}
+
+// E488 24-38. Preserve the inclusive boundaries and source overlap priority.
+float2 SR_ClothRegions(float VertexRed, float UseVertexRegion, float RegionOverride, float RegionRestore)
+{
+    float Middle = VertexRed >= 0.3 && VertexRed <= 0.5 ? 1.0 : 0.0;
+    float Upper = VertexRed >= 0.5 && VertexRed <= 0.9 ? 1.0 : 0.0;
+    float OutsideLower = VertexRed <= 0.05 ? 1.0 : (VertexRed <= 0.3 ? 0.0 : 1.0);
+    float Remaining = 1.0 - Middle * OutsideLower;
+    float UpperRegion = Remaining * Upper;
+    float LastRegion = (1.0 - Upper * Remaining) * (VertexRed >= 0.9 ? 1.0 : 0.0);
+    LastRegion = UseVertexRegion >= 0.5 ? LastRegion : RegionOverride;
+    return float2(lerp(LastRegion, 1.0, RegionRestore), UpperRegion);
+}
+
+struct SR_ClothSettings
+{
+    float NormalStrength;
+    float GlobalNormalBlend;
+    float NormalFlatten;
+    float UseVertexRegion;
+    float RegionOverride;
+    float RegionRestore;
+    float3 RegionTint;
+    float3 BaseTint;
+    float MetalControlGain;
+    float HighlightControlGain;
+    float MetalLobeScale;
+    float OtherLobeScale;
+    float FlattenLightEnabled;
+    float FlattenLightWeight;
+    float ViewThresholdLow;
+    float ViewThresholdHigh;
+    float ThresholdCenter;
+    float ThresholdHalfWidth;
+    float AlphaGain;
+    float AlphaLowCap;
+    float AlphaHighStart;
+    float AlphaBiasStart;
+    float AlphaBiasGain;
+    float AlphaBiasPower;
+    float AlphaBiasStrength;
+    float AlphaGateDivisor;
+    float AlphaGateStart;
+    float AlphaGateWidth;
+    float SpecularStrength;
+    float SpecularEmissionStrength;
+    float3 AlphaEmissionColor;
+    float3 VertexEmissionColor;
+    float3 OverrideEmissionColor;
+    float OverrideEmissionBlend;
+    float LookupMetalShadow;
+    float LookupOther;
+    float LookupMetalLight;
+    float BaseGain;
+    float Desaturation;
+    float3 SecondaryRegionTint;
+    float3 SecondaryOtherTint;
+    float RampLightCap;
+    float RampOtherRow;
+    float RampEnabled;
+    float RampBlend;
+    float AlphaSuppression;
+    float MipBias;
+};
+
+// E488 122-170. The color-map alpha controls the bands and the emission region.
+float SR_ClothLightBand(float Alpha, float3 Normal, float3 View, float3 Light,
+    SR_ClothSettings S, out float AlphaLow, out float AlphaHigh,
+    out float Threshold, out float BiasedHalfLight, out float AlphaGate)
+{
+    float ViewWeight = 0.5 * (1.0 + dot(Light, View) * (1.0 - abs(View.z)));
+    float ThresholdSlope = lerp(S.ViewThresholdLow, S.ViewThresholdHigh, ViewWeight);
+    Threshold = S.ThresholdCenter + ThresholdSlope * (1.0 - saturate(dot(Normal, View)));
+    Alpha *= S.AlphaGain;
+    AlphaLow = clamp(Alpha, 0.0, S.AlphaLowCap) / max(S.AlphaLowCap, 0.000001);
+    AlphaHigh = (clamp(Alpha, S.AlphaHighStart, 1.0) - S.AlphaHighStart) / max(1.0-S.AlphaHighStart, 0.000001);
+    float Bias = SR_CubicWeight((AlphaLow-S.AlphaBiasStart) / max(1.0-S.AlphaBiasStart, 0.000001)) * S.AlphaBiasGain;
+    Bias = Bias <= 0 ? 0.0 : pow(Bias, S.AlphaBiasPower) * S.AlphaBiasStrength;
+    BiasedHalfLight = 0.5 * dot(Normal, Light) + Bias + 0.5;
+    float Band = SR_CubicWeight((BiasedHalfLight-Threshold+S.ThresholdHalfWidth) / max(2.0*S.ThresholdHalfWidth, 0.000001));
+    AlphaGate = min(AlphaLow, S.AlphaBiasStart) / max(S.AlphaGateDivisor, 0.000001);
+    float Attenuation = (clamp(AlphaGate,S.AlphaGateStart,1.0)-S.AlphaGateStart) / max(S.AlphaGateWidth,0.000001);
+    return Band * Attenuation;
+}
+
+// E488 232-244. Camera-relative position and decoded normal use the SAME view basis.
+// No translated-world constant enters the directional lookup.
+float2 SR_ClothLookupUV(float3 ViewFromSurface, float3 Normal,
+    float3 ViewRight, float3 ViewUp, float3 ViewForward)
+{
+    float3 Ray = -ViewFromSurface;
+    float3 RayView = float3(dot(Ray,ViewRight),dot(Ray,ViewUp),dot(Ray,ViewForward));
+    float3 NormalView = float3(dot(Normal,ViewRight),dot(Normal,ViewUp),dot(Normal,ViewForward));
+    return 0.5 + 0.5 * float2(RayView.z*NormalView.x-RayView.x*NormalView.z,
+        RayView.y*NormalView.z-RayView.z*NormalView.y);
+}
+
+// E488 39-293. Linear color inputs; Packed.B/A remain material controls.
+// The captured point-light and vertex-direction blends are zero (cb1[3].z/cb2[27].y).
+float3 SR_ClothSurface(Texture2D PackedMap, SamplerState PackedSampler,
+    Texture2D ColorMap, SamplerState ColorSampler, Texture2D LookupMap, SamplerState LookupSampler,
+    Texture2D SkinRamp, SamplerState SkinSampler, float2 UV, float VertexRed, float VertexEmission,
+    float3 Tangent, float3 Bitangent, float3 VertexNormal, float3 View,
+    float3 StyleLight, float3 FlatLight, float3 ViewRight, float3 ViewUp, float3 ViewForward,
+    SR_ClothSettings S, out float3 Normal, out float3 SecondaryTint, out float3 Emission,
+    out float LightMask, out float2 Regions, out float Highlight, out float2 LookupUV,
+    out float3 RampColor, out float SurfaceRegion, out float3 RawEmission)
+{
+    float4 Packed = SR_CLOTH_SAMPLE(PackedMap,PackedSampler,UV,S.MipBias);
+    Normal = SR_DecodeClothNormal(Packed.rg,Tangent,Bitangent,VertexNormal,S.NormalStrength,S.GlobalNormalBlend);
+    float3 LightNormal = lerp(Normal,VertexNormal,S.NormalFlatten);
+    Regions = SR_ClothRegions(VertexRed,S.UseVertexRegion,S.RegionOverride,S.RegionRestore);
+    float4 Color = SR_CLOTH_SAMPLE(ColorMap,ColorSampler,UV,S.MipBias);
+    float3 Base = Color.rgb * S.BaseTint * lerp(float3(1,1,1),S.RegionTint,Regions.x);
+    float Metal = Packed.b * S.MetalControlGain;
+    float HighlightControl = Packed.a * S.HighlightControlGain;
+    float MetalRegion = Metal >= 0.85 ? 1.0 : 0.0;
+    float RootControl = HighlightControl <= 0 ? 0.0 : pow(HighlightControl,0.1);
+    float LobeExponent = 1000.0 - 999.0 * RootControl;
+    float LobeAmplitude = 0.1 + 19.9 * (1.0-RootControl);
+    float LobeScale = lerp(S.OtherLobeScale,S.MetalLobeScale,MetalRegion);
+    float3 Light = normalize(lerp(StyleLight,FlatLight,S.FlattenLightEnabled>=0.5 ? S.FlattenLightWeight : 0.0));
+    float AlphaLow, AlphaHigh, Threshold, HalfLight, AlphaGate;
+    float Band = SR_ClothLightBand(Color.a,LightNormal,View,Light,S,AlphaLow,AlphaHigh,Threshold,HalfLight,AlphaGate);
+    float Lit = Band >= 0.4 ? 1.0 : 0.0;
+    float3 AlternateLight = Light * float3(2.0*Lit-1.0,2.0*Lit-1.0,1.0);
+    float AlternateHalf = saturate(dot(normalize(AlternateLight+View),Normal));
+    float DirectHalf = saturate(dot(normalize(Light+View),LightNormal));
+    float HalfAngle = lerp(AlternateHalf,DirectHalf,MetalRegion);
+    float Lobe = pow(HalfAngle,LobeExponent) * LobeScale * (LobeScale+2.0);
+    Highlight = SR_CubicWeight((0.159155*Lobe-0.6)*0.833333) * LobeAmplitude;
+    float Dielectric = (0.5*Metal+0.5)*0.08;
+    float3 SpecularColor = lerp(Dielectric.xxx,Base,Metal);
+    float4 Approximation = HighlightControl*float4(-1,-0.0275,-0.572,0.022)+float4(1,0.0425,1.04,-0.04);
+    float Fit = min(Approximation.x*Approximation.x,0.001609)*Approximation.x+Approximation.y;
+    float2 FitAB = float2(-1.04,1.04)*Fit+Approximation.zw;
+    float3 LookupColor = (SpecularColor*FitAB.x+FitAB.y*saturate(SpecularColor.g*50.0))*S.SpecularStrength;
+    SpecularColor *= S.SpecularStrength;
+    float3 Diffuse = Base * (1.0-S.SpecularStrength*Metal);
+    SurfaceRegion = (1.0-max(Regions.x,Regions.y)) * (1.0-HighlightControl >= 0.01 ? 1.0 : 0.0);
+    Emission = Base*AlphaHigh*S.AlphaEmissionColor;
+    Emission += SurfaceRegion*Highlight*SpecularColor*MetalRegion*S.SpecularEmissionStrength;
+    Emission += VertexEmission*S.VertexEmissionColor;
+    RawEmission = Emission;
+    Emission = max(lerp(Emission,S.OverrideEmissionColor,S.OverrideEmissionBlend),0.0);
+    LookupUV = SR_ClothLookupUV(View,Normal,ViewRight,ViewUp,ViewForward);
+    float4 Lookup = SR_CLOTH_SAMPLE(LookupMap,LookupSampler,LookupUV,S.MipBias);
+    float LookupWeight = lerp(Lookup.r,Lookup.g,saturate(3.0*HighlightControl));
+    LookupWeight = lerp(LookupWeight,Lookup.b,saturate(3.0*HighlightControl-1.0));
+    LookupWeight = lerp(LookupWeight,Lookup.a,saturate(3.0*HighlightControl-2.0));
+    LookupWeight *= lerp(lerp(S.LookupOther,S.LookupMetalShadow,MetalRegion),lerp(S.LookupOther,S.LookupMetalLight,MetalRegion),Lit);
+    float3 Shaded = Diffuse+Highlight*SpecularColor+LookupColor*LookupWeight;
+    Base = lerp(Base,Shaded,SurfaceRegion)*S.BaseGain;
+    Base = lerp(Base,dot(Base,float3(0.3,0.59,0.11)).xxx,S.Desaturation);
+    SecondaryTint = lerp(S.SecondaryOtherTint,S.SecondaryRegionTint,Regions.x);
+    float CappedLight = clamp(HalfLight,0.0,S.RampLightCap);
+    float RampX = saturate(lerp(CappedLight,HalfLight,AlphaGate)+0.5-Threshold);
+    float RampY = lerp(S.RampOtherRow,0.1,Regions.x);
+    RampColor = SR_CLOTH_SAMPLE(SkinRamp,SkinSampler,float2(RampX,RampY),S.MipBias).rgb;
+    SecondaryTint = lerp(SecondaryTint,RampColor,(S.RampEnabled>=0.05 ? 1.0 : 0.0)*S.RampBlend);
+    SecondaryTint = saturate(lerp(SecondaryTint,dot(SecondaryTint,float3(0.3,0.59,0.11)).xxx,S.Desaturation));
+    LightMask = (0.5+0.5*Band)*(1.0-(1.0-AlphaGate)*S.AlphaSuppression);
+    return Base;
+}
+
+// Keep the regional caller contract stable; Item adds emission before the final clamp.
+float3 SR_ClothSurface(Texture2D PackedMap, SamplerState PackedSampler,
+    Texture2D ColorMap, SamplerState ColorSampler, Texture2D LookupMap, SamplerState LookupSampler,
+    Texture2D SkinRamp, SamplerState SkinSampler, float2 UV, float VertexRed, float VertexEmission,
+    float3 Tangent, float3 Bitangent, float3 VertexNormal, float3 View,
+    float3 StyleLight, float3 FlatLight, float3 ViewRight, float3 ViewUp, float3 ViewForward,
+    SR_ClothSettings S, out float3 Normal, out float3 SecondaryTint, out float3 Emission,
+    out float LightMask, out float2 Regions, out float Highlight, out float2 LookupUV,
+    out float3 RampColor, out float SurfaceRegion)
+{
+    float3 RawEmission;
+    return SR_ClothSurface(PackedMap,PackedSampler,ColorMap,ColorSampler,LookupMap,LookupSampler,
+        SkinRamp,SkinSampler,UV,VertexRed,VertexEmission,Tangent,Bitangent,VertexNormal,View,
+        StyleLight,FlatLight,ViewRight,ViewUp,ViewForward,S,Normal,SecondaryTint,Emission,
+        LightMask,Regions,Highlight,LookupUV,RampColor,SurfaceRegion,RawEmission);
+}
+
+// Down needs no additional regional layer. Keep its authored call contract stable.
+float3 SR_ClothSurface(Texture2D PackedMap, SamplerState PackedSampler,
+    Texture2D ColorMap, SamplerState ColorSampler, Texture2D LookupMap, SamplerState LookupSampler,
+    Texture2D SkinRamp, SamplerState SkinSampler, float2 UV, float VertexRed, float VertexEmission,
+    float3 Tangent, float3 Bitangent, float3 VertexNormal, float3 View,
+    float3 StyleLight, float3 FlatLight, float3 ViewRight, float3 ViewUp, float3 ViewForward,
+    SR_ClothSettings S, out float3 Normal, out float3 SecondaryTint, out float3 Emission,
+    out float LightMask, out float2 Regions, out float Highlight, out float2 LookupUV)
+{
+    float3 RampColor; float SurfaceRegion;
+    return SR_ClothSurface(PackedMap,PackedSampler,ColorMap,ColorSampler,LookupMap,LookupSampler,
+        SkinRamp,SkinSampler,UV,VertexRed,VertexEmission,Tangent,Bitangent,VertexNormal,View,
+        StyleLight,FlatLight,ViewRight,ViewUp,ViewForward,S,Normal,SecondaryTint,Emission,
+        LightMask,Regions,Highlight,LookupUV,RampColor,SurfaceRegion);
+}
+#endif

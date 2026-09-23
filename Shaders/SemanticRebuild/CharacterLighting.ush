@@ -1,0 +1,80 @@
+#ifndef MINGCHAO_SEMANTIC_CHARACTER_LIGHTING
+#define MINGCHAO_SEMANTIC_CHARACTER_LIGHTING
+#include "/MingchaoSemantic/Common.ush"
+
+struct SR_CharacterLightSettings
+{
+    float3 ShadowNear;
+    float3 ShadowFar;
+    float3 LightNear;
+    float3 LightFar;
+    float ColorDistanceCm;
+    float DistanceExponent;
+    float SecondaryStrength;
+    float ShadowMix;
+    float VisibilityScale;
+    float VisibilityLower;
+    float VisibilityUpper;
+    float VisibilityRemap;
+};
+
+// E1401 0-49: inputs decode from t1.B, t3.RGB, square(t2.RGB), t4.B.
+// Visibility = square(t5.R) * square(t5.B), instructions 111-114.
+// The captured branch is 246-318 because cb1[286].x == 0 (uint).
+// Input colors are linear. ViewDepthCm is measured along the current view forward.
+float3 SR_EvaluateCharacterLighting(float3 Base, float3 SecondaryTint,
+    float LightMask, float ExtraControl, float Visibility, float ViewDepthCm,
+    SR_CharacterLightSettings Settings, out float3 ShadowContribution,
+    out float3 SecondaryContribution, out float BrightWeight)
+{
+    float DistanceWeight = pow(saturate(ViewDepthCm / max(Settings.ColorDistanceCm, 0.001)), Settings.DistanceExponent);
+    float3 ShadowColor = lerp(Settings.ShadowNear, Settings.ShadowFar, DistanceWeight);
+    float3 LightColor = lerp(Settings.LightNear, Settings.LightFar, DistanceWeight);
+    float LowBand = SR_CubicWeight(2.0 * LightMask);
+    float HighBand = SR_CubicWeight(2.0 * (LightMask - 0.5));
+    float ColorContrast = SR_CubicWeight(min(dot(abs(LightColor - ShadowColor), float3(0.3, 0.59, 0.11)) * 10.0, 1.0));
+    float VisibilityRange = max(Settings.VisibilityUpper - Settings.VisibilityLower, 0.000001);
+    float ScaledVisibility = Visibility * Settings.VisibilityScale;
+    float VisibleBand = SR_CubicWeight((ScaledVisibility - Settings.VisibilityLower) / VisibilityRange);
+    float HighContrast = HighBand * ColorContrast;
+    float CoupledBand = HighContrast * VisibleBand;
+    float RemappedVisibility = lerp(CoupledBand, ScaledVisibility, Settings.VisibilityRemap);
+    float RemappedBand = SR_CubicWeight((RemappedVisibility - Settings.VisibilityLower) / VisibilityRange);
+    BrightWeight = lerp(HighContrast * RemappedBand, HighContrast, Settings.VisibilityRemap);
+    float ShadowBlend = 1.0 + Settings.ShadowMix * (RemappedVisibility - 1.0);
+    float3 Secondary = Base * lerp(0.2 * ShadowColor, 0.5 * LightColor, ShadowBlend) * Settings.SecondaryStrength;
+    SecondaryContribution = Secondary * SecondaryTint;
+    // E1401 300-304 is an affine accumulation of Base, not a cubic polynomial.
+    // Keep the original evaluation order and final max for reproducible float rounding.
+    float3 Compensation = Base * 2.0404 - 0.3324;
+    Compensation += Base * -4.7951;
+    Compensation += Base * 2.7552;
+    Compensation = max(Compensation + 1.332, 1.0);
+    ShadowContribution = Base * ShadowColor * Compensation * (0.7 + 0.3 * LowBand);
+    float3 Combined = ShadowContribution + SecondaryContribution * (1.0 + 10.0 * ExtraControl * RemappedVisibility);
+    Combined = lerp(Combined, Base * LightColor, BrightWeight);
+    float3 Alternative = lerp(ShadowContribution, Base * LightColor, 0.4 * BrightWeight) + SecondaryContribution;
+    return lerp(Alternative, Combined, ShadowBlend);
+}
+
+// Existing U52 producer contract: R32F linear depth in centimetres, fixed producer
+// view. Reproject world positions into that view; never use current ScreenUV here.
+float SR_ApplyBangsShadow(Texture2D BangsDepth, float3 WorldPosition,
+    float3 CaptureOrigin, float3 CaptureForward, float3 CaptureRight, float3 CaptureUp,
+    float2 CaptureTanHalfFov, float Enabled, float SurfaceMask, out float Occluded)
+{
+    float3 Delta = WorldPosition - CaptureOrigin;
+    float Depth = dot(Delta, CaptureForward);
+    float2 UV = 0.5 + float2(dot(Delta, CaptureRight), -dot(Delta, CaptureUp)) /
+        (2.0 * max(Depth, 0.0001) * CaptureTanHalfFov);
+    uint Width, Height;
+    BangsDepth.GetDimensions(Width, Height);
+    bool InBounds = Depth > 0 && all(UV >= 0) && all(UV < 1);
+    int2 Pixel = clamp(int2(UV * float2(Width, Height)), int2(0,0), int2(Width-1,Height-1));
+    float HairDepth = InBounds ? BangsDepth.Load(int3(Pixel,0)).r : 0;
+    Occluded = HairDepth > 0.001 && HairDepth <= Depth + 0.001 ? 1.0 : 0.0;
+    // E590 updates the light-control channel; it does not replace surface RGB.
+    return lerp(SurfaceMask, 0.5, Occluded * Enabled);
+}
+
+#endif

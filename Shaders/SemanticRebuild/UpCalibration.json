@@ -1,0 +1,607 @@
+{
+  "NormalStrength": {
+    "value": 1.0,
+    "source": "E528 cb4[77].z",
+    "group": "01 Normal and regions",
+    "meaning": "NormalStrength"
+  },
+  "NormalFlatten": {
+    "value": 0.0,
+    "source": "E528 cb4[77].w",
+    "group": "01 Normal and regions",
+    "meaning": "NormalFlatten"
+  },
+  "UseVertexRegion": {
+    "value": 1.0,
+    "source": "E528 cb4[78].y",
+    "group": "01 Normal and regions",
+    "meaning": "Use ID.R region signal; the common cloth field retains its existing name"
+  },
+  "RegionOverride": {
+    "value": 0.0,
+    "source": "E528 cb4[78].x",
+    "group": "01 Normal and regions",
+    "meaning": "RegionOverride"
+  },
+  "RegionRestore": {
+    "value": 0.0,
+    "source": "E528 cb4[78].z",
+    "group": "01 Normal and regions",
+    "meaning": "RegionRestore"
+  },
+  "RegionTint": {
+    "value": [
+      0.96875,
+      0.9548760056495667,
+      0.9132490158081055
+    ],
+    "source": "E528 cb4[8].xyz",
+    "group": "01 Normal and regions",
+    "meaning": "RegionTint"
+  },
+  "BaseTint": {
+    "value": [
+      1.0,
+      1.0,
+      1.0
+    ],
+    "source": "E528 cb4[10].xyz",
+    "group": "01 Normal and regions",
+    "meaning": "BaseTint"
+  },
+  "MetalControlGain": {
+    "value": 1.0,
+    "source": "E528 cb4[78].w",
+    "group": "02 Surface and highlight",
+    "meaning": "MetalControlGain"
+  },
+  "HighlightControlGain": {
+    "value": 1.0,
+    "source": "E528 cb4[79].x",
+    "group": "02 Surface and highlight",
+    "meaning": "HighlightControlGain"
+  },
+  "MetalLobeScale": {
+    "value": 3.0,
+    "source": "E528 cb4[79].y",
+    "group": "02 Surface and highlight",
+    "meaning": "MetalLobeScale"
+  },
+  "OtherLobeScale": {
+    "value": 12.0,
+    "source": "E528 cb4[79].z",
+    "group": "02 Surface and highlight",
+    "meaning": "OtherLobeScale"
+  },
+  "SpecularStrength": {
+    "value": 1.0,
+    "source": "E528 cb4[85].x",
+    "group": "02 Surface and highlight",
+    "meaning": "SpecularStrength"
+  },
+  "SpecularEmissionStrength": {
+    "value": 4.0,
+    "source": "E528 cb4[85].y",
+    "group": "02 Surface and highlight",
+    "meaning": "SpecularEmissionStrength"
+  },
+  "LookupMetalShadow": {
+    "value": 4.0,
+    "source": "E528 cb4[100].w",
+    "group": "02 Surface and highlight",
+    "meaning": "LookupMetalShadow"
+  },
+  "LookupOther": {
+    "value": 1.0,
+    "source": "E528 cb4[101].x",
+    "group": "02 Surface and highlight",
+    "meaning": "LookupOther"
+  },
+  "LookupMetalLight": {
+    "value": 5.0,
+    "source": "E528 cb4[101].y",
+    "group": "02 Surface and highlight",
+    "meaning": "LookupMetalLight"
+  },
+  "BaseGain": {
+    "value": 1.0,
+    "source": "E528 cb4[101].w",
+    "group": "02 Surface and highlight",
+    "meaning": "BaseGain"
+  },
+  "Desaturation": {
+    "value": 0.0,
+    "source": "E528 cb4[103].y",
+    "group": "02 Surface and highlight",
+    "meaning": "Desaturation"
+  },
+  "FlattenLightEnabled": {
+    "value": 30.0,
+    "source": "E528 cb4[79].w",
+    "group": "03 Light bands",
+    "meaning": "FlattenLightEnabled"
+  },
+  "FlattenLightWeight": {
+    "value": 0.6666666865348816,
+    "source": "E528 cb4[80].y",
+    "group": "03 Light bands",
+    "meaning": "FlattenLightWeight"
+  },
+  "ViewThresholdLow": {
+    "value": -0.10000000149011612,
+    "source": "E528 cb4[81].x",
+    "group": "03 Light bands",
+    "meaning": "ViewThresholdLow"
+  },
+  "ViewThresholdHigh": {
+    "value": 0.4000000059604645,
+    "source": "E528 cb4[80].w",
+    "group": "03 Light bands",
+    "meaning": "ViewThresholdHigh"
+  },
+  "ThresholdCenter": {
+    "value": 0.550000011920929,
+    "source": "E528 cb4[81].y",
+    "group": "03 Light bands",
+    "meaning": "ThresholdCenter"
+  },
+  "ThresholdHalfWidth": {
+    "value": 0.18000000715255737,
+    "source": "E528 cb4[81].z",
+    "group": "03 Light bands",
+    "meaning": "ThresholdHalfWidth"
+  },
+  "AlphaGain": {
+    "value": 1.0,
+    "source": "E528 cb4[81].w",
+    "group": "03 Light bands",
+    "meaning": "AlphaGain"
+  },
+  "AlphaLowCap": {
+    "value": 0.5,
+    "source": "E528 cb4[82].x",
+    "group": "03 Light bands",
+    "meaning": "AlphaLowCap"
+  },
+  "AlphaHighStart": {
+    "value": 0.8999999761581421,
+    "source": "E528 cb4[82].y",
+    "group": "03 Light bands",
+    "meaning": "AlphaHighStart"
+  },
+  "AlphaBiasStart": {
+    "value": 0.20000000298023224,
+    "source": "E528 cb4[82].z",
+    "group": "03 Light bands",
+    "meaning": "AlphaBiasStart"
+  },
+  "AlphaBiasGain": {
+    "value": 1.0,
+    "source": "E528 cb4[82].w",
+    "group": "03 Light bands",
+    "meaning": "AlphaBiasGain"
+  },
+  "AlphaBiasPower": {
+    "value": 1.0,
+    "source": "E528 cb4[83].x",
+    "group": "03 Light bands",
+    "meaning": "AlphaBiasPower"
+  },
+  "AlphaBiasStrength": {
+    "value": 0.0,
+    "source": "E528 cb4[83].y",
+    "group": "03 Light bands",
+    "meaning": "AlphaBiasStrength"
+  },
+  "AlphaGateDivisor": {
+    "value": 0.20000000298023224,
+    "source": "E528 cb4[83].w",
+    "group": "03 Light bands",
+    "meaning": "AlphaGateDivisor"
+  },
+  "AlphaGateStart": {
+    "value": 0.8999999761581421,
+    "source": "E528 cb4[84].x",
+    "group": "03 Light bands",
+    "meaning": "AlphaGateStart"
+  },
+  "AlphaGateWidth": {
+    "value": 0.10000002384185791,
+    "source": "E528 cb4[84].z",
+    "group": "03 Light bands",
+    "meaning": "AlphaGateWidth"
+  },
+  "AlphaSuppression": {
+    "value": 0.0,
+    "source": "E528 cb4[112].y",
+    "group": "03 Light bands",
+    "meaning": "AlphaSuppression"
+  },
+  "AlphaEmissionColor": {
+    "value": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "source": "E528 cb4[12].xyz",
+    "group": "04 Emission and tint",
+    "meaning": "AlphaEmissionColor"
+  },
+  "VertexEmissionColor": {
+    "value": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "source": "E528 cb4[47].xyz",
+    "group": "04 Emission and tint",
+    "meaning": "VertexEmissionColor"
+  },
+  "OverrideEmissionColor": {
+    "value": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "source": "E528 cb4[48].xyz",
+    "group": "04 Emission and tint",
+    "meaning": "OverrideEmissionColor"
+  },
+  "OverrideEmissionBlend": {
+    "value": 0.0,
+    "source": "E528 cb4[97].y",
+    "group": "04 Emission and tint",
+    "meaning": "OverrideEmissionBlend"
+  },
+  "SecondaryRegionTint": {
+    "value": [
+      0.9386860132217407,
+      0.6038280129432678,
+      0.40724000334739685
+    ],
+    "source": "E528 cb4[71].xyz",
+    "group": "04 Emission and tint",
+    "meaning": "SecondaryRegionTint"
+  },
+  "SecondaryOtherTint": {
+    "value": [
+      0.6455410122871399,
+      0.6631180047988892,
+      0.6770830154418945
+    ],
+    "source": "E528 cb4[72].xyz",
+    "group": "04 Emission and tint",
+    "meaning": "SecondaryOtherTint"
+  },
+  "RampLightCap": {
+    "value": 0.4000000059604645,
+    "source": "E528 cb4[102].w",
+    "group": "04 Emission and tint",
+    "meaning": "RampLightCap"
+  },
+  "RampOtherRow": {
+    "value": 0.5,
+    "source": "E528 cb4[103].x",
+    "group": "04 Emission and tint",
+    "meaning": "RampOtherRow"
+  },
+  "RampBlend": {
+    "value": 0,
+    "source": "E528 ID.G provides the blend; no material override",
+    "group": "04 Emission and tint",
+    "meaning": "Replaced by ID.G inside SR_UpSurface"
+  },
+  "GlobalNormalBlend": {
+    "value": 1.0,
+    "source": "E528 cb0[144].w",
+    "group": "01 Normal and regions",
+    "meaning": "GlobalNormalBlend"
+  },
+  "MipBias": {
+    "value": 0.0,
+    "source": "E528 cb0[149].y",
+    "group": "02 Surface and highlight",
+    "meaning": "MipBias"
+  },
+  "RampEnabled": {
+    "value": 3.0,
+    "source": "E528 cb3[1].w",
+    "group": "04 Emission and tint",
+    "meaning": "RampEnabled"
+  },
+  "RimStrength": {
+    "value": 0.05000000074505806,
+    "source": "E528 cb4[112].z",
+    "group": "07 Depth rim",
+    "meaning": "RimStrength"
+  },
+  "ShadowNear": {
+    "value": [
+      0.5,
+      0.5,
+      0.5
+    ],
+    "source": "E1401 cb1[303].xyz",
+    "group": "06 Lighting",
+    "meaning": "ShadowNear"
+  },
+  "ShadowFar": {
+    "value": [
+      0.30000001192092896,
+      0.40508604049682617,
+      0.5
+    ],
+    "source": "E1401 cb1[296].xyz",
+    "group": "06 Lighting",
+    "meaning": "ShadowFar"
+  },
+  "LightNear": {
+    "value": [
+      1.0,
+      1.0,
+      1.0
+    ],
+    "source": "E1401 cb1[302].xyz",
+    "group": "06 Lighting",
+    "meaning": "LightNear"
+  },
+  "LightFar": {
+    "value": [
+      1.0,
+      1.0,
+      1.0
+    ],
+    "source": "E1401 cb1[297].xyz",
+    "group": "06 Lighting",
+    "meaning": "LightFar"
+  },
+  "ColorDistanceCm": {
+    "value": 0.0,
+    "source": "E1401 cb1[301].x",
+    "group": "06 Lighting",
+    "meaning": "ColorDistanceCm"
+  },
+  "DistanceExponent": {
+    "value": 1.0,
+    "source": "E1401 cb1[301].y",
+    "group": "06 Lighting",
+    "meaning": "DistanceExponent"
+  },
+  "SecondaryStrength": {
+    "value": 1.0,
+    "source": "E1401 cb1[295].x",
+    "group": "06 Lighting",
+    "meaning": "SecondaryStrength"
+  },
+  "ShadowMix": {
+    "value": 0.6499999761581421,
+    "source": "E1401 cb1[295].y",
+    "group": "06 Lighting",
+    "meaning": "ShadowMix"
+  },
+  "VisibilityScale": {
+    "value": 1.0,
+    "source": "E1401 cb1[283].z",
+    "group": "06 Lighting",
+    "meaning": "VisibilityScale"
+  },
+  "VisibilityLower": {
+    "value": 0.0,
+    "source": "E1401 cb1[300].x",
+    "group": "06 Lighting",
+    "meaning": "VisibilityLower"
+  },
+  "VisibilityUpper": {
+    "value": 0.10000000149011612,
+    "source": "E1401 cb1[300].y",
+    "group": "06 Lighting",
+    "meaning": "VisibilityUpper"
+  },
+  "VisibilityRemap": {
+    "value": 1.0,
+    "source": "E1401 cb1[300].z",
+    "group": "06 Lighting",
+    "meaning": "VisibilityRemap"
+  },
+  "CaptureForward": {
+    "value": [
+      0.9975630875833955,
+      0,
+      -0.0697702392935752
+    ],
+    "source": "E548 cb3 style direction / existing U52 fixed capture projection",
+    "group": "07 Auxiliary",
+    "meaning": "CaptureForward"
+  },
+  "CaptureRight": {
+    "value": [
+      0,
+      1,
+      0
+    ],
+    "source": "E548 cb3 style direction / existing U52 fixed capture projection",
+    "group": "07 Auxiliary",
+    "meaning": "CaptureRight"
+  },
+  "CaptureUp": {
+    "value": [
+      0.0697702392935752,
+      0,
+      0.9975630875833955
+    ],
+    "source": "E548 cb3 style direction / existing U52 fixed capture projection",
+    "group": "07 Auxiliary",
+    "meaning": "CaptureUp"
+  },
+  "CaptureTanHalfFov": {
+    "value": [
+      0.4663076581549986,
+      0.2622980577121867
+    ],
+    "source": "E548 cb3 style direction / existing U52 fixed capture projection",
+    "group": "07 Auxiliary",
+    "meaning": "CaptureTanHalfFov"
+  },
+  "ExtraControl": {
+    "value": 0,
+    "source": "E1401 t4.B; full frame R44888 B verified zero",
+    "group": "06 Lighting",
+    "meaning": "Extra secondary contribution"
+  },
+  "Visibility": {
+    "value": 1,
+    "source": "E1401 t5.R^2*t5.B^2; full frame R44986 verified white",
+    "group": "06 Lighting",
+    "meaning": "Source scene visibility input"
+  },
+  "BangsShadowEnabled": {
+    "value": 1,
+    "source": "Existing U52 eye binding",
+    "group": "07 Auxiliary",
+    "meaning": "Use generated depth shadow"
+  },
+  "RimWidth": {
+    "value": 0.5,
+    "source": "E1401 cb0[0].x",
+    "group": "07 Depth rim",
+    "meaning": "RimWidth"
+  },
+  "RimDirection": {
+    "value": [
+      -0.7094064950942993,
+      -0.49673181772232056,
+      0.5
+    ],
+    "source": "E1401 cb1[299].xyz",
+    "group": "07 Depth rim",
+    "meaning": "RimDirection"
+  },
+  "RimColor": {
+    "value": [
+      2.5999999046325684,
+      3.4546399116516113,
+      4.0
+    ],
+    "source": "E1401 cb1[298].xyz",
+    "group": "07 Depth rim",
+    "meaning": "RimColor"
+  },
+  "RimBaseMix": {
+    "value": 1.0,
+    "source": "E1401 cb1[295].z",
+    "group": "07 Depth rim",
+    "meaning": "RimBaseMix"
+  },
+  "RimProjectionScale": {
+    "value": 0.8726645112037659,
+    "source": "E1401 cb1[133].x",
+    "group": "07 Depth rim",
+    "meaning": "RimProjectionScale"
+  },
+  "DebugMode": {
+    "value": 0,
+    "source": "0 final, 1 base, 2 tint, 3 normal, 4 mask, 5 emission, 6 region, 7 highlight, 8 lookup UV, 9 rim, 10 occlusion",
+    "group": "08 Diagnostics",
+    "meaning": "DebugMode"
+  },
+  "VertexEmission": {
+    "value": 0,
+    "source": "E528 postVS TEXCOORD5.y is zero in all captured vertices",
+    "group": "04 Emission and tint",
+    "meaning": "VertexEmission"
+  },
+  "UpperRegionHalfWidth": {
+    "value": 0.2,
+    "source": "E528 instruction 132 literal 0.2",
+    "group": "05 ID regional layer",
+    "meaning": "UpperRegionHalfWidth"
+  },
+  "TangentPower": {
+    "value": 1.0,
+    "source": "E528 cb4[97].z",
+    "group": "05 ID regional layer",
+    "meaning": "TangentPower"
+  },
+  "TangentSuppression": {
+    "value": 1.0,
+    "source": "E528 cb4[97].w",
+    "group": "05 ID regional layer",
+    "meaning": "TangentSuppression"
+  },
+  "TangentColor": {
+    "value": [
+      0.013888999819755554,
+      0.013888999819755554,
+      0.013888999819755554
+    ],
+    "source": "E528 cb4[50].xyz",
+    "group": "05 ID regional layer",
+    "meaning": "TangentColor"
+  },
+  "ViewTintLow": {
+    "value": 0.30000001192092896,
+    "source": "E528 cb4[99].z",
+    "group": "05 ID regional layer",
+    "meaning": "ViewTintLow"
+  },
+  "ViewTintHigh": {
+    "value": 0.6000000238418579,
+    "source": "E528 cb4[99].y",
+    "group": "05 ID regional layer",
+    "meaning": "ViewTintHigh"
+  },
+  "ViewLowColor": {
+    "value": [
+      0.40625,
+      0.20198200643062592,
+      0.33801600337028503
+    ],
+    "source": "E528 cb4[56].xyz",
+    "group": "05 ID regional layer",
+    "meaning": "ViewLowColor"
+  },
+  "ViewHighColor": {
+    "value": [
+      1.0,
+      0.9921879768371582,
+      0.96875
+    ],
+    "source": "E528 cb4[55].xyz",
+    "group": "05 ID regional layer",
+    "meaning": "ViewHighColor"
+  },
+  "ViewTintBlend": {
+    "value": 0.5,
+    "source": "E528 cb4[99].w",
+    "group": "05 ID regional layer",
+    "meaning": "ViewTintBlend"
+  },
+  "SheenLow": {
+    "value": 0.4000000059604645,
+    "source": "E528 cb4[100].y",
+    "group": "05 ID regional layer",
+    "meaning": "SheenLow"
+  },
+  "SheenHigh": {
+    "value": 1.0,
+    "source": "E528 cb4[100].x",
+    "group": "05 ID regional layer",
+    "meaning": "SheenHigh"
+  },
+  "SheenColor": {
+    "value": [
+      0.013888999819755554,
+      0.013888999819755554,
+      0.013888999819755554
+    ],
+    "source": "E528 cb4[58].xyz",
+    "group": "05 ID regional layer",
+    "meaning": "SheenColor"
+  },
+  "SheenSuppression": {
+    "value": 0.0,
+    "source": "E528 cb4[100].z",
+    "group": "05 ID regional layer",
+    "meaning": "SheenSuppression"
+  }
+}

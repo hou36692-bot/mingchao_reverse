@@ -1,0 +1,645 @@
+{
+  "LayerScale": {
+    "value": [
+      0.2475000023841858,
+      0.15128572285175323
+    ],
+    "source": "E548 cb5[43].xy",
+    "group": "01 Layer UV",
+    "meaning": "Base UV divisor"
+  },
+  "LayerScaleOffset": {
+    "value": [
+      0,
+      0
+    ],
+    "source": "E548 cb5[44].xy",
+    "group": "01 Layer UV",
+    "meaning": "Subtract before reciprocal"
+  },
+  "SharedScale": {
+    "value": 1,
+    "source": "E548 cb5[111].z",
+    "group": "01 Layer UV",
+    "meaning": "Shared layer and radial scale"
+  },
+  "PulseEnabled": {
+    "value": 0,
+    "source": "E548 cb5[111].x",
+    "group": "01 Layer UV",
+    "meaning": "Select pulse at >=0.5"
+  },
+  "PulseFrequency": {
+    "value": 5,
+    "source": "E548 cb5[110].z",
+    "group": "01 Layer UV",
+    "meaning": "Cycles per second"
+  },
+  "PulseAmplitude": {
+    "value": 0.5,
+    "source": "E548 cb5[110].w",
+    "group": "01 Layer UV",
+    "meaning": "UV scale modulation"
+  },
+  "JitterFrequency": {
+    "value": 10,
+    "source": "E548 cb5[111].w",
+    "group": "01 Layer UV",
+    "meaning": "Cycles per second"
+  },
+  "JitterAmplitude": {
+    "value": 0.009999999776482582,
+    "source": "E548 cb5[112].x",
+    "group": "01 Layer UV",
+    "meaning": "Offset modulation"
+  },
+  "LayerOffsetGreen0": {
+    "value": [
+      0.20000000298023224,
+      0.41092801094055176
+    ],
+    "source": "E548 cb5[46].xy",
+    "group": "01 Layer UV",
+    "meaning": "Offset at vertex green 0"
+  },
+  "LayerOffsetGreen1": {
+    "value": [
+      0.20000000298023224,
+      0.41092801094055176
+    ],
+    "source": "E548 cb5[47].xy",
+    "group": "01 Layer UV",
+    "meaning": "Offset at vertex green 1"
+  },
+  "LayerOffset": {
+    "value": [
+      0,
+      0
+    ],
+    "source": "E548 cb5[48].xy",
+    "group": "01 Layer UV",
+    "meaning": "Common offset"
+  },
+  "LayerRotationRadians": {
+    "value": -0.5138570070266724,
+    "source": "E548 cb5[114].y",
+    "group": "01 Layer UV",
+    "meaning": "Rotation in radians"
+  },
+  "TimeSeconds": {
+    "value": 76.28292846679688,
+    "source": "E548 cb0[148].z",
+    "group": "01 Layer UV",
+    "meaning": "Frozen source time, seconds"
+  },
+  "ControlScale": {
+    "value": [
+      1.2100000381469727,
+      0.8500000238418579
+    ],
+    "source": "E548 cb5[51].xy",
+    "group": "02 Surface",
+    "meaning": "UV divisor"
+  },
+  "ControlOffset": {
+    "value": [
+      0.5389999747276306,
+      0.6200000047683716
+    ],
+    "source": "E548 cb5[52].xy",
+    "group": "02 Surface",
+    "meaning": "UV offset before divisor"
+  },
+  "ControlEdgeWidth": {
+    "value": 0.25999999046325684,
+    "source": "E548 cb5[116].y",
+    "group": "02 Surface",
+    "meaning": "Control alpha smoothing width"
+  },
+  "ControlColor": {
+    "value": [
+      0.0949999988079071,
+      0.17399999499320984,
+      0.22300000488758087
+    ],
+    "source": "E548 cb5[54].xyz",
+    "group": "02 Surface",
+    "meaning": "Control red layer tint"
+  },
+  "ControlStrength": {
+    "value": 0.4000000059604645,
+    "source": "E548 cb5[116].z",
+    "group": "02 Surface",
+    "meaning": "Control layer weight"
+  },
+  "ParallaxDepth": {
+    "value": 0.12999999523162842,
+    "source": "E548 cb5[116].w",
+    "group": "02 Surface",
+    "meaning": "View offset amplitude"
+  },
+  "ViewOffsetGreen1": {
+    "value": [
+      0.08437599986791611,
+      0.19120199978351593,
+      0
+    ],
+    "source": "E548 cb5[56].xyz",
+    "group": "02 Surface",
+    "meaning": "Tangent-space direction offset"
+  },
+  "InnerScale": {
+    "value": [
+      0.8500000238418579,
+      0.8500000238418579
+    ],
+    "source": "E548 cb5[60].xy",
+    "group": "02 Surface",
+    "meaning": "Centered search UV scale"
+  },
+  "BaseTint": {
+    "value": [
+      1,
+      1,
+      1
+    ],
+    "source": "E548 cb5[62].xyz",
+    "group": "02 Surface",
+    "meaning": "Eye color texture multiplier"
+  },
+  "RingCenter": {
+    "value": [
+      0.7200000286102295,
+      0.7599999904632568
+    ],
+    "source": "E548 cb5[118].yz",
+    "group": "03 Color layers",
+    "meaning": "Radial center"
+  },
+  "RingAxisX": {
+    "value": [
+      0.998550295829773,
+      -0.05382715165615082
+    ],
+    "source": "E548 cb5[63].xy",
+    "group": "03 Color layers",
+    "meaning": "First radial basis row"
+  },
+  "RingAxisY": {
+    "value": [
+      0.05382715165615082,
+      0.998550295829773
+    ],
+    "source": "E548 cb5[64].xy",
+    "group": "03 Color layers",
+    "meaning": "Second radial basis row"
+  },
+  "RingScale": {
+    "value": [
+      8,
+      16
+    ],
+    "source": "E548 cb5[65].xy",
+    "group": "03 Color layers",
+    "meaning": "Radial axis multiplier"
+  },
+  "RingScaleOffset": {
+    "value": [
+      0,
+      0
+    ],
+    "source": "E548 cb5[66].xy",
+    "group": "03 Color layers",
+    "meaning": "Radial additive scale"
+  },
+  "RingPulseShrink": {
+    "value": 0.375,
+    "source": "E548 cb5[120].z",
+    "group": "03 Color layers",
+    "meaning": "Pulse shrink factor"
+  },
+  "RingLower": {
+    "value": 0.5120000839233398,
+    "source": "E548 cb5[121].z",
+    "group": "03 Color layers",
+    "meaning": "Radial band lower bound"
+  },
+  "RingUpper": {
+    "value": 0.8200000524520874,
+    "source": "E548 cb5[121].y",
+    "group": "03 Color layers",
+    "meaning": "Radial band upper bound"
+  },
+  "RingBlend": {
+    "value": 1,
+    "source": "E548 cb5[121].w",
+    "group": "03 Color layers",
+    "meaning": "Radial layer mix"
+  },
+  "RingColor": {
+    "value": [
+      0.23958300054073334,
+      0.23958300054073334,
+      0.23958300054073334
+    ],
+    "source": "E548 cb5[68].xyz",
+    "group": "03 Color layers",
+    "meaning": "Radial layer target color"
+  },
+  "LayerRedColor": {
+    "value": [
+      0.029999999329447746,
+      0.029999999329447746,
+      0.029999999329447746
+    ],
+    "source": "E548 cb5[70].xyz",
+    "group": "03 Color layers",
+    "meaning": "t0 red target color"
+  },
+  "LayerGreenColor": {
+    "value": [
+      0,
+      0,
+      0
+    ],
+    "source": "E548 cb5[73].xyz",
+    "group": "03 Color layers",
+    "meaning": "t0 green target color"
+  },
+  "LayerRestore": {
+    "value": 0.4000000059604645,
+    "source": "E548 cb5[114].w",
+    "group": "03 Color layers",
+    "meaning": "Restore base color after layer mixing"
+  },
+  "LayerBlueEmission": {
+    "value": 0.800000011920929,
+    "source": "E548 cb5[114].z",
+    "group": "04 Emission",
+    "meaning": "t0 blue emission scale"
+  },
+  "EmissionColor": {
+    "value": [
+      0,
+      0,
+      0
+    ],
+    "source": "E548 cb5[74].xyz",
+    "group": "04 Emission",
+    "meaning": "Radially attenuated base multiplier"
+  },
+  "EmissionRadiusGreen0": {
+    "value": [
+      0.5,
+      0.5,
+      0.5,
+      0.5
+    ],
+    "source": "E548 cb5[77].xyzw",
+    "group": "04 Emission",
+    "meaning": "Center XY, radius Z, exponent W when t1.G<=0.99"
+  },
+  "EmissionRadiusGreen1": {
+    "value": [
+      0.5,
+      1.5,
+      1.659999966621399,
+      1
+    ],
+    "source": "E548 cb5[78].xyzw",
+    "group": "04 Emission",
+    "meaning": "Center XY, radius Z, exponent W otherwise"
+  },
+  "AlphaGain": {
+    "value": 1,
+    "source": "E548 cb5[122].y",
+    "group": "04 Emission",
+    "meaning": "t2 alpha gain; not opacity"
+  },
+  "AlphaPower": {
+    "value": 0.25,
+    "source": "E548 cb5[122].z",
+    "group": "04 Emission",
+    "meaning": "Alpha-region exponent"
+  },
+  "AlphaEmissionColor": {
+    "value": [
+      0,
+      0,
+      0
+    ],
+    "source": "E548 cb5[80].xyz",
+    "group": "04 Emission",
+    "meaning": "Alpha-region tint"
+  },
+  "WarmOverride": {
+    "value": 0,
+    "source": "E548 cb4[4].z",
+    "group": "04 Emission",
+    "meaning": "Warm emission override mix"
+  },
+  "VertexEmissionColor": {
+    "value": [
+      0,
+      0,
+      0
+    ],
+    "source": "E548 cb5[41].xyz",
+    "group": "04 Emission",
+    "meaning": "Multiply source TEXCOORD4.x, zero in all E548 post-VS vertices"
+  },
+  "OverrideEmissionColor": {
+    "value": [
+      0,
+      0,
+      0
+    ],
+    "source": "E548 cb5[81].xyz",
+    "group": "04 Emission",
+    "meaning": "Emission override color"
+  },
+  "OverrideEmissionBlend": {
+    "value": 0,
+    "source": "E548 cb5[123].x",
+    "group": "04 Emission",
+    "meaning": "Emission override mix"
+  },
+  "MipBias": {
+    "value": 0,
+    "source": "E548 cb0[149].y",
+    "group": "02 Surface",
+    "meaning": "Source texture LOD bias"
+  },
+  "FlattenEnabled": {
+    "value": 0,
+    "source": "E548 cb5[133].w",
+    "group": "05 Light mask",
+    "meaning": "Enable flattened style direction"
+  },
+  "FlattenWeight": {
+    "value": 0,
+    "source": "E548 cb5[134].y",
+    "group": "05 Light mask",
+    "meaning": "Flattened direction mix"
+  },
+  "MirrorMode": {
+    "value": 0,
+    "source": "E548 cb2[29].w",
+    "group": "05 Light mask",
+    "meaning": "Source mirror parity and fractional control"
+  },
+  "MirrorBlend": {
+    "value": 0,
+    "source": "E548 cb2[30].x",
+    "group": "05 Light mask",
+    "meaning": "Blend source mirror rule"
+  },
+  "UseAlternateUV": {
+    "value": 0,
+    "source": "E548 cb5[134].w",
+    "group": "05 Light mask",
+    "meaning": "Select alternate SDF UV at >=0.001"
+  },
+  "AlternateSide": {
+    "value": 0,
+    "source": "E548 cb5[134].z",
+    "group": "05 Light mask",
+    "meaning": "Alternate SDF half selection"
+  },
+  "AlphaCap": {
+    "value": 0.20000000298023224,
+    "source": "E548 cb5[132].w",
+    "group": "05 Light mask",
+    "meaning": "Cap alpha before coverage normalization"
+  },
+  "AlphaSuppression": {
+    "value": 1,
+    "source": "E548 cb5[133].x",
+    "group": "05 Light mask",
+    "meaning": "Suppress low alpha light control"
+  },
+  "SecondaryTint": {
+    "value": [
+      0.4000000059604645,
+      0.4000000059604645,
+      0.4000000059604645
+    ],
+    "source": "E548 cb5[93].xyz",
+    "group": "06 Lighting",
+    "meaning": "Decoded second color multiplier"
+  },
+  "JitterAxis": {
+    "value": [
+      0,
+      0
+    ],
+    "source": "E548 cb5[112].y, cb5[113].z",
+    "group": "01 Layer UV",
+    "meaning": "XY jitter direction"
+  },
+  "ViewOffsetGreen0": {
+    "value": [
+      -0.08437599986791611,
+      0.19120199978351593,
+      0
+    ],
+    "source": "E548 cb5[57].x, cb5[117].xy",
+    "group": "02 Surface",
+    "meaning": "Tangent-space direction offset at vertex green 0"
+  },
+  "ThresholdCenter": {
+    "value": 0.5,
+    "source": "E548 midpoint cb5[135].xy",
+    "group": "05 Light mask",
+    "meaning": "SDF threshold center"
+  },
+  "ThresholdWidth": {
+    "value": 0.019999980926513672,
+    "source": "E548 cb5[135].x-cb5[135].y",
+    "group": "05 Light mask",
+    "meaning": "SDF threshold width"
+  },
+  "AnimationRate": {
+    "value": 0,
+    "source": "Frozen Frame3765 calibration",
+    "group": "01 Layer UV",
+    "meaning": "Time input advances only if enabled"
+  },
+  "Visibility": {
+    "value": 1,
+    "source": "E1401 t5.R^2*t5.B^2; full frame R44986 verified white",
+    "group": "06 Lighting",
+    "meaning": "Source scene visibility input"
+  },
+  "ExtraControl": {
+    "value": 0,
+    "source": "E1401 t4.B; full frame R44888 B verified zero",
+    "group": "06 Lighting",
+    "meaning": "Extra secondary contribution"
+  },
+  "BangsShadowEnabled": {
+    "value": 1,
+    "source": "Existing U52 eye binding",
+    "group": "07 Auxiliary",
+    "meaning": "Use generated depth shadow"
+  },
+  "DebugMode": {
+    "value": 0,
+    "source": "UE diagnostic selector",
+    "group": "08 Diagnostics",
+    "meaning": "0 final;1 UV;2 base;3 emission;4 searchUV;5 alpha;6 mask;7 direction;8 shadow;9 secondary;10 bright;11 occlusion"
+  },
+  "VertexEmission": {
+    "value": 0,
+    "source": "E548 post-VS TEXCOORD4.x: all 440 vertices are 0",
+    "group": "04 Emission",
+    "meaning": "Captured per-vertex emission input"
+  },
+  "ShadowNear": {
+    "value": [
+      0.5,
+      0.5,
+      0.5
+    ],
+    "source": "E1401 cb1[303].xyz",
+    "group": "06 Lighting",
+    "meaning": "ShadowNear"
+  },
+  "ShadowFar": {
+    "value": [
+      0.30000001192092896,
+      0.40508604049682617,
+      0.5
+    ],
+    "source": "E1401 cb1[296].xyz",
+    "group": "06 Lighting",
+    "meaning": "ShadowFar"
+  },
+  "LightNear": {
+    "value": [
+      1.0,
+      1.0,
+      1.0
+    ],
+    "source": "E1401 cb1[302].xyz",
+    "group": "06 Lighting",
+    "meaning": "LightNear"
+  },
+  "LightFar": {
+    "value": [
+      1.0,
+      1.0,
+      1.0
+    ],
+    "source": "E1401 cb1[297].xyz",
+    "group": "06 Lighting",
+    "meaning": "LightFar"
+  },
+  "ColorDistanceCm": {
+    "value": 0.0,
+    "source": "E1401 cb1[301].x",
+    "group": "06 Lighting",
+    "meaning": "ColorDistanceCm"
+  },
+  "DistanceExponent": {
+    "value": 1.0,
+    "source": "E1401 cb1[301].y",
+    "group": "06 Lighting",
+    "meaning": "DistanceExponent"
+  },
+  "SecondaryStrength": {
+    "value": 1.0,
+    "source": "E1401 cb1[295].x",
+    "group": "06 Lighting",
+    "meaning": "SecondaryStrength"
+  },
+  "ShadowMix": {
+    "value": 0.6499999761581421,
+    "source": "E1401 cb1[295].y",
+    "group": "06 Lighting",
+    "meaning": "ShadowMix"
+  },
+  "VisibilityScale": {
+    "value": 1.0,
+    "source": "E1401 cb1[283].z",
+    "group": "06 Lighting",
+    "meaning": "VisibilityScale"
+  },
+  "VisibilityLower": {
+    "value": 0.0,
+    "source": "E1401 cb1[300].x",
+    "group": "06 Lighting",
+    "meaning": "VisibilityLower"
+  },
+  "VisibilityUpper": {
+    "value": 0.10000000149011612,
+    "source": "E1401 cb1[300].y",
+    "group": "06 Lighting",
+    "meaning": "VisibilityUpper"
+  },
+  "VisibilityRemap": {
+    "value": 1.0,
+    "source": "E1401 cb1[300].z",
+    "group": "06 Lighting",
+    "meaning": "VisibilityRemap"
+  },
+  "StyleDirection": {
+    "value": [
+      -0.5792279243469238,
+      -0.4055798053741455,
+      0.7071067690849304
+    ],
+    "source": "E548 cb3 style direction / existing U52 fixed capture projection",
+    "group": "05 Light mask",
+    "meaning": "StyleDirection"
+  },
+  "FlatDirection": {
+    "value": [
+      -0.8191519975662231,
+      -0.5735765099525452,
+      0
+    ],
+    "source": "E548 cb3 style direction / existing U52 fixed capture projection",
+    "group": "05 Light mask",
+    "meaning": "FlatDirection"
+  },
+  "CaptureForward": {
+    "value": [
+      0.9975630875833955,
+      0,
+      -0.0697702392935752
+    ],
+    "source": "E548 cb3 style direction / existing U52 fixed capture projection",
+    "group": "07 Auxiliary",
+    "meaning": "CaptureForward"
+  },
+  "CaptureRight": {
+    "value": [
+      0,
+      1,
+      0
+    ],
+    "source": "E548 cb3 style direction / existing U52 fixed capture projection",
+    "group": "07 Auxiliary",
+    "meaning": "CaptureRight"
+  },
+  "CaptureUp": {
+    "value": [
+      0.0697702392935752,
+      0,
+      0.9975630875833955
+    ],
+    "source": "E548 cb3 style direction / existing U52 fixed capture projection",
+    "group": "07 Auxiliary",
+    "meaning": "CaptureUp"
+  },
+  "CaptureTanHalfFov": {
+    "value": [
+      0.4663076581549986,
+      0.2622980577121867
+    ],
+    "source": "E548 cb3 style direction / existing U52 fixed capture projection",
+    "group": "07 Auxiliary",
+    "meaning": "CaptureTanHalfFov"
+  }
+}

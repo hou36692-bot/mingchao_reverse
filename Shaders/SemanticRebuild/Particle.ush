@@ -1,0 +1,37 @@
+#pragma once
+struct SR_ParticleWPOSettings
+{
+    float3 BasisX,BasisY,BasisZ,Translation,Anchor,CenterScale,CenterOffset,UpAxis,SourceOriginOffset;
+    float2 Size,CenterDimensions;
+    float AgeShrink,SpinScale,UpAlignment;
+};
+
+// The fixed instance values come from the decoded source SRV state at VS514.
+// E1817/E1821 flags=11: source size state and billboard state enabled; random gate state disabled.
+// Source positions retain the original 150000 cm translated origin until the final subtraction.
+float3 SR_ParticleOffset(float3 LocalPosition,float3 WorldPosition,float3 Camera,float2 UV,float VertexRed,SR_ParticleWPOSettings S)
+{
+    float3 SourcePosition=float3(dot(float4(LocalPosition,1),float4(S.BasisX,S.Translation.x)),dot(float4(LocalPosition,1),float4(S.BasisY,S.Translation.y)),dot(float4(LocalPosition,1),float4(S.BasisZ,S.Translation.z)));
+    // Preserve the source's float-domain rebasing; algebraic cancellation moves tiny particles.
+    float3 RelativePosition=SourcePosition+S.SourceOriginOffset;
+    float3 RebasedPosition=RelativePosition-S.SourceOriginOffset;
+    float3 CenterLocal=float3(0,(.5-UV.x)*S.CenterDimensions.x,(.5-UV.y)*S.CenterDimensions.y);
+    float3 CenterCorrection=float3(dot(CenterLocal,S.BasisX),dot(CenterLocal,S.BasisY),dot(CenterLocal,S.BasisZ));
+    float3 Center=S.Anchor+S.CenterScale*(CenterCorrection+RebasedPosition-S.Anchor)+S.CenterOffset;
+    float RandomAngleSeed=frac(3.141593)+VertexRed;
+    float Angle=RandomAngleSeed*123.456001*S.SpinScale*6.283185;
+    float Scale=max(1+S.AgeShrink*(frac(RandomAngleSeed)-1),0);
+    float2 PlaneOffset=(UV.yx-.5)*S.Size.yx*Scale;
+    float SinAngle,CosAngle;sincos(Angle,SinAngle,CosAngle);
+    float RightOffset=PlaneOffset.x*SinAngle+PlaneOffset.y*CosAngle;
+    float UpOffset=PlaneOffset.x*CosAngle-PlaneOffset.y*SinAngle;
+    float3 Direction=normalize(Center-(Camera+150000));
+    float UpLengthSquared=dot(S.UpAxis,S.UpAxis);
+    float3 Up=(UpLengthSquared>=.000001 && abs(UpLengthSquared-.000001)>.00001)?normalize(S.UpAxis):float3(0,0,1);
+    float3 Right=normalize(cross(Direction,Up));
+    float3 FacingUp=normalize(cross(Right,Direction));
+    Up=normalize(lerp(Up,FacingUp,S.UpAlignment));
+    float3 Target=Center+(UpOffset*Up+RightOffset*Right);
+    float3 OffsetFromSource=Target-RebasedPosition;
+    return ((RelativePosition+OffsetFromSource)-S.SourceOriginOffset-150000)-WorldPosition;
+}

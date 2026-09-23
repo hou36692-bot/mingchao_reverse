@@ -1,0 +1,220 @@
+#ifndef MINGCHAO_SEMANTIC_EYE
+#define MINGCHAO_SEMANTIC_EYE
+#include "/MingchaoSemantic/Common.ush"
+
+// These sampling operations preserve the raster PS derivative contract of E548.
+// The non-pixel permutation is only a compilation fallback, not ray-hit equivalence.
+#if PIXELSHADER
+#define SR_SAMPLE_BIAS(T,S,U,B) T.SampleBias(S,U,B)
+#define SR_SAMPLE_GRAD(T,S,U,X,Y) T.SampleGrad(S,U,X,Y)
+#define SR_DDX(U) ddx_coarse(U)
+#define SR_DDY(U) ddy_coarse(U)
+#else
+#define SR_SAMPLE_BIAS(T,S,U,B) T.SampleLevel(S,U,0)
+#define SR_SAMPLE_GRAD(T,S,U,X,Y) T.SampleLevel(S,U,0)
+#define SR_DDX(U) float2(0,0)
+#define SR_DDY(U) float2(0,0)
+#endif
+
+struct SR_EyeCoordinates
+{
+    float2 LayerScale;
+    float2 LayerScaleOffset;
+    float SharedScale;
+    float PulseEnabled;
+    float PulseFrequency;
+    float PulseAmplitude;
+    float JitterFrequency;
+    float JitterAmplitude;
+    float2 JitterAxis;
+    float2 LayerOffsetGreen0;
+    float2 LayerOffsetGreen1;
+    float2 LayerOffset;
+    float LayerRotationRadians;
+};
+
+// E548 18-58. UVs are dimensionless; time is seconds, rotation is radians.
+float2 SR_EyeLayerUV(float2 UV, float VertexGreen, float TimeSeconds,
+    SR_EyeCoordinates Settings, out float Pulse, out float Jitter)
+{
+    Pulse = 0.5 * (sin(TimeSeconds * Settings.PulseFrequency * 6.283185) + 1.0);
+    Jitter = sin(TimeSeconds * Settings.JitterFrequency * 6.283185) * Settings.JitterAmplitude;
+    float2 Scale = Settings.LayerScale;
+    if (Settings.PulseEnabled >= 0.5)
+        Scale *= 1.0 + Pulse * Settings.PulseAmplitude;
+    Scale = (Scale - Settings.LayerScaleOffset) * Settings.SharedScale;
+    // Positive scales are enforced by the authored parameter contract.
+    Scale = max(Scale, 0.000001);
+    float2 Offset = lerp(Settings.LayerOffsetGreen0, Settings.LayerOffsetGreen1, VertexGreen);
+    Offset += Settings.LayerOffset + float2(0.05, 0.0) + Settings.JitterAxis * Jitter;
+    float2 Centered = (UV - Offset) / Scale;
+    float Sine, Cosine;
+    sincos(Settings.LayerRotationRadians, Sine, Cosine);
+    return float2(Cosine * Centered.x - Sine * Centered.y,
+        Sine * Centered.x + Cosine * Centered.y) + 0.5;
+}
+
+// E548 76-119. sample_d writes destination .y, so t1.xyzw selects G, not R.
+// Height comparison therefore uses t1.G after its sRGB resource-view decode.
+// The two source searches (97-119 and 210-232) have identical initial state,
+// gradients, loop limits and recurrence; their outputs are checked independently.
+float2 SR_EyeSearchUV(Texture2D ControlMap, SamplerState ControlSampler,
+    float2 UV, float3 ViewTangent, float3 ViewOffset, float DepthScale,
+    float ControlGreen, float2 GradientX, float2 GradientY)
+{
+    float3 BiasedView = ViewTangent + ViewOffset;
+    // Outside the proven grazing-angle range, retain the sign and avoid division by zero.
+    float ViewZ = abs(BiasedView.z) < 0.000001 ? (BiasedView.z < 0 ? -0.000001 : 0.000001) : BiasedView.z;
+    float2 RayOffset = -BiasedView.xy / ViewZ * (1.0 - ControlGreen) * DepthScale;
+    float Layers = min(abs(ViewTangent.z), 1.0) * 4.0 + 4.0;
+    float StepHeight = 1.0 / Layers;
+    float2 StepUV = RayOffset * StepHeight;
+    float Height = 1.0;
+    float PreviousHeight = 1.0;
+    float PreviousSample = 1.0;
+    float2 Offset = 0.0;
+    [loop] for (int Step = 0; Step < (int)floor(Layers) + 2; ++Step)
+    {
+        float SampleHeight = SR_SAMPLE_GRAD(ControlMap, ControlSampler, UV + Offset, GradientX, GradientY).g;
+        if (Height < SampleHeight)
+        {
+            float Crossing = SampleHeight - Height;
+            float Fraction = Crossing / (Crossing + PreviousHeight - PreviousSample);
+            Offset -= Fraction * StepUV;
+            break;
+        }
+        PreviousHeight = Height;
+        PreviousSample = SampleHeight;
+        Height -= StepHeight;
+        Offset += StepUV;
+    }
+    return UV + Offset;
+}
+
+struct SR_EyeSurfaceSettings
+{
+    float2 ControlScale;
+    float2 ControlOffset;
+    float ControlEdgeWidth;
+    float3 ControlColor;
+    float ControlStrength;
+    float ParallaxDepth;
+    float3 ViewOffsetGreen0;
+    float3 ViewOffsetGreen1;
+    float2 InnerScale;
+    float3 BaseTint;
+    float2 RingCenter;
+    float2 LayerOffset;
+    float2 JitterAxis;
+    float2 RingAxisX;
+    float2 RingAxisY;
+    float2 RingScale;
+    float2 RingScaleOffset;
+    float SharedScale;
+    float PulseEnabled;
+    float RingPulseShrink;
+    float RingLower;
+    float RingUpper;
+    float RingBlend;
+    float3 RingColor;
+    float3 LayerRedColor;
+    float3 LayerGreenColor;
+    float LayerRestore;
+    float LayerBlueEmission;
+    float3 EmissionColor;
+    float4 EmissionRadiusGreen0;
+    float4 EmissionRadiusGreen1;
+    float AlphaGain;
+    float AlphaPower;
+    float3 AlphaEmissionColor;
+    float WarmOverride;
+    float3 VertexEmissionColor;
+    float3 OverrideEmissionColor;
+    float OverrideEmissionBlend;
+    float MipBias;
+};
+
+// E548 61-246, 392-395, 450-453. Base and emission are linear RGB.
+// AlphaControl is a lighting control read from t2.A; it is NOT opacity.
+float3 SR_EyeSurface(Texture2D LayerMap, SamplerState LayerSampler,
+    Texture2D ControlMap, SamplerState ControlSampler,
+    Texture2D ColorMap, SamplerState ColorSampler,
+    float2 UV, float2 LayerUV, float VertexGreen, float VertexEmission,
+    float3 ViewTangent, float Pulse, float Jitter, SR_EyeSurfaceSettings Settings,
+    out float3 Emission, out float2 SearchUV, out float AlphaControl, out float RingRadius)
+{
+    float3 Layer = SR_SAMPLE_BIAS(LayerMap, LayerSampler, LayerUV, Settings.MipBias).rgb;
+    float2 ControlUV = (UV - Settings.ControlOffset) / max(Settings.ControlScale, 0.000001) + 0.5;
+    float ControlRed = SR_SAMPLE_BIAS(ControlMap, ControlSampler, ControlUV, Settings.MipBias).r;
+    float4 Control = SR_SAMPLE_BIAS(ControlMap, ControlSampler, UV, Settings.MipBias);
+    float Edge = SR_CubicWeight((1.0 - Control.a) / max(Settings.ControlEdgeWidth, 0.000001));
+    float3 ControlLayer = ControlRed * Edge * Settings.ControlColor * Settings.ControlStrength;
+    float3 ViewOffset = lerp(Settings.ViewOffsetGreen0, Settings.ViewOffsetGreen1, VertexGreen);
+    SearchUV = SR_EyeSearchUV(ControlMap, ControlSampler, UV, ViewTangent, ViewOffset,
+        Settings.ParallaxDepth, Control.g, SR_DDX(UV), SR_DDY(UV));
+    float InnerWeight = SR_CubicWeight((0.9 - Control.a) * 1.428571);
+    SearchUV = (SearchUV - 0.5) * lerp(float2(1,1), Settings.InnerScale, InnerWeight) + 0.5;
+    float4 Color = SR_SAMPLE_BIAS(ColorMap, ColorSampler, SearchUV, Settings.MipBias);
+    float3 Base = Color.rgb * Settings.BaseTint + ControlLayer;
+    float2 RingDelta = UV - Settings.RingCenter - Settings.LayerOffset - Settings.JitterAxis * Jitter;
+    float2 RingLocal = float2(dot(RingDelta, Settings.RingAxisX), dot(RingDelta, Settings.RingAxisY));
+    float2 RingScale = Settings.RingScale;
+    if (Settings.PulseEnabled >= 0.5)
+        RingScale *= 1.0 - Pulse * Settings.RingPulseShrink;
+    RingRadius = length(RingLocal * (RingScale + Settings.RingScaleOffset) * Settings.SharedScale);
+    float HardDisk = saturate((1.0 - 2.0 * RingRadius) * 100000.0);
+    float TriangleRing = 1.0 - abs(2.0 * (saturate((1.0 - RingRadius * 1.538462) * 1.886792) - 0.5));
+    float RingWeight = SR_CubicWeight((TriangleRing - Settings.RingLower) / max(Settings.RingUpper - Settings.RingLower, 0.000001));
+    float3 Layered = lerp(Base + HardDisk, Settings.RingColor, RingWeight);
+    Layered = lerp(Base, Layered, Settings.RingBlend);
+    Layered = lerp(Layered, Settings.LayerRedColor, Layer.r);
+    Layered = lerp(Layered, Settings.LayerGreenColor, Layer.g);
+    Base = lerp(Layered, Base, Settings.LayerRestore);
+    float GreenRegion = Control.g <= 0.99 ? 1.0 : 0.0;
+    float4 Radius = lerp(Settings.EmissionRadiusGreen1, Settings.EmissionRadiusGreen0, GreenRegion);
+    float Radial = saturate(2.0 * length(UV - Radius.xy) / max(Radius.z, 0.000001));
+    float Falloff = Radial <= 0 ? 0.0 : pow(Radial, Radius.w);
+    Emission = Base * Settings.EmissionColor * (1.0 - Falloff);
+    Emission += Layer.b * Settings.LayerBlueEmission * (1.0 - Settings.LayerRestore);
+    AlphaControl = Color.a * Settings.AlphaGain;
+    float AlphaRegion = AlphaControl <= 0 ? 0.0 : (pow(AlphaControl, Settings.AlphaPower) >= 0.9 ? 1.0 : 0.0);
+    float3 AlphaEmission = AlphaRegion * Base * Settings.AlphaEmissionColor;
+    Emission += lerp(AlphaEmission, Base * GreenRegion * float3(1.2, 0.550589, 0.315294), Settings.WarmOverride);
+    Emission += VertexEmission * Settings.VertexEmissionColor;
+    Emission = max(lerp(Emission, Settings.OverrideEmissionColor, Settings.OverrideEmissionBlend), 0.0);
+    return Base;
+}
+
+// E548 237-359. The captured point-light and per-vertex direction blend factors
+// cb1[3].z and cb2[27].y are zero; this explicit interface covers the active style-light path.
+float SR_EyeLightMask(Texture2D DirectionMap, SamplerState DirectionSampler,
+    float2 UV1, float AlphaControl, float3 StyleDirection, float3 FlatDirection,
+    float FlattenEnabled, float FlattenWeight, float3 HeadForward, float3 HeadRight,
+    float MirrorMode, float MirrorBlend, float UseAlternateUV, float AlternateSide,
+    float AlphaCap, float AlphaSuppression, float ThresholdCenter, float ThresholdWidth,
+    out float DirectionWeight)
+{
+    float Alpha = min(AlphaControl, AlphaCap);
+    Alpha /= max(Alpha, 0.01);
+    float AlphaAttenuation = 1.0 - (1.0 - Alpha) * AlphaSuppression;
+    float AlphaBand = (clamp(Alpha, 0.9, 1.0) - 0.9) * 9.999998;
+    float3 Light = normalize(lerp(StyleDirection, FlatDirection, FlattenEnabled >= 0.5 ? FlattenWeight : 0.0));
+    float2 HeadLight = float2(dot(Light, HeadForward), dot(Light, HeadRight));
+    HeadLight /= max(length(HeadLight), 0.000001);
+    float Side = HeadLight.y <= 0 ? 1.0 : 0.0;
+    float HalfMode = floor(MirrorMode) * 0.5;
+    float Parity = saturate(2.0 * sign(HalfMode) * frac(abs(HalfMode)));
+    float Mirror = Side + MirrorBlend * (Parity - Side);
+    float2 DirectionUV = float2(lerp(UV1.x, 1.0 - UV1.x, Mirror), UV1.y);
+    if (UseAlternateUV >= 0.001)
+        DirectionUV = float2(UV1.x, 0.5 * UV1.y + (AlternateSide >= 0 ? 0.0 : 0.5));
+    float4 Control = SR_SAMPLE_BIAS(DirectionMap, DirectionSampler, DirectionUV, 0.0);
+    float Facing = (1.0 - HeadLight.x) * 0.5;
+    float Fraction = sign(MirrorMode) * frac(abs(MirrorMode));
+    float MirroredFacing = lerp(Facing, Parity * (1.0 - 2.0 * Fraction) + Fraction, MirrorBlend);
+    float RawWeight = 0.25 * (Control.r + Control.a) + 0.5 * MirroredFacing;
+    DirectionWeight = SR_CubicWeight((RawWeight - (ThresholdCenter - 0.5 * ThresholdWidth)) / max(ThresholdWidth, 0.000001));
+    return (0.5 + 0.5 * DirectionWeight * AlphaBand) * AlphaAttenuation;
+}
+
+#endif

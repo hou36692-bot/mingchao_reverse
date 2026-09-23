@@ -1,0 +1,137 @@
+#ifndef MINGCHAO_SEMANTIC_HAIR
+#define MINGCHAO_SEMANTIC_HAIR
+#include "/MingchaoSemantic/Cloth.ush"
+
+struct SR_HairSettings
+{
+    float UseVertexRegion;
+    float RegionOverride;
+    float RegionRestore;
+    float3 RegionTint;
+    float3 BaseTint;
+    float2 MaskAtlasOffset;
+    float MaskAtlasEnabled;
+    float3 MaskEmissionColor;
+    float3 VertexEmissionColor;
+    float3 OverrideEmissionColor;
+    float OverrideEmissionBlend;
+    float NormalFlatten;
+    float HighlightStrength;
+    float MaskBaseLow;
+    float MaskBaseHigh;
+    float Desaturation;
+    float3 SecondaryRegionTint;
+    float3 SecondaryOtherTint;
+    float MaskBiasStart;
+    float MaskBiasGain;
+    float MaskBiasPower;
+    float MaskBiasStrength;
+    float FlattenLightEnabled;
+    float FlattenLightWeight;
+    float RampLightCap;
+    float MaskGateDivisor;
+    float RampThresholdBias;
+    float RampOtherRow;
+    float RampEnabled;
+    float RampBlend;
+    float MaskSuppression;
+    float BandLow;
+    float BandHigh;
+    float MaskGateStart;
+    float MaskGateWidth;
+    float MipBias;
+};
+
+// E611/E621 share shader 13b07ad4-a0f6b766-4e59721d-90c59d20.
+// HM is a control map: R view highlight, G light band, B base gain, A emission.
+float3 SR_HairSurface(Texture2D ColorMap,SamplerState ColorSampler,
+    Texture2D HairMask,SamplerState HairSampler,Texture2D SkinRamp,SamplerState SkinSampler,
+    float2 UV,float VertexRed,float VertexEmission,float3 VertexNormal,float3 View,
+    float3 StyleLight,float3 FlatLight,SR_HairSettings S,
+    out float3 Normal,out float3 SecondaryTint,out float3 Emission,out float LightMask,
+    out float2 Regions,out float Highlight,out float2 RampUV,out float ColorAlpha)
+{
+    Normal=normalize(VertexNormal);
+    float3 LightingNormal=lerp(Normal,VertexNormal,S.NormalFlatten);
+    Regions=SR_ClothRegions(VertexRed,S.UseVertexRegion,S.RegionOverride,S.RegionRestore);
+    float4 Color=SR_CLOTH_SAMPLE(ColorMap,ColorSampler,UV,S.MipBias);
+    ColorAlpha=Color.a;
+    float3 Base=Color.rgb*S.BaseTint*lerp(float3(1,1,1),S.RegionTint,Regions.x);
+    float2 MaskUV=S.MaskAtlasEnabled>=0.1 ? frac((UV+S.MaskAtlasOffset)*float2(0.5,0.25)) : UV;
+    float4 HM=SR_CLOTH_SAMPLE(HairMask,HairSampler,MaskUV,S.MipBias);
+    Emission=max(lerp(Base*HM.a*S.MaskEmissionColor+VertexEmission*S.VertexEmissionColor,
+        S.OverrideEmissionColor,S.OverrideEmissionBlend),0.0);
+    float Facing=saturate(dot(LightingNormal,normalize(View)));
+    Highlight=Facing*S.HighlightStrength*(min(max(1.0-Facing,HM.r),1.0)-(1.0-Facing))/max(Facing,0.0001);
+    Base=(Base+Highlight)*lerp(S.MaskBaseLow,S.MaskBaseHigh,HM.b);
+    Base=lerp(Base,dot(Base,float3(0.3,0.59,0.11)).xxx,S.Desaturation);
+
+    float Bias=SR_CubicWeight((HM.g-S.MaskBiasStart)/max(1.0-S.MaskBiasStart,0.000001))*S.MaskBiasGain;
+    Bias=Bias>0 ? pow(Bias,S.MaskBiasPower)*S.MaskBiasStrength : 0.0;
+    float3 Light=normalize(lerp(StyleLight,FlatLight,S.FlattenLightEnabled>=0.5 ? S.FlattenLightWeight : 0.0));
+    float HalfLight=0.5*dot(LightingNormal,Light)+Bias+0.5;
+    float Capped=min(max(HalfLight,0.0),S.RampLightCap);
+    float MaskGate=min(HM.g,S.MaskBiasStart)/max(S.MaskGateDivisor,0.000001);
+    RampUV=float2(saturate(lerp(Capped,HalfLight,MaskGate)+0.5-S.RampThresholdBias),lerp(S.RampOtherRow,0.1,Regions.x));
+    float3 Ramp=SR_CLOTH_SAMPLE(SkinRamp,SkinSampler,RampUV,S.MipBias).rgb;
+    SecondaryTint=lerp(S.SecondaryOtherTint,S.SecondaryRegionTint,Regions.x);
+    SecondaryTint=lerp(SecondaryTint,Ramp,(S.RampEnabled>=0.05 ? 1.0 : 0.0)*S.RampBlend);
+    SecondaryTint=saturate(lerp(SecondaryTint,dot(SecondaryTint,float3(0.3,0.59,0.11)).xxx,S.Desaturation));
+    float Band=SR_CubicWeight((HalfLight-S.BandLow)/max(S.BandHigh-S.BandLow,0.000001));
+    float GateFade=(clamp(MaskGate,S.MaskGateStart,1.0)-S.MaskGateStart)/max(S.MaskGateWidth,0.000001);
+    LightMask=(0.5+0.5*Band*GateFade)*(1.0-(1.0-MaskGate)*S.MaskSuppression);
+    return Base;
+}
+
+// Signed HET depth distinguishes Face (+) and Eye (-); zero is uncovered.
+// Compare each tap before filtering: interpolating signed depth invents surfaces
+// at Face/Eye/background boundaries. Filter coverage and premultiplied SourceBase
+// together so a magnified capture has continuous edges without background bleed.
+// Reference-view UV rectangle captured by HETCapture and TintCapture. The
+// projection setup reads this declaration; retain their original view/depth basis.
+static const float4 SR_BangsCaptureRect=float4(0.375,0.125,0.25,0.3125);
+float3 SR_BlendBangsBase(Texture2D HETDepth,Texture2D UnderBase,float3 WorldPosition,
+    float3 CaptureOrigin,float3 CaptureForward,float3 CaptureRight,float3 CaptureUp,
+    float2 CaptureTanHalfFov,float3 Base,float ColorAlpha,float AlphaScale,float Enabled,
+    float4 CaptureRect,out float Region,out float Alpha)
+{
+    float3 Delta=WorldPosition-CaptureOrigin;
+    float Depth=dot(Delta,CaptureForward);
+    float2 UV=0.5+float2(dot(Delta,CaptureRight),-dot(Delta,CaptureUp))/(2.0*max(Depth,0.0001)*CaptureTanHalfFov);
+    UV=(UV-CaptureRect.xy)/CaptureRect.zw;
+    uint Width,Height;HETDepth.GetDimensions(Width,Height);
+    float2 Size=float2(Width,Height);
+    float2 UVdx=ddx(UV),UVdy=ddy(UV);
+    float Depthdx=ddx(Depth),Depthdy=ddy(Depth);
+    // Integrate the viewing pixel's footprint when the head capture is minified.
+    // A single bilinear lookup still aliases a thin brow across several RT texels.
+    int SamplesX=clamp(int(ceil(length(UVdx*Size))),1,4);
+    int SamplesY=clamp(int(ceil(length(UVdy*Size))),1,4);
+    bool Valid=Depth>0 && all(UV>=0) && all(UV<1);
+    Alpha=saturate(ColorAlpha*AlphaScale);
+    Region=0.0;
+    if(!Valid || Enabled==0.0)return Base;
+    float3 UnderPremultiplied=0.0;
+    [loop] for(int SY=0;SY<SamplesY;++SY)
+    [loop] for(int SX=0;SX<SamplesX;++SX)
+    {
+    float2 Offset=(float2(SX,SY)+0.5)/float2(SamplesX,SamplesY)-0.5;
+    float2 Texel=(UV+Offset.x*UVdx+Offset.y*UVdy)*Size-0.5;
+    float SampleDepth=Depth+Offset.x*Depthdx+Offset.y*Depthdy;
+    int2 Origin=int2(floor(Texel));
+    float2 Fraction=frac(Texel);
+    [unroll] for(int Y=0;Y<2;++Y)
+    [unroll] for(int X=0;X<2;++X)
+    {
+        int2 Pixel=Origin+int2(X,Y);
+        bool InBounds=all(Pixel>=0) && all(Pixel<int2(Width,Height));
+        float UnderDepth=InBounds ? HETDepth.Load(int3(Pixel,0)).r : 0.0;
+        float Coverage=abs(UnderDepth)>0.001 && SampleDepth<=abs(UnderDepth)+0.001 ? 1.0 : 0.0;
+        float Weight=(X ? Fraction.x : 1.0-Fraction.x)*(Y ? Fraction.y : 1.0-Fraction.y)*Coverage/(SamplesX*SamplesY);
+        Region+=Weight;
+        if(Weight>0.0)UnderPremultiplied+=UnderBase.Load(int3(Pixel,0)).rgb*Weight;
+    }
+    }
+    return Base+Enabled*(1.0-Alpha)*(UnderPremultiplied-Base*Region);
+}
+#endif

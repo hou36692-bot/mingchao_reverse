@@ -1,0 +1,537 @@
+{
+  "NormalStrength": {
+    "value": 1.0,
+    "source": "E473 cb4[67].z",
+    "group": "01 Normal and regions",
+    "meaning": "NormalStrength"
+  },
+  "NormalFlatten": {
+    "value": 0.0,
+    "source": "E473 cb4[67].w",
+    "group": "01 Normal and regions",
+    "meaning": "NormalFlatten"
+  },
+  "UseVertexRegion": {
+    "value": 0.0,
+    "source": "E473 cb4[68].y",
+    "group": "01 Normal and regions",
+    "meaning": "UseVertexRegion"
+  },
+  "RegionOverride": {
+    "value": 0.0,
+    "source": "E473 cb4[68].x",
+    "group": "01 Normal and regions",
+    "meaning": "RegionOverride"
+  },
+  "RegionRestore": {
+    "value": 0.0,
+    "source": "E473 cb4[68].z",
+    "group": "01 Normal and regions",
+    "meaning": "RegionRestore"
+  },
+  "RegionTint": {
+    "value": [
+      1.0,
+      1.0,
+      1.0
+    ],
+    "source": "E473 cb4[8].xyz",
+    "group": "01 Normal and regions",
+    "meaning": "RegionTint"
+  },
+  "BaseTint": {
+    "value": [
+      1.0,
+      1.0,
+      1.0
+    ],
+    "source": "E473 cb4[10].xyz",
+    "group": "01 Normal and regions",
+    "meaning": "BaseTint"
+  },
+  "MetalControlGain": {
+    "value": 1.0,
+    "source": "E473 cb4[68].w",
+    "group": "02 Surface and highlight",
+    "meaning": "MetalControlGain"
+  },
+  "HighlightControlGain": {
+    "value": 1.0,
+    "source": "E473 cb4[69].x",
+    "group": "02 Surface and highlight",
+    "meaning": "HighlightControlGain"
+  },
+  "MetalLobeScale": {
+    "value": 5.0,
+    "source": "E473 cb4[69].y",
+    "group": "02 Surface and highlight",
+    "meaning": "MetalLobeScale"
+  },
+  "OtherLobeScale": {
+    "value": 5.0,
+    "source": "E473 cb4[69].z",
+    "group": "02 Surface and highlight",
+    "meaning": "OtherLobeScale"
+  },
+  "SpecularStrength": {
+    "value": 1.0,
+    "source": "E473 cb4[75].x",
+    "group": "02 Surface and highlight",
+    "meaning": "SpecularStrength"
+  },
+  "SpecularEmissionStrength": {
+    "value": 2.0,
+    "source": "E473 cb4[75].y",
+    "group": "02 Surface and highlight",
+    "meaning": "SpecularEmissionStrength"
+  },
+  "LookupMetalShadow": {
+    "value": 4.0,
+    "source": "E473 cb4[87].z",
+    "group": "02 Surface and highlight",
+    "meaning": "LookupMetalShadow"
+  },
+  "LookupOther": {
+    "value": 1.0,
+    "source": "E473 cb4[87].w",
+    "group": "02 Surface and highlight",
+    "meaning": "LookupOther"
+  },
+  "LookupMetalLight": {
+    "value": 5.0,
+    "source": "E473 cb4[88].x",
+    "group": "02 Surface and highlight",
+    "meaning": "LookupMetalLight"
+  },
+  "BaseGain": {
+    "value": 1.0,
+    "source": "E473 cb4[88].z",
+    "group": "02 Surface and highlight",
+    "meaning": "BaseGain"
+  },
+  "Desaturation": {
+    "value": 0.0,
+    "source": "E473 cb4[89].z",
+    "group": "02 Surface and highlight",
+    "meaning": "Desaturation"
+  },
+  "FlattenLightEnabled": {
+    "value": 0.0,
+    "source": "E473 cb4[69].w",
+    "group": "03 Light bands",
+    "meaning": "FlattenLightEnabled"
+  },
+  "FlattenLightWeight": {
+    "value": 0.0,
+    "source": "E473 cb4[70].y",
+    "group": "03 Light bands",
+    "meaning": "FlattenLightWeight"
+  },
+  "ViewThresholdLow": {
+    "value": -0.10000000149011612,
+    "source": "E473 cb4[71].x",
+    "group": "03 Light bands",
+    "meaning": "ViewThresholdLow"
+  },
+  "ViewThresholdHigh": {
+    "value": 0.4000000059604645,
+    "source": "E473 cb4[70].w",
+    "group": "03 Light bands",
+    "meaning": "ViewThresholdHigh"
+  },
+  "ThresholdCenter": {
+    "value": 0.699999988079071,
+    "source": "E473 cb4[71].y",
+    "group": "03 Light bands",
+    "meaning": "ThresholdCenter"
+  },
+  "ThresholdHalfWidth": {
+    "value": 0.10000000149011612,
+    "source": "E473 cb4[71].z",
+    "group": "03 Light bands",
+    "meaning": "ThresholdHalfWidth"
+  },
+  "AlphaGain": {
+    "value": 1.0,
+    "source": "E473 cb4[71].w",
+    "group": "03 Light bands",
+    "meaning": "AlphaGain"
+  },
+  "AlphaLowCap": {
+    "value": 0.10000000149011612,
+    "source": "E473 cb4[72].x",
+    "group": "03 Light bands",
+    "meaning": "AlphaLowCap"
+  },
+  "AlphaHighStart": {
+    "value": 0.30000001192092896,
+    "source": "E473 cb4[72].y",
+    "group": "03 Light bands",
+    "meaning": "AlphaHighStart"
+  },
+  "AlphaBiasStart": {
+    "value": 0.20000000298023224,
+    "source": "E473 cb4[72].z",
+    "group": "03 Light bands",
+    "meaning": "AlphaBiasStart"
+  },
+  "AlphaBiasGain": {
+    "value": 1.0,
+    "source": "E473 cb4[72].w",
+    "group": "03 Light bands",
+    "meaning": "AlphaBiasGain"
+  },
+  "AlphaBiasPower": {
+    "value": 1.0,
+    "source": "E473 cb4[73].x",
+    "group": "03 Light bands",
+    "meaning": "AlphaBiasPower"
+  },
+  "AlphaBiasStrength": {
+    "value": 0.0,
+    "source": "E473 cb4[73].y",
+    "group": "03 Light bands",
+    "meaning": "AlphaBiasStrength"
+  },
+  "AlphaGateDivisor": {
+    "value": 0.20000000298023224,
+    "source": "E473 cb4[73].w",
+    "group": "03 Light bands",
+    "meaning": "AlphaGateDivisor"
+  },
+  "AlphaGateStart": {
+    "value": 0.8999999761581421,
+    "source": "E473 cb4[74].x",
+    "group": "03 Light bands",
+    "meaning": "AlphaGateStart"
+  },
+  "AlphaGateWidth": {
+    "value": 0.10000002384185791,
+    "source": "E473 cb4[74].z",
+    "group": "03 Light bands",
+    "meaning": "AlphaGateWidth"
+  },
+  "AlphaSuppression": {
+    "value": 0.0,
+    "source": "E473 cb4[99].z",
+    "group": "03 Light bands",
+    "meaning": "AlphaSuppression"
+  },
+  "AlphaEmissionColor": {
+    "value": [
+      0.29985499382019043,
+      0.29714301228523254,
+      0.5
+    ],
+    "source": "E473 cb4[12].xyz",
+    "group": "04 Emission and tint",
+    "meaning": "AlphaEmissionColor"
+  },
+  "VertexEmissionColor": {
+    "value": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "source": "E473 cb4[47].xyz",
+    "group": "04 Emission and tint",
+    "meaning": "VertexEmissionColor"
+  },
+  "OverrideEmissionColor": {
+    "value": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "source": "E473 cb4[48].xyz",
+    "group": "04 Emission and tint",
+    "meaning": "OverrideEmissionColor"
+  },
+  "OverrideEmissionBlend": {
+    "value": 0.0,
+    "source": "E473 cb4[87].y",
+    "group": "04 Emission and tint",
+    "meaning": "OverrideEmissionBlend"
+  },
+  "SecondaryRegionTint": {
+    "value": [
+      0.9386860132217407,
+      0.6038280129432678,
+      0.40724000334739685
+    ],
+    "source": "E473 cb4[61].xyz",
+    "group": "04 Emission and tint",
+    "meaning": "SecondaryRegionTint"
+  },
+  "SecondaryOtherTint": {
+    "value": [
+      0.8229169845581055,
+      0.912211000919342,
+      1.0
+    ],
+    "source": "E473 cb4[62].xyz",
+    "group": "04 Emission and tint",
+    "meaning": "SecondaryOtherTint"
+  },
+  "RampLightCap": {
+    "value": 0.4000000059604645,
+    "source": "E473 cb4[98].w",
+    "group": "04 Emission and tint",
+    "meaning": "RampLightCap"
+  },
+  "RampOtherRow": {
+    "value": 0.5,
+    "source": "E473 cb4[99].x",
+    "group": "04 Emission and tint",
+    "meaning": "RampOtherRow"
+  },
+  "RampBlend": {
+    "value": 0.6000000238418579,
+    "source": "E473 cb4[99].y",
+    "group": "04 Emission and tint",
+    "meaning": "RampBlend"
+  },
+  "GlobalNormalBlend": {
+    "value": 1.0,
+    "source": "E473 cb0[144].w",
+    "group": "01 Normal and regions",
+    "meaning": "GlobalNormalBlend"
+  },
+  "MipBias": {
+    "value": 0.0,
+    "source": "E473 cb0[149].y",
+    "group": "02 Surface and highlight",
+    "meaning": "MipBias"
+  },
+  "RampEnabled": {
+    "value": 3.0,
+    "source": "E473 cb3[1].w",
+    "group": "04 Emission and tint",
+    "meaning": "RampEnabled"
+  },
+  "RimStrength": {
+    "value": 0.0,
+    "source": "E473 cb4[99].w",
+    "group": "07 Depth rim",
+    "meaning": "RimStrength"
+  },
+  "ShadowNear": {
+    "value": [
+      0.5,
+      0.5,
+      0.5
+    ],
+    "source": "E1401 cb1[303].xyz",
+    "group": "06 Lighting",
+    "meaning": "ShadowNear"
+  },
+  "ShadowFar": {
+    "value": [
+      0.30000001192092896,
+      0.40508604049682617,
+      0.5
+    ],
+    "source": "E1401 cb1[296].xyz",
+    "group": "06 Lighting",
+    "meaning": "ShadowFar"
+  },
+  "LightNear": {
+    "value": [
+      1.0,
+      1.0,
+      1.0
+    ],
+    "source": "E1401 cb1[302].xyz",
+    "group": "06 Lighting",
+    "meaning": "LightNear"
+  },
+  "LightFar": {
+    "value": [
+      1.0,
+      1.0,
+      1.0
+    ],
+    "source": "E1401 cb1[297].xyz",
+    "group": "06 Lighting",
+    "meaning": "LightFar"
+  },
+  "ColorDistanceCm": {
+    "value": 0.0,
+    "source": "E1401 cb1[301].x",
+    "group": "06 Lighting",
+    "meaning": "ColorDistanceCm"
+  },
+  "DistanceExponent": {
+    "value": 1.0,
+    "source": "E1401 cb1[301].y",
+    "group": "06 Lighting",
+    "meaning": "DistanceExponent"
+  },
+  "SecondaryStrength": {
+    "value": 1.0,
+    "source": "E1401 cb1[295].x",
+    "group": "06 Lighting",
+    "meaning": "SecondaryStrength"
+  },
+  "ShadowMix": {
+    "value": 0.6499999761581421,
+    "source": "E1401 cb1[295].y",
+    "group": "06 Lighting",
+    "meaning": "ShadowMix"
+  },
+  "VisibilityScale": {
+    "value": 1.0,
+    "source": "E1401 cb1[283].z",
+    "group": "06 Lighting",
+    "meaning": "VisibilityScale"
+  },
+  "VisibilityLower": {
+    "value": 0.0,
+    "source": "E1401 cb1[300].x",
+    "group": "06 Lighting",
+    "meaning": "VisibilityLower"
+  },
+  "VisibilityUpper": {
+    "value": 0.10000000149011612,
+    "source": "E1401 cb1[300].y",
+    "group": "06 Lighting",
+    "meaning": "VisibilityUpper"
+  },
+  "VisibilityRemap": {
+    "value": 1.0,
+    "source": "E1401 cb1[300].z",
+    "group": "06 Lighting",
+    "meaning": "VisibilityRemap"
+  },
+  "CaptureForward": {
+    "value": [
+      0.9975630875833955,
+      0,
+      -0.0697702392935752
+    ],
+    "source": "E548 cb3 style direction / existing U52 fixed capture projection",
+    "group": "07 Auxiliary",
+    "meaning": "CaptureForward"
+  },
+  "CaptureRight": {
+    "value": [
+      0,
+      1,
+      0
+    ],
+    "source": "E548 cb3 style direction / existing U52 fixed capture projection",
+    "group": "07 Auxiliary",
+    "meaning": "CaptureRight"
+  },
+  "CaptureUp": {
+    "value": [
+      0.0697702392935752,
+      0,
+      0.9975630875833955
+    ],
+    "source": "E548 cb3 style direction / existing U52 fixed capture projection",
+    "group": "07 Auxiliary",
+    "meaning": "CaptureUp"
+  },
+  "CaptureTanHalfFov": {
+    "value": [
+      0.4663076581549986,
+      0.2622980577121867
+    ],
+    "source": "E548 cb3 style direction / existing U52 fixed capture projection",
+    "group": "07 Auxiliary",
+    "meaning": "CaptureTanHalfFov"
+  },
+  "ExtraControl": {
+    "value": 0,
+    "source": "E1401 t4.B; full frame R44888 B verified zero",
+    "group": "06 Lighting",
+    "meaning": "Extra secondary contribution"
+  },
+  "Visibility": {
+    "value": 1,
+    "source": "E1401 t5.R^2*t5.B^2; full frame R44986 verified white",
+    "group": "06 Lighting",
+    "meaning": "Source scene visibility input"
+  },
+  "BangsShadowEnabled": {
+    "value": 1,
+    "source": "Existing U52 eye binding",
+    "group": "07 Auxiliary",
+    "meaning": "Use generated depth shadow"
+  },
+  "RimWidth": {
+    "value": 0.5,
+    "source": "E1401 cb0[0].x",
+    "group": "07 Depth rim",
+    "meaning": "RimWidth"
+  },
+  "RimDirection": {
+    "value": [
+      -0.7094064950942993,
+      -0.49673181772232056,
+      0.5
+    ],
+    "source": "E1401 cb1[299].xyz",
+    "group": "07 Depth rim",
+    "meaning": "RimDirection"
+  },
+  "RimColor": {
+    "value": [
+      2.5999999046325684,
+      3.4546399116516113,
+      4.0
+    ],
+    "source": "E1401 cb1[298].xyz",
+    "group": "07 Depth rim",
+    "meaning": "RimColor"
+  },
+  "RimBaseMix": {
+    "value": 1.0,
+    "source": "E1401 cb1[295].z",
+    "group": "07 Depth rim",
+    "meaning": "RimBaseMix"
+  },
+  "RimProjectionScale": {
+    "value": 0.8726645112037659,
+    "source": "E1401 cb1[133].x",
+    "group": "07 Depth rim",
+    "meaning": "RimProjectionScale"
+  },
+  "DebugMode": {
+    "value": 0,
+    "source": "0 final, 1 base, 2 tint, 3 normal, 4 mask, 5 emission, 6 region, 7 highlight, 8 lookup UV, 9 rim, 10 occlusion",
+    "group": "08 Diagnostics",
+    "meaning": "DebugMode"
+  },
+  "VertexEmission": {
+    "value": 0,
+    "source": "E473 all postVS TEXCOORD5.y values are zero",
+    "group": "04 Emission and tint",
+    "meaning": "VertexEmission"
+  },
+  "CoverageRestore": {
+    "value": 0.0,
+    "source": "E473 cb4[89].w",
+    "group": "05 Dither coverage",
+    "meaning": "CoverageRestore"
+  },
+  "DitherPhase": {
+    "value": 2.0,
+    "source": "E473 cb0[158].x",
+    "group": "05 Dither coverage",
+    "meaning": "DitherPhase"
+  },
+  "FadeEnabled": {
+    "value": 0.0,
+    "source": "E473 cb2[43].x",
+    "group": "05 Dither coverage",
+    "meaning": "FadeEnabled"
+  },
+  "FadeAmount": {
+    "value": 1.0,
+    "source": "E473 cb2[43].y",
+    "group": "05 Dither coverage",
+    "meaning": "FadeAmount"
+  }
+}

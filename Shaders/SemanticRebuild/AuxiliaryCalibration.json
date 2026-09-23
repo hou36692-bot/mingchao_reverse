@@ -1,0 +1,160 @@
+{
+  "FaceHET": {
+    "ScreenGateEnabled": {
+      "value": 0,
+      "source": "E565 cb2[73].x"
+    },
+    "ScreenStartA": {
+      "value": 0,
+      "source": "E565 cb2[73].y"
+    },
+    "ScreenStartB": {
+      "value": 0.33000001311302185,
+      "source": "E565 cb2[75].y"
+    },
+    "ScreenAxisA": {
+      "value": [
+        1,
+        0
+      ],
+      "source": "E565 cb2[49].xy"
+    },
+    "ScreenAxisB": {
+      "value": [
+        1,
+        0
+      ],
+      "source": "E565 cb2[51].xy"
+    },
+    "ScreenRegionScale": {
+      "value": 0,
+      "source": "E565 cb2[77].z"
+    },
+    "ScreenRegionBlend": {
+      "value": 0,
+      "source": "E565 cb2[78].x"
+    },
+    "InnerScale": {
+      "value": [
+        0.800000011920929,
+        0.800000011920929
+      ],
+      "source": "E565 cb2[55].xy"
+    },
+    "CoverageGain": {
+      "value": 1,
+      "source": "E565 cb2[83].z"
+    },
+    "FadeEnabled": {
+      "value": 0,
+      "source": "E565 cb1[43].x"
+    },
+    "FadeAmount": {
+      "value": 1,
+      "source": "E565 cb1[43].y"
+    },
+    "MipBias": {
+      "value": 0,
+      "source": "E565 cb0[149].y"
+    },
+    "ViewOffsetGreen0": {
+      "value": [
+        0,
+        0,
+        0
+      ],
+      "source": "E577 cb2[55].x,cb2[84].w,cb2[85].x; unused for Face"
+    },
+    "ViewOffsetGreen1": {
+      "value": [
+        0,
+        0,
+        0
+      ],
+      "source": "Unused by Face coverage"
+    },
+    "ParallaxDepth": {
+      "value": 0,
+      "source": "Unused by Face coverage"
+    }
+  },
+  "EyeHET": {
+    "ScreenGateEnabled": {
+      "value": 0,
+      "source": "E577 cb2[76].x"
+    },
+    "ScreenStartA": {
+      "value": 0,
+      "source": "E577 cb2[76].y"
+    },
+    "ScreenStartB": {
+      "value": 0.33000001311302185,
+      "source": "E577 cb2[78].y"
+    },
+    "ScreenAxisA": {
+      "value": [
+        1,
+        0
+      ],
+      "source": "E577 cb2[49].xy"
+    },
+    "ScreenAxisB": {
+      "value": [
+        1,
+        0
+      ],
+      "source": "E577 cb2[51].xy"
+    },
+    "ScreenRegionScale": {
+      "value": 0,
+      "source": "E577 cb2[80].z"
+    },
+    "ScreenRegionBlend": {
+      "value": 0,
+      "source": "E577 cb2[81].x"
+    },
+    "InnerScale": {
+      "value": [
+        0.8500000238418579,
+        0.8500000238418579
+      ],
+      "source": "E577 cb2[58].xy"
+    },
+    "CoverageGain": {
+      "value": 1,
+      "source": "E577 cb2[87].y"
+    },
+    "FadeEnabled": {
+      "value": 0,
+      "source": "E577 cb1[43].x"
+    },
+    "FadeAmount": {
+      "value": 1,
+      "source": "E577 cb1[43].y"
+    },
+    "MipBias": {
+      "value": 0,
+      "source": "E577 cb0[149].y"
+    },
+    "ViewOffsetGreen1": {
+      "value": [
+        0.08437599986791611,
+        0.19120199978351593,
+        0
+      ],
+      "source": "E577 cb2[54].xyz"
+    },
+    "ParallaxDepth": {
+      "value": 0.12999999523162842,
+      "source": "E577 cb2[85].y"
+    },
+    "ViewOffsetGreen0": {
+      "value": [
+        -0.08437599986791611,
+        0.19120199978351593,
+        0
+      ],
+      "source": "E577 cb2[55].x,cb2[84].w,cb2[85].x; unused for Face"
+    }
+  }
+}

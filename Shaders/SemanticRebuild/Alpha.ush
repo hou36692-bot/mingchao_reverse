@@ -1,0 +1,33 @@
+#ifndef MINGCHAO_SEMANTIC_ALPHA
+#define MINGCHAO_SEMANTIC_ALPHA
+#include "/MingchaoSemantic/Cloth.ush"
+
+struct SR_AlphaSettings
+{
+    float CoverageRestore;
+    float DitherPhase;
+    float FadeEnabled;
+    float FadeAmount;
+};
+
+// E473 272-301. Coverage is a signed clip test, not color alpha transparency.
+// Pixel is relative to the view rectangle; AbsolutePixel retains its origin for fade hashing.
+float SR_AlphaCoverage(Texture2D ColorMap, SamplerState ColorSampler,
+    Texture2D NoiseMap, SamplerState NoiseSampler, float2 UV, float2 Pixel,
+    float2 AbsolutePixel, float AlphaGain, float MipBias, SR_AlphaSettings A,
+    out float SignedCoverage)
+{
+    float Alpha = SR_CLOTH_SAMPLE(ColorMap,ColorSampler,UV,MipBias).a*AlphaGain;
+    float Coverage = lerp(Alpha,1.0,A.CoverageRestore);
+    uint2 DitherPixel = uint2(Pixel+A.DitherPhase);
+    uint Pattern = (DitherPixel.x+2u*DitherPixel.y)%5u;
+    // E473 281: t3.yzxw into .z selects the original R channel.
+    float Noise = SR_CLOTH_SAMPLE(NoiseMap,NoiseSampler,Pixel/64.0,MipBias).r;
+    Coverage += (float(Pattern)+Noise)*0.166667-0.833300;
+    float Fade = A.FadeEnabled>0 ? saturate(A.FadeAmount) : 1.0;
+    float Hash = frac(frac(dot(floor(AbsolutePixel*0.25),float2(0.067111,0.005837)))*52.982918);
+    float FadeCoverage = Fade<1.0 ? 2.0*Fade/(1.0+Fade)-Hash : 1.0;
+    SignedCoverage = min(Coverage,FadeCoverage);
+    return SignedCoverage>=0 ? 1.0 : 0.0;
+}
+#endif

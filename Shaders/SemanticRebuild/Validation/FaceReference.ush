@@ -1,0 +1,526 @@
+// Independent E454 literal oracle. Test-only, never used by scene materials.
+#include "/MingchaoSemantic/Face.ush"
+float3 SR_FaceReference(Texture2D t0,SamplerState t0Sampler,Texture2D t1,SamplerState t1Sampler,Texture2D t2,SamplerState t2Sampler,Texture2D t3,SamplerState t3Sampler,Texture2D t4,SamplerState t4Sampler,Texture2D t5,SamplerState t5Sampler,Texture2D t6,SamplerState t6Sampler,Texture2D t7,SamplerState t7Sampler,
+float2 UV,float VertexFlag,float3 Normal,float3 Forward,float3 Right,float3 StyleLight,float BandOffset,float MarkProbe,
+out float3 Emission,out float3 Tint,out float3 DecodedNormal,out float Mask){
+float4 v1=float4(Normal,0),v2=float4(UV,0,0),v5=float4(VertexFlag,0,0,0),v6=0,v7=0;
+float4 r0=0,r1=0,r2=0,r3=0,r4=0,r5=0,r6=0,r7=0,r8=0;float4 o1=0,o3=0;
+float4 cb0_144=float4(0,0,0,1);
+float4 cb0_148=float4(10,420.2358704,76.28292847,76.28292847);
+float4 cb0_149=float4(0.01665399969,0,1,2.717117722e-41);
+float4 cb2_27=float4(0,0,-0.3287169635,0.9087818265);
+float4 cb2_28=float4(0.2570230365,0.1841263622,-0.2052565813,0.961232245);
+float4 cb2_29=float4(0.9263060093,0.3632980287,-0.09985940903,0);
+float4 cb2_30=float4(0,0,0,0);
+float4 cb3_1=float4(0.5,1,1,3);
+float4 cb3_23=float4(-0.8191519976,-0.57357651,0,1);
+float4 cb3_42=float4(-0.5792279243,-0.4055798054,0.7071067691,1);
+float4 cb4_100=float4(0.5,0.5,0.5,0.3000000119);
+float4 cb4_101=float4(0,0,0,0);
+float4 cb4_112=float4(0.5199999809,0.4799999893,0.1000000015,0.8999999762);
+float4 cb4_114=float4(1,1,1,1);
+float4 cb4_12=float4(3.274625063,5.211645126,5.211645126,5.211645126);
+float4 cb4_13=float4(-0.01952400059,-1.663287044,-1.663287044,-1.663287044);
+float4 cb4_14=float4(0,0,0,0);
+float4 cb4_17=float4(0.96875,0.9548760056,0.9132490158,0);
+float4 cb4_19=float4(1,1,1,0);
+float4 cb4_20=float4(-1,-1,-1,-1);
+float4 cb4_21=float4(0,0,0,0);
+float4 cb4_56=float4(0,0,0,0);
+float4 cb4_57=float4(0,0,0,0);
+float4 cb4_70=float4(0.9386860132,0.6038280129,0.4072400033,0);
+float4 cb4_71=float4(0.34375,0.34375,0.34375,0);
+float4 cb4_77=float4(0,0,0,0);
+float4 cb4_79=float4(0,0,0,-0.200000003);
+float4 cb4_80=float4(3.799999952,-0.200000003,0,7.800000191);
+float4 cb4_81=float4(-0.5699999928,0,0,0.4499999881);
+float4 cb4_82=float4(0,0,0,0);
+float4 cb4_83=float4(-1,0,1,1);
+float4 cb4_84=float4(0,0,-1,-0.5);
+float4 cb4_9=float4(0,0,0,0);
+float4 cb4_97=float4(0,0,1,1);
+float4 cb4_98=float4(0,0,0,0);
+float4 cb4_99=float4(0,0,0,0);
+cb2_27.w=Forward.x;cb2_28.z=Forward.y;cb2_29.y=Forward.z;cb2_28.x=Right.x;cb2_28.w=Right.y;cb2_29.z=Right.z;cb3_42.xyz=StyleLight;cb4_112.xy+=BandOffset;
+if(MarkProbe>0){cb4_12.xy=1;cb4_13.xy=0;cb4_9.xyz=float3(0.2,0.4,0.8);cb4_14.xyz=float3(1,0.5,0.1);cb4_77.y=1;cb4_77.z=0.5;cb4_82.w=0.7;cb4_83.y=MarkProbe-1;}
+// 6: add
+r0.w = (-(cb0_144.wwww) + float4(1.000000,1.000000,1.000000,1.000000)).w;
+// 7: mul
+r1.xyz = (r0.wwww * v1.xyzx).xyz;
+// 8: mad
+r1.xyz = (v1.xyzx * cb0_144.wwww + r1.xyzx).xyz;
+// 9: dp3
+r0.w = ((dot((r1.xyzx).xyz,(r1.xyzx).xyz)).xxxx).w;
+// 10: rsq
+r0.w = (rsqrt(r0.wwww)).w;
+// 11: mul
+r1.xyz = (r0.wwww * r1.xyzx).xyz;
+// 12: ge
+r0.w = (asfloat(uint4((((cb4_77.yyyy).x) >= ((float4(0.001000,0.001000,0.001000,0.001000)).x)) ? 0xffffffffu : 0u,(((cb4_77.yyyy).y) >= ((float4(0.001000,0.001000,0.001000,0.001000)).y)) ? 0xffffffffu : 0u,(((cb4_77.yyyy).z) >= ((float4(0.001000,0.001000,0.001000,0.001000)).z)) ? 0xffffffffu : 0u,(((cb4_77.yyyy).w) >= ((float4(0.001000,0.001000,0.001000,0.001000)).w)) ? 0xffffffffu : 0u))).w;
+// 13: and
+r0.w = (asfloat(asuint(r0.wwww) & asuint(float4(0.200000,0.200000,0.200000,0.200000)))).w;
+// 14: add
+r0.w = (r0.wwww + cb4_77.zzzz).w;
+// 15: mul
+r2.xyz = (r0.wwww * cb4_9.xyzx).xyz;
+// 16: add
+r3.xy = (v2.xyxx + float4(-0.500000,-0.500000,0.000000,0.000000)).xy;
+// 17: mad
+r3.xy = (r3.xyxx * cb4_12.xyxx + float4(0.500000,0.500000,0.000000,0.000000)).xy;
+// 18: add
+r3.xy = (r3.xyxx + -(cb4_13.xyxx)).xy;
+// 19: sample_indexable(texture2d)(float,float,float,float)
+r4.xyzw = (SR_FACE_SAMPLE(t0,t0Sampler,(r3.xyxx).xy).xyzw).xyzw;
+// 20: add
+r1.w = (-(r4.xxxx) + float4(1.000000,1.000000,1.000000,1.000000)).w;
+// 21: mov_sat
+r2.w = (saturate(cb4_79.xxxx)).w;
+// 22: mad
+r3.z = (r2.wwww * float4(-2.000000,-2.000000,-2.000000,-2.000000) + float4(3.000000,3.000000,3.000000,3.000000)).z;
+// 23: mul
+r2.w = (r2.wwww * r2.wwww).w;
+// 24: mul
+r2.w = (r2.wwww * r3.zzzz).w;
+// 25: mad
+r1.w = (r2.wwww * -(r1.wwww) + r1.wwww).w;
+// 26: add
+r2.w = (-(cb4_79.wwww) + float4(1.200000,1.200000,1.200000,1.200000)).w;
+// 27: mad
+r2.w = (cb4_79.zzzz * r2.wwww + cb4_79.wwww).w;
+// 28: add
+r5.xyzw = (-(cb4_80.xyzw) + float4(3.500000,-0.200000,15.000000,2.800000)).xyzw;
+// 29: mad
+r5.xyzw = (cb4_79.zzzz * r5.xwyz + cb4_80.xwyz).xyzw;
+// 30: mov
+r6.xz = (float4(1.000000,0.000000,0.000000,0.000000)).xz;
+// 31: mov
+r6.yw = (r5.xxxz).yw;
+// 32: mul
+r3.z = (cb0_148.zzzz * float4(0.020833,0.020833,0.020833,0.020833)).z;
+// 33: ge
+r3.w = (asfloat(uint4((((r3.zzzz).x) >= ((-(r3.zzzz)).x)) ? 0xffffffffu : 0u,(((r3.zzzz).y) >= ((-(r3.zzzz)).y)) ? 0xffffffffu : 0u,(((r3.zzzz).z) >= ((-(r3.zzzz)).z)) ? 0xffffffffu : 0u,(((r3.zzzz).w) >= ((-(r3.zzzz)).w)) ? 0xffffffffu : 0u))).w;
+// 34: frc
+r3.z = (frac(abs(r3.zzzz))).z;
+// 35: movc
+r7.y = (float4(asuint((r3.wwww).x) != 0u ? (r3.zzzz).x : (-(r3.zzzz)).x,asuint((r3.wwww).y) != 0u ? (r3.zzzz).y : (-(r3.zzzz)).y,asuint((r3.wwww).z) != 0u ? (r3.zzzz).z : (-(r3.zzzz)).z,asuint((r3.wwww).w) != 0u ? (r3.zzzz).w : (-(r3.zzzz)).w)).y;
+// 36: mul
+r7.xz = (r7.yyyy * float4(144.000000,0.000000,48.000000,0.000000)).xz;
+// 37: mul
+r3.zw = (r6.zzzw * r7.yyyz).zw;
+// 38: mad
+r3.zw = (r3.xxxy * r6.xxxy + r3.zzzw).zw;
+// 39: sample_indexable(texture2d)(float,float,float,float)
+r3.z = (SR_FACE_SAMPLE(t1,t1Sampler,(r3.zwzz).xy).yzxw).z;
+// 40: mad
+r3.z = (r3.zzzz * float4(-0.057143,-0.057143,-0.057143,-0.057143) + float4(0.009524,0.009524,0.009524,0.009524)).z;
+// 41: mul
+r3.w = (r5.wwww * float4(0.500000,0.500000,0.500000,0.500000)).w;
+// 42: max
+r3.w = (max(r3.wwww,float4(1.000000,1.000000,1.000000,1.000000))).w;
+// 43: mul
+r3.z = (r3.wwww * r3.zzzz).z;
+// 44: mov
+r5.xz = (float4(1.000000,0.000000,0.600000,0.000000)).xz;
+// 45: add
+r6.xy = (-(cb4_81.xyxx) + float4(-0.400000,15.000000,0.000000,0.000000)).xy;
+// 46: mad
+r6.xy = (cb4_79.zzzz * r6.xyxx + cb4_81.xyxx).xy;
+// 47: mov
+r6.z = (float4(asfloat(0u),asfloat(0u),asfloat(0u),asfloat(0u))).z;
+// 48: mul
+r6.xz = (r7.yyzy * r6.zzxz).xz;
+// 49: mad
+r6.xz = (r3.xxyx * r5.xxyx + r6.xxzx).xz;
+// 50: sample_indexable(texture2d)(float,float,float,float)
+r3.w = (SR_FACE_SAMPLE(t2,t2Sampler,(r6.xzxx).xy).yzwx).w;
+// 51: mad
+r3.w = (r3.wwww * float4(-0.057143,-0.057143,-0.057143,-0.057143) + float4(0.009524,0.009524,0.009524,0.009524)).w;
+// 52: mul
+r4.x = (r6.yyyy * float4(0.500000,0.500000,0.500000,0.500000)).x;
+// 53: max
+r4.x = (max(r4.xxxx,float4(1.000000,1.000000,1.000000,1.000000))).x;
+// 54: ge
+r6.xyz = (asfloat(uint4((((float4(0.513000,0.990000,0.990000,0.000000)).x) >= ((r3.xxyx).x)) ? 0xffffffffu : 0u,(((float4(0.513000,0.990000,0.990000,0.000000)).y) >= ((r3.xxyx).y)) ? 0xffffffffu : 0u,(((float4(0.513000,0.990000,0.990000,0.000000)).z) >= ((r3.xxyx).z)) ? 0xffffffffu : 0u,(((float4(0.513000,0.990000,0.990000,0.000000)).w) >= ((r3.xxyx).w)) ? 0xffffffffu : 0u))).xyz;
+// 55: and
+r6.xyz = (asfloat(asuint(r6.xyzx) & asuint(float4(1.000000,1.000000,1.000000,0.000000)))).xyz;
+// 56: mad
+r3.w = (r3.wwww * r4.xxxx + -(r3.zzzz)).w;
+// 57: mad
+r3.z = (r6.xxxx * r3.wwww + r3.zzzz).z;
+// 58: mad
+r2.w = (r2.wwww * float4(0.500000,0.500000,0.500000,0.500000) + -(r3.zzzz)).w;
+// 59: ge
+r2.w = (asfloat(uint4((((r2.wwww).x) >= ((r4.yyyy).x)) ? 0xffffffffu : 0u,(((r2.wwww).y) >= ((r4.yyyy).y)) ? 0xffffffffu : 0u,(((r2.wwww).z) >= ((r4.yyyy).z)) ? 0xffffffffu : 0u,(((r2.wwww).w) >= ((r4.yyyy).w)) ? 0xffffffffu : 0u))).w;
+// 60: and
+r2.w = (asfloat(asuint(r2.wwww) & asuint(float4(1.000000,1.000000,1.000000,1.000000)))).w;
+// 61: add
+r1.w = (r1.wwww + r2.wwww).w;
+// 62: mad
+r2.w = (cb4_81.zzzz * float4(-29.530001,-29.530001,-29.530001,-29.530001) + float4(30.000000,30.000000,30.000000,30.000000)).w;
+// 63: ge
+r3.z = (asfloat(uint4((((float4(0.000000,0.000000,0.000000,0.000000)).x) >= ((r4.zzzz).x)) ? 0xffffffffu : 0u,(((float4(0.000000,0.000000,0.000000,0.000000)).y) >= ((r4.zzzz).y)) ? 0xffffffffu : 0u,(((float4(0.000000,0.000000,0.000000,0.000000)).z) >= ((r4.zzzz).z)) ? 0xffffffffu : 0u,(((float4(0.000000,0.000000,0.000000,0.000000)).w) >= ((r4.zzzz).w)) ? 0xffffffffu : 0u))).z;
+// 64: log
+r3.w = (log2(r4.zzzz)).w;
+// 65: mul
+r2.w = (r2.wwww * r3.wwww).w;
+// 66: exp
+r2.w = (exp2(r2.wwww)).w;
+// 67: min
+r2.w = (min(r2.wwww,float4(1.000000,1.000000,1.000000,1.000000))).w;
+// 68: movc
+r2.w = (float4(asuint((r3.zzzz).x) != 0u ? (float4(asfloat(0u),asfloat(0u),asfloat(0u),asfloat(0u))).x : (r2.wwww).x,asuint((r3.zzzz).y) != 0u ? (float4(asfloat(0u),asfloat(0u),asfloat(0u),asfloat(0u))).y : (r2.wwww).y,asuint((r3.zzzz).z) != 0u ? (float4(asfloat(0u),asfloat(0u),asfloat(0u),asfloat(0u))).z : (r2.wwww).z,asuint((r3.zzzz).w) != 0u ? (float4(asfloat(0u),asfloat(0u),asfloat(0u),asfloat(0u))).w : (r2.wwww).w)).w;
+// 69: mad
+r3.z = (r2.wwww * float4(3.000000,3.000000,3.000000,3.000000) + r7.xxxx).z;
+// 70: frc
+r3.z = (frac(r3.zzzz)).z;
+// 71: mad
+r3.w = (r3.zzzz * float4(-2.000000,-2.000000,-2.000000,-2.000000) + float4(3.000000,3.000000,3.000000,3.000000)).w;
+// 72: mul
+r4.x = (r3.zzzz * r3.zzzz).x;
+// 73: mul
+r3.w = (r3.wwww * r4.xxxx).w;
+// 74: add
+r4.x = (cb4_81.wwww + float4(-1.000000,-1.000000,-1.000000,-1.000000)).x;
+// 75: add
+r3.z = (r3.zzzz + float4(-1.000000,-1.000000,-1.000000,-1.000000)).z;
+// 76: div
+r4.x = (float4(1.000000,1.000000,1.000000,1.000000) / r4.xxxx).x;
+// 77: mul_sat
+r3.z = (saturate(r3.zzzz * r4.xxxx)).z;
+// 78: mad
+r4.x = (r3.zzzz * float4(-2.000000,-2.000000,-2.000000,-2.000000) + float4(3.000000,3.000000,3.000000,3.000000)).x;
+// 79: mul
+r3.z = (r3.zzzz * r3.zzzz).z;
+// 80: mul
+r3.z = (r3.zzzz * r4.xxxx).z;
+// 81: mul
+r3.z = (r3.zzzz * r3.wwww).z;
+// 82: mul
+r2.w = (r2.wwww * r3.zzzz).w;
+// 83: mad
+r1.w = (r2.wwww * cb4_82.xxxx + r1.wwww).w;
+// 84: mad
+r4.xyz = (-(cb4_9.xyzx) * r0.wwww + cb4_14.xyzx).xyz;
+// 85: mad
+r2.xyz = (r1.wwww * r4.xyzx + r2.xyzx).xyz;
+// 86: ge
+r3.xy = (asfloat(uint4((((r3.xyxx).x) >= ((float4(0.010000,0.010000,0.000000,0.000000)).x)) ? 0xffffffffu : 0u,(((r3.xyxx).y) >= ((float4(0.010000,0.010000,0.000000,0.000000)).y)) ? 0xffffffffu : 0u,(((r3.xyxx).z) >= ((float4(0.010000,0.010000,0.000000,0.000000)).z)) ? 0xffffffffu : 0u,(((r3.xyxx).w) >= ((float4(0.010000,0.010000,0.000000,0.000000)).w)) ? 0xffffffffu : 0u))).xy;
+// 87: and
+r3.xy = (asfloat(asuint(r3.xyxx) & asuint(float4(1.000000,1.000000,0.000000,0.000000)))).xy;
+// 88: mul
+r3.xy = (r3.xyxx * r6.yzyy).xy;
+// 89: mul
+r0.w = (r3.yyyy * r3.xxxx).w;
+// 90: ge
+r0.w = (asfloat(uint4((((r0.wwww).x) >= ((float4(1.000000,1.000000,1.000000,1.000000)).x)) ? 0xffffffffu : 0u,(((r0.wwww).y) >= ((float4(1.000000,1.000000,1.000000,1.000000)).y)) ? 0xffffffffu : 0u,(((r0.wwww).z) >= ((float4(1.000000,1.000000,1.000000,1.000000)).z)) ? 0xffffffffu : 0u,(((r0.wwww).w) >= ((float4(1.000000,1.000000,1.000000,1.000000)).w)) ? 0xffffffffu : 0u))).w;
+if (asuint((r0.wwww).x) != 0u) {
+// 92: mul
+r2.w = (r4.wwww * r1.wwww).w;
+} else {
+// 94: mov
+r2.w = (float4(asfloat(0u),asfloat(0u),asfloat(0u),asfloat(0u))).w;
+}
+// 96: mov_sat
+r2.w = (saturate(r2.wwww)).w;
+// 97: mul
+r3.xyz = (r2.xyzx * r2.wwww).xyz;
+// 98: ge
+r2.w = (asfloat(uint4((((v5.xxxx).x) >= ((float4(0.500000,0.500000,0.500000,0.500000)).x)) ? 0xffffffffu : 0u,(((v5.xxxx).y) >= ((float4(0.500000,0.500000,0.500000,0.500000)).y)) ? 0xffffffffu : 0u,(((v5.xxxx).z) >= ((float4(0.500000,0.500000,0.500000,0.500000)).z)) ? 0xffffffffu : 0u,(((v5.xxxx).w) >= ((float4(0.500000,0.500000,0.500000,0.500000)).w)) ? 0xffffffffu : 0u))).w;
+// 99: add
+r3.w = (-(cb4_82.wwww) + float4(1.000000,1.000000,1.000000,1.000000)).w;
+// 100: movc
+r3.w = (float4(asuint((r2.wwww).x) != 0u ? (float4(1.000000,1.000000,1.000000,1.000000)).x : (r3.wwww).x,asuint((r2.wwww).y) != 0u ? (float4(1.000000,1.000000,1.000000,1.000000)).y : (r3.wwww).y,asuint((r2.wwww).z) != 0u ? (float4(1.000000,1.000000,1.000000,1.000000)).z : (r3.wwww).z,asuint((r2.wwww).w) != 0u ? (float4(1.000000,1.000000,1.000000,1.000000)).w : (r3.wwww).w)).w;
+// 101: movc
+r2.w = (float4(asuint((r2.wwww).x) != 0u ? (float4(asfloat(0u),asfloat(0u),asfloat(0u),asfloat(0u))).x : (float4(1.000000,1.000000,1.000000,1.000000)).x,asuint((r2.wwww).y) != 0u ? (float4(asfloat(0u),asfloat(0u),asfloat(0u),asfloat(0u))).y : (float4(1.000000,1.000000,1.000000,1.000000)).y,asuint((r2.wwww).z) != 0u ? (float4(asfloat(0u),asfloat(0u),asfloat(0u),asfloat(0u))).z : (float4(1.000000,1.000000,1.000000,1.000000)).z,asuint((r2.wwww).w) != 0u ? (float4(asfloat(0u),asfloat(0u),asfloat(0u),asfloat(0u))).w : (float4(1.000000,1.000000,1.000000,1.000000)).w)).w;
+// 102: add
+r2.w = (-(r3.wwww) + r2.wwww).w;
+// 103: mad
+r2.w = (cb4_83.yyyy * r2.wwww + r3.wwww).w;
+// 104: sample_l(texture2d)(float,float,float,float)
+r4.xy = (t3.SampleLevel(t3Sampler,(v2.xyxx).xy,(cb0_149.yyyy).x).xyzw).xy;
+// 105: ge
+r6.xyzw = (asfloat(uint4((((r4.xxxx).x) >= ((float4(0.050000,0.300000,0.500000,0.900000)).x)) ? 0xffffffffu : 0u,(((r4.xxxx).y) >= ((float4(0.050000,0.300000,0.500000,0.900000)).y)) ? 0xffffffffu : 0u,(((r4.xxxx).z) >= ((float4(0.050000,0.300000,0.500000,0.900000)).z)) ? 0xffffffffu : 0u,(((r4.xxxx).w) >= ((float4(0.050000,0.300000,0.500000,0.900000)).w)) ? 0xffffffffu : 0u))).xyzw;
+// 106: and
+r6.xyzw = (asfloat(asuint(r6.xyzw) & asuint(float4(1.000000,1.000000,1.000000,1.000000)))).xyzw;
+// 107: ge
+r7.xyzw = (asfloat(uint4((((float4(0.050000,0.300000,0.500000,0.900000)).x) >= ((r4.xxxx).x)) ? 0xffffffffu : 0u,(((float4(0.050000,0.300000,0.500000,0.900000)).y) >= ((r4.xxxx).y)) ? 0xffffffffu : 0u,(((float4(0.050000,0.300000,0.500000,0.900000)).z) >= ((r4.xxxx).z)) ? 0xffffffffu : 0u,(((float4(0.050000,0.300000,0.500000,0.900000)).w) >= ((r4.xxxx).w)) ? 0xffffffffu : 0u))).xyzw;
+// 108: and
+r7.yzw = (asfloat(asuint(r7.yyzw) & asuint(float4(0.000000,1.000000,1.000000,1.000000)))).yzw;
+// 109: mul
+r4.xz = (r6.yyzy * r7.zzwz).xz;
+// 110: mad
+r3.w = (-(r6.xxxx) * r7.yyyy + float4(1.000000,1.000000,1.000000,1.000000)).w;
+// 111: movc
+r3.w = (float4(asuint((r7.xxxx).x) != 0u ? (float4(1.000000,1.000000,1.000000,1.000000)).x : (r3.wwww).x,asuint((r7.xxxx).y) != 0u ? (float4(1.000000,1.000000,1.000000,1.000000)).y : (r3.wwww).y,asuint((r7.xxxx).z) != 0u ? (float4(1.000000,1.000000,1.000000,1.000000)).z : (r3.wwww).z,asuint((r7.xxxx).w) != 0u ? (float4(1.000000,1.000000,1.000000,1.000000)).w : (r3.wwww).w)).w;
+// 112: mad
+r3.w = (-(r4.xxxx) * r3.wwww + float4(1.000000,1.000000,1.000000,1.000000)).w;
+// 113: mad
+r3.w = (-(r4.zzzz) * r3.wwww + float4(1.000000,1.000000,1.000000,1.000000)).w;
+// 114: mul
+r3.w = (r3.wwww * r6.wwww).w;
+// 115: ge
+r4.x = (asfloat(uint4((((cb4_83.wwww).x) >= ((float4(0.500000,0.500000,0.500000,0.500000)).x)) ? 0xffffffffu : 0u,(((cb4_83.wwww).y) >= ((float4(0.500000,0.500000,0.500000,0.500000)).y)) ? 0xffffffffu : 0u,(((cb4_83.wwww).z) >= ((float4(0.500000,0.500000,0.500000,0.500000)).z)) ? 0xffffffffu : 0u,(((cb4_83.wwww).w) >= ((float4(0.500000,0.500000,0.500000,0.500000)).w)) ? 0xffffffffu : 0u))).x;
+// 116: movc
+r3.w = (float4(asuint((r4.xxxx).x) != 0u ? (r3.wwww).x : (cb4_83.zzzz).x,asuint((r4.xxxx).y) != 0u ? (r3.wwww).y : (cb4_83.zzzz).y,asuint((r4.xxxx).z) != 0u ? (r3.wwww).z : (cb4_83.zzzz).z,asuint((r4.xxxx).w) != 0u ? (r3.wwww).w : (cb4_83.zzzz).w)).w;
+// 117: add
+r4.x = (-(r3.wwww) + float4(1.000000,1.000000,1.000000,1.000000)).x;
+// 118: mad
+r3.w = (cb4_84.xxxx * r4.xxxx + r3.wwww).w;
+// 119: add
+r6.xyz = (cb4_17.xyzx + float4(-1.000000,-1.000000,-1.000000,0.000000)).xyz;
+// 120: mad
+r6.xyz = (r3.wwww * r6.xyzx + float4(1.000000,1.000000,1.000000,0.000000)).xyz;
+// 121: sample_b(texture2d)(float,float,float,float)
+r7.xyzw = (SR_CLOTH_SAMPLE(t4,t4Sampler,(v2.xyxx).xy,(cb0_149.yyyy).x).xyzw).xyzw;
+// 122: mul
+r7.xyz = (r7.xyzx * cb4_19.xyzx).xyz;
+// 123: mul
+r6.xyz = (r6.xyzx * r7.xyzx).xyz;
+// 124: add
+r4.xz = (v2.xxyx + cb4_20.xxyx).xz;
+// 125: mul
+r4.xz = (r4.xxzx * float4(0.500000,0.000000,0.250000,0.000000)).xz;
+// 126: frc
+r4.xz = (frac(r4.xxzx)).xz;
+// 127: ge
+r5.x = (asfloat(uint4((((cb4_84.yyyy).x) >= ((float4(0.100000,0.100000,0.100000,0.100000)).x)) ? 0xffffffffu : 0u,(((cb4_84.yyyy).y) >= ((float4(0.100000,0.100000,0.100000,0.100000)).y)) ? 0xffffffffu : 0u,(((cb4_84.yyyy).z) >= ((float4(0.100000,0.100000,0.100000,0.100000)).z)) ? 0xffffffffu : 0u,(((cb4_84.yyyy).w) >= ((float4(0.100000,0.100000,0.100000,0.100000)).w)) ? 0xffffffffu : 0u))).x;
+// 128: and
+r5.x = (asfloat(asuint(r5.xxxx) & asuint(float4(1.000000,1.000000,1.000000,1.000000)))).x;
+// 129: add
+r4.xz = (r4.xxzx + -(v2.xxyx)).xz;
+// 130: mad
+r4.xz = (r5.xxxx * r4.xxzx + v2.xxyx).xz;
+// 131: sample_b(texture2d)(float,float,float,float)
+r5.yw = (SR_CLOTH_SAMPLE(t5,t5Sampler,(r4.xzxx).xy,(cb0_149.yyyy).x).xyzw).yw;
+// 132: add
+r4.xz = (-(r5.zzwz) + r5.yywy).xz;
+// 133: mad
+r4.xz = (r5.xxxx * r4.xxzx + r5.zzwz).xz;
+// 134: mul
+r7.xyz = (r4.zzzz * r6.xyzx).xyz;
+// 135: mul
+r7.xyz = (r7.xyzx * cb4_21.xyzx).xyz;
+// 136: mad
+r3.xyz = (r2.wwww * r3.xyzx + r7.xyzx).xyz;
+// 137: mad
+r3.xyz = (v6.xxxx * cb4_56.xyzx + r3.xyzx).xyz;
+// 138: add
+r7.xyz = (-(r3.xyzx) + cb4_57.xyzx).xyz;
+// 139: mad
+r3.xyz = (cb4_97.yyyy * r7.xyzx + r3.xyzx).xyz;
+// 140: mul
+r7.xyz = (r6.xyzx * cb4_97.zzzz).xyz;
+// 141: mad
+r6.xyz = (cb4_97.wwww * r6.xyzx + -(r7.xyzx)).xyz;
+// 142: mad
+r6.xyz = (r4.xxxx * r6.xyzx + r7.xyzx).xyz;
+if (asuint((r0.wwww).x) != 0u) {
+// 144: mul
+r0.w = (r4.wwww * r1.wwww).w;
+} else {
+// 146: mov
+r0.w = (float4(asfloat(0u),asfloat(0u),asfloat(0u),asfloat(0u))).w;
+}
+// 148: mov_sat
+r0.w = (saturate(r0.wwww)).w;
+// 149: add
+r2.xyz = (r2.xyzx + -(r6.xyzx)).xyz;
+// 150: mul
+r2.xyz = (r0.wwww * r2.xyzx).xyz;
+// 151: mad
+r2.xyz = (r2.wwww * r2.xyzx + r6.xyzx).xyz;
+// 152: add
+r4.xzw = (cb3_23.xxyz + -(cb3_42.xxyz)).xzw;
+// 153: mul
+r4.xzw = (r4.xxzw * cb4_99.yyyy).xzw;
+// 154: ge
+r0.w = (asfloat(uint4((((cb4_98.wwww).x) >= ((float4(0.500000,0.500000,0.500000,0.500000)).x)) ? 0xffffffffu : 0u,(((cb4_98.wwww).y) >= ((float4(0.500000,0.500000,0.500000,0.500000)).y)) ? 0xffffffffu : 0u,(((cb4_98.wwww).z) >= ((float4(0.500000,0.500000,0.500000,0.500000)).z)) ? 0xffffffffu : 0u,(((cb4_98.wwww).w) >= ((float4(0.500000,0.500000,0.500000,0.500000)).w)) ? 0xffffffffu : 0u))).w;
+// 155: and
+r0.w = (asfloat(asuint(r0.wwww) & asuint(float4(1.000000,1.000000,1.000000,1.000000)))).w;
+// 156: mad
+r4.xzw = (r0.wwww * r4.xxzw + cb3_42.xxyz).xzw;
+// 157: dp3
+r0.w = ((dot((r4.xzwx).xyz,(r4.xzwx).xyz)).xxxx).w;
+// 158: sqrt
+r0.w = (sqrt(r0.wwww)).w;
+// 159: div
+r4.xzw = (r4.xxzw / r0.wwww).xzw;
+// 214: dp3
+r0.w = ((dot((r4.xzwx).xyz,(r4.xzwx).xyz)).xxxx).w;
+// 215: sqrt
+r0.w = (sqrt(r0.wwww)).w;
+// 216: div
+r4.xzw = (r4.xxzw / r0.wwww).xzw;
+// 217: mul
+r6.x = (r4.xxxx * cb2_27.wwww).x;
+// 218: mul
+r6.yzw = (r4.xxzz * cb2_28.xxzw).yzw;
+// 219: add
+r4.xz = (r6.zzwz + r6.xxyx).xz;
+// 220: mad
+r4.xz = (cb2_29.yyzy * r4.wwww + r4.xxzx).xz;
+// 221: dp2
+r0.w = ((dot((r4.xzxx).xy,(r4.xzxx).xy)).xxxx).w;
+// 222: sqrt
+r0.w = (sqrt(r0.wwww)).w;
+// 223: div
+r4.xz = (r4.xxzx / r0.wwww).xz;
+// 224: ge
+r0.w = (asfloat(uint4((((float4(asfloat(0u),asfloat(0u),asfloat(0u),asfloat(0u))).x) >= ((r4.zzzz).x)) ? 0xffffffffu : 0u,(((float4(asfloat(0u),asfloat(0u),asfloat(0u),asfloat(0u))).y) >= ((r4.zzzz).y)) ? 0xffffffffu : 0u,(((float4(asfloat(0u),asfloat(0u),asfloat(0u),asfloat(0u))).z) >= ((r4.zzzz).z)) ? 0xffffffffu : 0u,(((float4(asfloat(0u),asfloat(0u),asfloat(0u),asfloat(0u))).w) >= ((r4.zzzz).w)) ? 0xffffffffu : 0u))).w;
+// 225: and
+r1.w = (asfloat(asuint(r0.wwww) & asuint(float4(1.000000,1.000000,1.000000,1.000000)))).w;
+// 226: round_ni
+r2.w = (floor(cb2_29.wwww)).w;
+// 227: mul
+r2.w = (r2.wwww * float4(0.500000,0.500000,0.500000,0.500000)).w;
+// 228: ge
+r4.z = (asfloat(uint4((((r2.wwww).x) >= ((-(r2.wwww)).x)) ? 0xffffffffu : 0u,(((r2.wwww).y) >= ((-(r2.wwww)).y)) ? 0xffffffffu : 0u,(((r2.wwww).z) >= ((-(r2.wwww)).z)) ? 0xffffffffu : 0u,(((r2.wwww).w) >= ((-(r2.wwww)).w)) ? 0xffffffffu : 0u))).z;
+// 229: frc
+r2.w = (frac(abs(r2.wwww))).w;
+// 230: movc
+r2.w = (float4(asuint((r4.zzzz).x) != 0u ? (r2.wwww).x : (-(r2.wwww)).x,asuint((r4.zzzz).y) != 0u ? (r2.wwww).y : (-(r2.wwww)).y,asuint((r4.zzzz).z) != 0u ? (r2.wwww).z : (-(r2.wwww)).z,asuint((r4.zzzz).w) != 0u ? (r2.wwww).w : (-(r2.wwww)).w)).w;
+// 231: add_sat
+r2.w = (saturate(r2.wwww + r2.wwww)).w;
+// 232: movc
+r0.w = (float4(asuint((r0.wwww).x) != 0u ? (float4(-1.000000,-1.000000,-1.000000,-1.000000)).x : (float4(asfloat(0x80000000u),asfloat(0x80000000u),asfloat(0x80000000u),asfloat(0x80000000u))).x,asuint((r0.wwww).y) != 0u ? (float4(-1.000000,-1.000000,-1.000000,-1.000000)).y : (float4(asfloat(0x80000000u),asfloat(0x80000000u),asfloat(0x80000000u),asfloat(0x80000000u))).y,asuint((r0.wwww).z) != 0u ? (float4(-1.000000,-1.000000,-1.000000,-1.000000)).z : (float4(asfloat(0x80000000u),asfloat(0x80000000u),asfloat(0x80000000u),asfloat(0x80000000u))).z,asuint((r0.wwww).w) != 0u ? (float4(-1.000000,-1.000000,-1.000000,-1.000000)).w : (float4(asfloat(0x80000000u),asfloat(0x80000000u),asfloat(0x80000000u),asfloat(0x80000000u))).w)).w;
+// 233: add
+r0.w = (r0.wwww + r2.wwww).w;
+// 234: mad
+r0.w = (cb2_30.xxxx * r0.wwww + r1.wwww).w;
+// 235: mad
+r4.zw = (v2.xxxy * float4(0.000000,0.000000,-2.000000,0.500000) + float4(0.000000,0.000000,1.000000,0.500000)).zw;
+// 236: mad
+r6.x = (r0.wwww * r4.zzzz + v2.xxxx).x;
+// 237: ge
+r5.zw = (asfloat(uint4((((cb4_99.zzzw).x) >= ((float4(0.000000,0.000000,0.000000,0.001000)).x)) ? 0xffffffffu : 0u,(((cb4_99.zzzw).y) >= ((float4(0.000000,0.000000,0.000000,0.001000)).y)) ? 0xffffffffu : 0u,(((cb4_99.zzzw).z) >= ((float4(0.000000,0.000000,0.000000,0.001000)).z)) ? 0xffffffffu : 0u,(((cb4_99.zzzw).w) >= ((float4(0.000000,0.000000,0.000000,0.001000)).w)) ? 0xffffffffu : 0u))).zw;
+// 238: and
+r5.zw = (asfloat(asuint(r5.zzzw) & asuint(float4(0.000000,0.000000,1.000000,1.000000)))).zw;
+// 239: mad
+r0.w = (v2.yyyy * float4(0.500000,0.500000,0.500000,0.500000) + -(r4.wwww)).w;
+// 240: mad
+r6.w = (r5.zzzz * r0.wwww + r4.wwww).w;
+// 241: mov
+r6.yz = (v2.yyxy).yz;
+// 242: add
+r4.zw = (-(r6.xxxy) + r6.zzzw).zw;
+// 243: mad
+r4.zw = (r5.wwww * r4.zzzw + r6.xxxy).zw;
+// 244: sample_indexable(texture2d)(float,float,float,float)
+r6.xyz = (SR_FACE_SAMPLE(t6,t6Sampler,(r4.zwzz).xy).xzwy).xyz;
+// 245: ge
+r0.w = (asfloat(uint4((((float4(0.000000,0.000000,0.000000,0.000000)).x) >= ((r6.yyyy).x)) ? 0xffffffffu : 0u,(((float4(0.000000,0.000000,0.000000,0.000000)).y) >= ((r6.yyyy).y)) ? 0xffffffffu : 0u,(((float4(0.000000,0.000000,0.000000,0.000000)).z) >= ((r6.yyyy).z)) ? 0xffffffffu : 0u,(((float4(0.000000,0.000000,0.000000,0.000000)).w) >= ((r6.yyyy).w)) ? 0xffffffffu : 0u))).w;
+// 246: log
+r1.w = (log2(r6.yyyy)).w;
+// 247: mul
+r1.w = (r1.wwww * float4(1.500000,1.500000,1.500000,1.500000)).w;
+// 248: exp
+r1.w = (exp2(r1.wwww)).w;
+// 249: add
+r1.w = (-(r1.wwww) + float4(1.000000,1.000000,1.000000,1.000000)).w;
+// 250: movc
+r0.w = (float4(asuint((r0.wwww).x) != 0u ? (float4(1.000000,1.000000,1.000000,1.000000)).x : (r1.wwww).x,asuint((r0.wwww).y) != 0u ? (float4(1.000000,1.000000,1.000000,1.000000)).y : (r1.wwww).y,asuint((r0.wwww).z) != 0u ? (float4(1.000000,1.000000,1.000000,1.000000)).z : (r1.wwww).z,asuint((r0.wwww).w) != 0u ? (float4(1.000000,1.000000,1.000000,1.000000)).w : (r1.wwww).w)).w;
+// 251: add
+r1.w = (-(r4.xxxx) + float4(1.000000,1.000000,1.000000,1.000000)).w;
+// 252: mul
+r4.x = (r1.wwww * float4(0.500000,0.500000,0.500000,0.500000)).x;
+// 253: ge
+r4.z = (asfloat(uint4((((cb2_29.wwww).x) >= ((-(cb2_29.wwww)).x)) ? 0xffffffffu : 0u,(((cb2_29.wwww).y) >= ((-(cb2_29.wwww)).y)) ? 0xffffffffu : 0u,(((cb2_29.wwww).z) >= ((-(cb2_29.wwww)).z)) ? 0xffffffffu : 0u,(((cb2_29.wwww).w) >= ((-(cb2_29.wwww)).w)) ? 0xffffffffu : 0u))).z;
+// 254: frc
+r4.w = (frac(abs(cb2_29.wwww))).w;
+// 255: movc
+r4.z = (float4(asuint((r4.zzzz).x) != 0u ? (r4.wwww).x : (-(r4.wwww)).x,asuint((r4.zzzz).y) != 0u ? (r4.wwww).y : (-(r4.wwww)).y,asuint((r4.zzzz).z) != 0u ? (r4.wwww).z : (-(r4.wwww)).z,asuint((r4.zzzz).w) != 0u ? (r4.wwww).w : (-(r4.wwww)).w)).z;
+// 256: mad
+r4.w = (r4.zzzz * float4(-2.000000,-2.000000,-2.000000,-2.000000) + float4(1.000000,1.000000,1.000000,1.000000)).w;
+// 257: mad
+r2.w = (r2.wwww * r4.wwww + r4.zzzz).w;
+// 258: mad
+r1.w = (-(r1.wwww) * float4(0.500000,0.500000,0.500000,0.500000) + r2.wwww).w;
+// 259: mad
+r1.w = (cb2_30.xxxx * r1.wwww + r4.xxxx).w;
+// 260: add
+r0.w = (r0.wwww + -(r1.wwww)).w;
+// 261: add
+r0.w = (r0.wwww + float4(1.000000,1.000000,1.000000,1.000000)).w;
+// 262: mad
+r0.w = (-(r0.wwww) * float4(0.500000,0.500000,0.500000,0.500000) + float4(1.500000,1.500000,1.500000,1.500000)).w;
+// 263: add_sat
+r7.x = (saturate(r0.wwww + -(cb4_100.zzzz))).x;
+// 264: add
+r0.w = (-(cb4_100.wwww) + float4(0.100000,0.100000,0.100000,0.100000)).w;
+// 265: mad
+r7.y = (r3.wwww * r0.wwww + cb4_100.wwww).y;
+// 266: sample_b(texture2d)(float,float,float,float)
+r4.xzw = (SR_CLOTH_SAMPLE(t7,t7Sampler,(r7.xyxx).xy,(cb0_149.yyyy).x).xwyz).xzw;
+// 267: ge
+r0.w = (asfloat(uint4((((cb3_1.wwww).x) >= ((float4(0.050000,0.050000,0.050000,0.050000)).x)) ? 0xffffffffu : 0u,(((cb3_1.wwww).y) >= ((float4(0.050000,0.050000,0.050000,0.050000)).y)) ? 0xffffffffu : 0u,(((cb3_1.wwww).z) >= ((float4(0.050000,0.050000,0.050000,0.050000)).z)) ? 0xffffffffu : 0u,(((cb3_1.wwww).w) >= ((float4(0.050000,0.050000,0.050000,0.050000)).w)) ? 0xffffffffu : 0u))).w;
+// 268: and
+r0.w = (asfloat(asuint(r0.wwww) & asuint(float4(1.000000,1.000000,1.000000,1.000000)))).w;
+// 269: mul
+r0.w = (r0.wwww * r4.yyyy).w;
+// 270: add
+r7.xyz = (-(r2.xyzx) + r4.xzwx).xyz;
+// 271: add
+r8.xyz = (r2.xyzx + r2.xyzx).xyz;
+// 272: mad
+r7.xyz = (r0.wwww * r7.xyzx + r8.xyzx).xyz;
+// 273: mad
+r7.xyz = (r7.xyzx * float4(0.500000,0.500000,0.500000,0.000000) + -(r2.xyzx)).xyz;
+// 274: mad
+r2.xyz = (r3.wwww * r7.xyzx + r2.xyzx).xyz;
+// 275: dp3
+r2.w = ((dot((r2.xyzx).xyz,(float4(0.300000,0.590000,0.110000,0.000000)).xyz)).xxxx).w;
+// 276: add
+r7.xyz = (-(r2.xyzx) + r2.wwww).xyz;
+// 277: mad
+o3.xyz = (cb4_101.xxxx * r7.xyzx + r2.xyzx).xyz;
+// 278: add
+r2.xyz = (cb4_70.xyzx + -(cb4_71.xyzx)).xyz;
+// 279: mad
+r2.xyz = (r3.wwww * r2.xyzx + cb4_71.xyzx).xyz;
+// 280: add
+r4.xyz = (-(r2.xyzx) + r4.xzwx).xyz;
+// 281: mad
+r2.xyz = (r0.wwww * r4.xyzx + r2.xyzx).xyz;
+// 282: dp3
+r0.w = ((dot((r2.xyzx).xyz,(float4(0.300000,0.590000,0.110000,0.000000)).xyz)).xxxx).w;
+// 283: add
+r4.xyz = (-(r2.xyzx) + r0.wwww).xyz;
+// 284: mad
+r2.xyz = (cb4_101.xxxx * r4.xyzx + r2.xyzx).xyz;
+// 285: add
+r0.w = (r6.zzzz + r6.xxxx).w;
+// 286: mad
+r0.w = (-(r0.wwww) * float4(0.500000,0.500000,0.500000,0.500000) + -(r1.wwww)).w;
+// 287: add
+r0.w = (r0.wwww + float4(2.000000,2.000000,2.000000,2.000000)).w;
+// 288: mad
+r0.w = (-(r0.wwww) * float4(0.500000,0.500000,0.500000,0.500000) + float4(1.000000,1.000000,1.000000,1.000000)).w;
+// 289: add
+r1.w = (-(cb4_112.yyyy) + cb4_112.xxxx).w;
+// 290: add
+r0.w = (r0.wwww + -(cb4_112.yyyy)).w;
+// 291: div
+r1.w = (float4(1.000000,1.000000,1.000000,1.000000) / r1.wwww).w;
+// 292: mul_sat
+r0.w = (saturate(r0.wwww * r1.wwww)).w;
+// 293: mad
+r1.w = (r0.wwww * float4(-2.000000,-2.000000,-2.000000,-2.000000) + float4(3.000000,3.000000,3.000000,3.000000)).w;
+// 294: mul
+r0.w = (r0.wwww * r0.wwww).w;
+// 295: mul
+r0.w = (r0.wwww * r1.wwww).w;
+// 296: add
+r1.w = (r5.yyyy + float4(-1.000000,-1.000000,-1.000000,-1.000000)).w;
+// 297: mad
+r1.w = (cb4_114.yyyy * r1.wwww + float4(1.000000,1.000000,1.000000,1.000000)).w;
+// 298: mad
+r1.w = (cb4_114.zzzz * r1.wwww + -(cb4_114.zzzz)).w;
+// 299: mad
+r1.w = (r5.xxxx * r1.wwww + cb4_114.zzzz).w;
+// 300: mul
+r0.w = (r0.wwww * r1.wwww).w;
+// 301: mad
+r0.w = (r0.wwww * float4(0.500000,0.500000,0.500000,0.500000) + float4(0.500000,0.500000,0.500000,0.500000)).w;
+// 302: mul
+o1.z = (r0.wwww * cb4_114.wwww).z;
+Emission=max(r3.xyz,0);Tint=saturate(r2.xyz);DecodedNormal=r1.xyz;Mask=o1.z;return o3.xyz;}

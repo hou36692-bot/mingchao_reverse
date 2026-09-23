@@ -1,0 +1,160 @@
+#ifndef MINGCHAO_SEMANTIC_FACE
+#define MINGCHAO_SEMANTIC_FACE
+#include "/MingchaoSemantic/Cloth.ush"
+
+#if PIXELSHADER
+#define SR_FACE_SAMPLE(T,S,U) T.Sample(S,U)
+#else
+#define SR_FACE_SAMPLE(T,S,U) T.SampleLevel(S,U,0)
+#endif
+
+struct SR_FaceSettings
+{
+    float MarkEnabled;
+    float MarkIntensity;
+    float3 MarkBaseColor;
+    float3 MarkColor;
+    float2 MarkScale;
+    float2 MarkOffset;
+    float MarkErase;
+    float MarkTransition;
+    float MarkThreshold;
+    float NoiseScaleA;
+    float NoiseSpeedA;
+    float NoiseAmplitudeA;
+    float NoiseSpeedB;
+    float NoiseAmplitudeB;
+    float PulseExponent;
+    float PulseGate;
+    float PulseStrength;
+    float MarkVertexSuppression;
+    float MarkVertexInvert;
+    float UseIDRegion;
+    float RegionOverride;
+    float RegionRestore;
+    float3 RegionTint;
+    float3 BaseTint;
+    float2 MaskAtlasOffset;
+    float MaskAtlasEnabled;
+    float3 MaskEmissionColor;
+    float3 VertexEmissionColor;
+    float3 OverrideEmissionColor;
+    float OverrideEmissionBlend;
+    float MaskBaseLow;
+    float MaskBaseHigh;
+    float FlattenLightEnabled;
+    float FlattenLightWeight;
+    float OrientationPhase;
+    float OrientationBlend;
+    float UpperFaceHalf;
+    float LightingAtlasEnabled;
+    float RampThresholdBias;
+    float RampOtherRow;
+    float RampEnabled;
+    float Desaturation;
+    float3 SecondaryRegionTint;
+    float3 SecondaryOtherTint;
+    float BandLow;
+    float BandHigh;
+    float MaskBandInfluence;
+    float MaskBandGain;
+    float LightMaskGain;
+    float MipBias;
+};
+
+// E454 12-103. Animated intrinsic mark, clipped to its local UV square.
+float3 SR_FaceMark(Texture2D MarkMap,SamplerState MarkSampler,
+    Texture2D NoiseA,SamplerState NoiseASampler,Texture2D NoiseB,SamplerState NoiseBSampler,
+    float2 UV,float VertexFlag,float TimeSeconds,SR_FaceSettings S,out float Coverage)
+{
+    UV=(UV-0.5)*S.MarkScale+0.5-S.MarkOffset;
+    float4 Mark=SR_FACE_SAMPLE(MarkMap,MarkSampler,UV);
+    float Weight=(1.0-Mark.r)*(1.0-SR_CubicWeight(S.MarkErase));
+    float Phase=TimeSeconds*0.020833;
+    Phase=Phase>=0 ? frac(abs(Phase)) : -frac(abs(Phase));
+    float ScaleA=lerp(S.NoiseScaleA,3.5,S.MarkTransition);
+    float SpeedA=lerp(S.NoiseSpeedA,-0.2,S.MarkTransition);
+    float AmplitudeA=lerp(S.NoiseAmplitudeA,15.0,S.MarkTransition);
+    float SpeedB=lerp(S.NoiseSpeedB,-0.4,S.MarkTransition);
+    float AmplitudeB=lerp(S.NoiseAmplitudeB,15.0,S.MarkTransition);
+    float A=SR_FACE_SAMPLE(NoiseA,NoiseASampler,float2(UV.x,UV.y*ScaleA+Phase*48.0*SpeedA)).r;
+    float B=SR_FACE_SAMPLE(NoiseB,NoiseBSampler,float2(UV.x,UV.y*0.6+Phase*48.0*SpeedB)).r;
+    A=(0.009524-0.057143*A)*max(AmplitudeA*0.5,1.0);
+    B=(0.009524-0.057143*B)*max(AmplitudeB*0.5,1.0);
+    float Noise=UV.x<=0.513 ? B : A;
+    Weight+=0.5*lerp(S.MarkThreshold,1.2,S.MarkTransition)-Noise>=Mark.g ? 1.0 : 0.0;
+    float Pulse=Mark.b>0 ? min(pow(Mark.b,30.0-29.530001*S.PulseExponent),1.0) : 0.0;
+    float PulsePhase=frac(Pulse*3.0+Phase*144.0);
+    Pulse*=SR_CubicWeight(PulsePhase)*SR_CubicWeight((PulsePhase-1.0)/(S.PulseGate-1.0));
+    Weight+=Pulse*S.PulseStrength;
+    float3 Base=S.MarkBaseColor*(S.MarkIntensity+(S.MarkEnabled>=0.001 ? 0.2 : 0.0));
+    bool Inside=all(UV>=0.01)&&all(UV<=0.99);
+    float VertexWeight=lerp(VertexFlag>=0.5 ? 1.0 : 1.0-S.MarkVertexSuppression,
+        VertexFlag>=0.5 ? 0.0 : 1.0,S.MarkVertexInvert);
+    Coverage=saturate(Inside ? Mark.a*Weight : 0.0)*VertexWeight;
+    return lerp(Base,S.MarkColor,Weight);
+}
+
+// E454 217-266. Project the style light onto the evaluated head axes.
+float2 SR_FaceLightingUV(float2 UV,float3 Light,float3 HeadForward,float3 HeadRight,
+    SR_FaceSettings S,out float DirectionThreshold)
+{
+    float2 HeadLight=normalize(float2(dot(Light,HeadForward),dot(Light,HeadRight)));
+    float Mirrored=HeadLight.y<=0 ? 1.0 : 0.0;
+    float HalfPhase=floor(S.OrientationPhase)*0.5;
+    float Parity=saturate(2.0*(HalfPhase>=0 ? frac(abs(HalfPhase)) : -frac(abs(HalfPhase))));
+    float MirrorWeight=Mirrored+S.OrientationBlend*(Parity-Mirrored);
+    float2 LightingUV=float2(lerp(UV.x,1.0-UV.x,MirrorWeight),UV.y);
+    if(S.LightingAtlasEnabled>=0.001)
+        LightingUV=float2(UV.x,UV.y*0.5+(S.UpperFaceHalf>=0 ? 0.0 : 0.5));
+    float Phase=S.OrientationPhase>=0 ? frac(abs(S.OrientationPhase)) : -frac(abs(S.OrientationPhase));
+    float PhaseThreshold=Parity*(1.0-2.0*Phase)+Phase;
+    DirectionThreshold=lerp(0.5*(1.0-HeadLight.x),PhaseThreshold,S.OrientationBlend);
+    return LightingUV;
+}
+
+// E454 104-302. Mask SDF sampling and light SDF sampling have distinct samplers.
+float3 SR_FaceSurface(Texture2D MarkMap,SamplerState MarkSampler,
+    Texture2D NoiseA,SamplerState NoiseASampler,Texture2D NoiseB,SamplerState NoiseBSampler,
+    Texture2D IDMap,SamplerState IDSampler,Texture2D ColorMap,SamplerState ColorSampler,
+    Texture2D MaskMap,SamplerState MaskSampler,Texture2D LightMap,SamplerState LightSampler,
+    Texture2D SkinRamp,SamplerState SkinSampler,float2 UV,float VertexFlag,float VertexEmission,
+    float TimeSeconds,float3 VertexNormal,float3 StyleLight,float3 FlatLight,float3 HeadForward,float3 HeadRight,
+    SR_FaceSettings S,out float3 Normal,out float3 SecondaryTint,out float3 Emission,
+    out float LightMask,out float2 Regions,out float Highlight,out float2 RampUV)
+{
+    Normal=normalize(VertexNormal);
+    float MarkCoverage;
+    float3 Mark=SR_FaceMark(MarkMap,MarkSampler,NoiseA,NoiseASampler,NoiseB,NoiseBSampler,UV,VertexFlag,TimeSeconds,S,MarkCoverage);
+    float2 ID=IDMap.SampleLevel(IDSampler,UV,S.MipBias).rg;
+    Regions=SR_ClothRegions(ID.r,S.UseIDRegion,S.RegionOverride,S.RegionRestore);
+    float3 Base=SR_CLOTH_SAMPLE(ColorMap,ColorSampler,UV,S.MipBias).rgb*S.BaseTint*lerp(float3(1,1,1),S.RegionTint,Regions.x);
+    float Atlas=S.MaskAtlasEnabled>=0.1 ? 1.0 : 0.0;
+    float2 MaskUV=lerp(UV,frac((UV+S.MaskAtlasOffset)*float2(0.5,0.25)),Atlas);
+    // E454 131 .yw selects G/A; 132-133 retain 0.6 for G when atlas remapping is off.
+    float2 Mask=SR_CLOTH_SAMPLE(MaskMap,MaskSampler,MaskUV,S.MipBias).ga;
+    Mask.x=lerp(0.6,Mask.x,Atlas);
+    Emission=Mark*MarkCoverage+Base*Mask.y*S.MaskEmissionColor+VertexEmission*S.VertexEmissionColor;
+    Emission=max(lerp(Emission,S.OverrideEmissionColor,S.OverrideEmissionBlend),0.0);
+    Base*=lerp(S.MaskBaseLow,S.MaskBaseHigh,Mask.x);
+    Base=lerp(Base,Mark,MarkCoverage);
+    float3 Light=normalize(lerp(StyleLight,FlatLight,S.FlattenLightEnabled>=0.5 ? S.FlattenLightWeight : 0.0));
+    float DirectionThreshold;
+    float2 LightingUV=SR_FaceLightingUV(UV,Light,HeadForward,HeadRight,S,DirectionThreshold);
+    float4 SDF=SR_FACE_SAMPLE(LightMap,LightSampler,LightingUV);
+    float Complement=SDF.b>0 ? 1.0-pow(SDF.b,1.5) : 1.0;
+    RampUV=float2(saturate(1.5-0.5*(Complement-DirectionThreshold+1.0)-S.RampThresholdBias),lerp(S.RampOtherRow,0.1,Regions.x));
+    float3 Ramp=SR_CLOTH_SAMPLE(SkinRamp,SkinSampler,RampUV,S.MipBias).rgb;
+    float RampWeight=(S.RampEnabled>=0.05 ? 1.0 : 0.0)*ID.g;
+    Base=lerp(Base,Base+0.5*RampWeight*(Ramp-Base),Regions.x);
+    Base=lerp(Base,dot(Base,float3(0.3,0.59,0.11)).xxx,S.Desaturation);
+    SecondaryTint=lerp(S.SecondaryOtherTint,S.SecondaryRegionTint,Regions.x);
+    SecondaryTint=lerp(SecondaryTint,Ramp,RampWeight);
+    SecondaryTint=saturate(lerp(SecondaryTint,dot(SecondaryTint,float3(0.3,0.59,0.11)).xxx,S.Desaturation));
+    float Band=SR_CubicWeight((0.25*(SDF.r+SDF.a)+0.5*DirectionThreshold-S.BandLow)/max(S.BandHigh-S.BandLow,0.000001));
+    float BandGain=S.MaskBandGain*lerp(1.0,1.0+S.MaskBandInfluence*(Mask.x-1.0),Atlas);
+    LightMask=(0.5+0.5*Band*BandGain)*S.LightMaskGain;
+    Highlight=MarkCoverage;
+    return Base;
+}
+#endif

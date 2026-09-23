@@ -1,0 +1,83 @@
+#ifndef MINGCHAO_SEMANTIC_ITEM
+#define MINGCHAO_SEMANTIC_ITEM
+#include "/MingchaoSemantic/Cloth.ush"
+
+struct SR_ItemSettings
+{
+    float PulseSpeed;
+    float PulseAmplitude;
+    float PulseOffset;
+    float PulseGain;
+    float PulseAlphaThreshold;
+    float4 LayerUVWeights;
+    float ScreenUVBlend;
+    float2 LayerRotationX;
+    float2 LayerRotationY;
+    float2 LayerScale;
+    float2 LayerVelocity;
+    float2 LayerOffset;
+    float2 LayerExtraOffset;
+    float LayerPower;
+    float LayerPowerGain;
+    float LayerRawGain;
+    float LayerRawBlend;
+    float3 LayerColor;
+    float PatternUVBlend;
+    float PatternDistortion;
+    float PatternPower;
+};
+
+// E509 239-283. Source RGB is decoded through an sRGB resource view.
+float3 SR_ItemLayer(Texture2D LayerMap, SamplerState LayerSampler,
+    Texture2D PatternMap, SamplerState PatternSampler, float2 UV0, float2 UV1,
+    float2 UV2, float2 UV3, float2 ScreenUV, float TimeSeconds, float MipBias,
+    SR_ItemSettings I, out float2 LayerUV)
+{
+    float2 UV = UV0*I.LayerUVWeights.x+UV1*I.LayerUVWeights.y
+        +UV2*I.LayerUVWeights.z+UV3*I.LayerUVWeights.w;
+    UV = lerp(UV,ScreenUV,I.ScreenUVBlend)-0.5;
+    UV = float2(dot(UV,I.LayerRotationX),dot(UV,I.LayerRotationY))+0.5;
+    // The source uses literal 0.001667, not an exact reciprocal of 600.
+    float Phase = TimeSeconds*0.001667;
+    float WrappedTime = (Phase>=0 ? frac(abs(Phase)) : -frac(abs(Phase)))*600.0;
+    LayerUV = UV*I.LayerScale+WrappedTime*I.LayerVelocity+I.LayerOffset+I.LayerExtraOffset;
+    float3 Layer = SR_CLOTH_SAMPLE(LayerMap,LayerSampler,LayerUV,MipBias).rgb;
+    float3 Powered = float3(Layer.r>0 ? pow(Layer.r,I.LayerPower) : 0,
+        Layer.g>0 ? pow(Layer.g,I.LayerPower) : 0,Layer.b>0 ? pow(Layer.b,I.LayerPower) : 0);
+    float3 Color = lerp(Powered*I.LayerPowerGain,Layer*I.LayerRawGain,I.LayerRawBlend)*I.LayerColor;
+    float2 PatternUV = lerp(UV0,UV2,I.PatternUVBlend)+Layer.r*I.PatternDistortion;
+    // E509 277 writes .w from t3.yzwx: the selected channel is R, not A.
+    float Pattern = SR_CLOTH_SAMPLE(PatternMap,PatternSampler,PatternUV,MipBias).r;
+    return Color*(Pattern>0 ? pow(Pattern,I.PatternPower) : 0.0);
+}
+
+// E509 0-348. Shared cloth surface plus the independently controlled emission layer.
+float3 SR_ItemSurface(Texture2D PackedMap, SamplerState PackedSampler,
+    Texture2D ColorMap, SamplerState ColorSampler, Texture2D LayerMap, SamplerState LayerSampler,
+    Texture2D PatternMap, SamplerState PatternSampler, Texture2D LookupMap, SamplerState LookupSampler,
+    Texture2D SkinRamp, SamplerState SkinSampler, float2 UV0, float2 UV1, float2 UV2, float2 UV3,
+    float2 ScreenUV, float TimeSeconds, float VertexRed, float VertexEmission,
+    float3 Tangent, float3 Bitangent, float3 VertexNormal, float3 View,
+    float3 StyleLight, float3 FlatLight, float3 ViewRight, float3 ViewUp, float3 ViewForward,
+    SR_ClothSettings S, SR_ItemSettings I, out float3 Normal, out float3 SecondaryTint,
+    out float3 Emission, out float LightMask, out float2 Regions, out float Highlight, out float2 LookupUV)
+{
+    float Alpha = SR_CLOTH_SAMPLE(ColorMap,ColorSampler,UV0,S.MipBias).a*S.AlphaGain;
+    float AlphaHigh = (clamp(Alpha,S.AlphaHighStart,1.0)-S.AlphaHighStart)/max(1.0-S.AlphaHighStart,0.000001);
+    float Pulse = I.PulseAmplitude*(cos(TimeSeconds*I.PulseSpeed)+I.PulseOffset)*I.PulseGain;
+    S.AlphaEmissionColor *= I.PulseAlphaThreshold>=AlphaHigh ? 1.0 : Pulse;
+    float OverrideBlend = S.OverrideEmissionBlend;
+    S.OverrideEmissionBlend = 0.0;
+    float3 RampColor, RawEmission; float SurfaceRegion;
+    float3 Base = SR_ClothSurface(PackedMap,PackedSampler,ColorMap,ColorSampler,LookupMap,LookupSampler,
+        SkinRamp,SkinSampler,UV0,VertexRed,0,Tangent,Bitangent,VertexNormal,View,
+        StyleLight,FlatLight,ViewRight,ViewUp,ViewForward,S,Normal,SecondaryTint,Emission,
+        LightMask,Regions,Highlight,LookupUV,RampColor,SurfaceRegion,RawEmission);
+    Emission = RawEmission;
+    float2 LayerUV;
+    Emission += SR_ItemLayer(LayerMap,LayerSampler,PatternMap,PatternSampler,
+        UV0,UV1,UV2,UV3,ScreenUV,TimeSeconds,S.MipBias,I,LayerUV)+VertexEmission*S.VertexEmissionColor;
+    Emission = max(lerp(Emission,S.OverrideEmissionColor,OverrideBlend),0.0);
+    return Base;
+}
+#endif
