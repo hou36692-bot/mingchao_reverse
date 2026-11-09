@@ -16,18 +16,6 @@
 
 *从源帧到结项的六个阶段。总览为缩放排版，跨阶段条件不同，不用于像素误差比较。*
 
-![Cloud 修复前后对照](docs/figures/03-cloud-comparison.png)
-
-*上：RDC 源帧；中：UE 修复前；下：补回 Cloud 实例贡献后。*
-
-![Eye 语义重建对照](docs/figures/04-eye-comparison.png)
-
-*左：旧实现；右：按源语义重建后的眼部。*
-
-![原生 4K 对照](docs/figures/05-resolution-comparison.png)
-
-*左：720p 放大；右：原生 3840×2160 局部。*
-
 ## 项目简述
 
 | 项目 | 内容 |
