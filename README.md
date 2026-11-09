@@ -1,24 +1,52 @@
-# 鸣潮卡提希娅渲染重建
+# 鸣潮卡提希娅角色渲染还原
 
-一次 AI 辅助渲染逆向实验，以《鸣潮》卡提希娅选人界面为例，走通捕获分析、源资产匹配、UE 导入、材质语义与运行时输入重建、后处理及受控验证。
+*Wuthering Waves · Katixiya character rendering reconstruction in Unreal Engine 5.8*
 
-项目已结项，完成 R2–R7 语义重建工程交付，包含可编辑材质、Shader 函数、运行时 Render Target、背景与参考界面。**整体视觉 1∶1 未验收**，仍保留部分反射、背景实例和局部视觉差异。
+以《鸣潮》卡提希娅选人界面为参考，从 D3D11 帧捕获出发，在 UE 5.8 中重建角色材质、描边、背景、后处理与 UI。工程保留默认 Renderer / Substrate，用可编辑 Shader 函数、材质实例和运行时输入表达源渲染管线。
+
+> 个人研究项目，与库洛游戏无关。仓库包含游戏模型、贴图等派生内容，权利归原权利人所有；仅供研究与展示。整体视觉 1∶1 未验收。
+
+![结项时保存的 UE 画面](docs/figures/01-final-4k.png)
+
+*原生 3840×2160，结项时保存的 UE 画面。*
+
+## 效果
+
+![阶段成果总览](docs/figures/02-overview.jpg)
+
+*从源帧到结项的六个阶段。总览为缩放排版，跨阶段条件不同，不用于像素误差比较。*
+
+![Cloud 修复前后对照](docs/figures/03-cloud-comparison.png)
+
+*上：RDC 源帧；中：UE 修复前；下：补回 Cloud 实例贡献后。*
+
+![Eye 语义重建对照](docs/figures/04-eye-comparison.png)
+
+*左：旧实现；右：按源语义重建后的眼部。*
+
+![原生 4K 对照](docs/figures/05-resolution-comparison.png)
+
+*左：720p 放大；右：原生 3840×2160 局部。*
+
+## 项目简述
+
+| 项目 | 内容 |
+| --- | --- |
+| 参考 | 《鸣潮》卡提希娅选人界面，D3D11 / Frame 3765 / 3840×2160 |
+| 引擎 | Unreal Engine 5.8，默认 Renderer / Substrate |
+| 实现 | 8 个主体材质槽、6 组描边、HET／前发辅助、22 个背景实例、U5 后处理、U6 UI |
+| 方法 | RDC 语义分析 → 可读 HLSL／材质函数 → MPC／RT 运行时驱动 → 同条件验证 |
 
 ## 打开工程
 
-1. 安装 Unreal Engine **5.8**、Visual Studio C++ 编译工具链和 Git LFS。工程包含 C++ 模块及 `UE_MCP_Bridge` 插件源码，首次打开需要编译。
-2. 先执行 `git lfs install`，再通过仓库页面的 **Code** 地址克隆工程；进入工程目录执行 `git lfs pull`，确保下载的是完整资产。请使用 Git 克隆，避免仅下载 ZIP 后缺少 LFS 资产。
-3. 打开 `mingchao_reverse.uproject`。如果提示缺少模块，允许重新编译；也可先生成 Visual Studio 项目文件，构建 `Development Editor / Win64`。
-4. 手动打开 `/Game/Maps/L_Katixiya_Reference`。默认启动地图仍是 ThirdPerson 模板地图，参考内容位于上述关卡；点击 Play 可查看运行效果。
+1. 安装 UE 5.8、Visual Studio C++ 工具链和 Git LFS；执行 `git lfs install` 后克隆，并运行 `git lfs pull` 获取完整资产。
+2. 打开 `mingchao_reverse.uproject`。首次打开需要编译 C++ 模块。
+3. 加载 `/Game/Maps/L_Katixiya_Reference`；默认启动地图是 ThirdPerson 模板。
 
-PIE 中点击画面空白处取得焦点，按英文分号 `;` 进入或退出自由相机；`W/A/S/D` 移动，`E/Q` 升降，按住鼠标右键转向，滚轮调速。自由视角用于观察，视觉对照仍以原参考镜头为准。
+## 已知边界
 
-## 主要目录
+工程交付完成，整体视觉 1∶1 未验收。反射、Ribbon 实例、姿态与部分采样残差保留；受控响应测试不等于最终视觉验收。
 
-- `Content/MingchaoReverse/`：角色、材质、运行时驱动、背景与 UI。
-- `Content/Maps/L_Katixiya_Reference.umap`：参考关卡。
-- `Shaders/SemanticRebuild/`：按模块语义整理的 Shader 函数。
-- `Source/`、`Plugins/`：项目 C++ 模块与插件源码。
-- `Tools/SemanticRebuild/`：部分材质构建脚本，打开工程不需要执行；运行前应检查其写入范围。
+## 许可
 
-本仓库提供已保存的 UE 工程，不包含原始捕获包、解包工具或完整研究资料。模型、纹理及相关游戏内容的权利归原权利人所有；仓库访问权限不代表获得这些内容的再分发或商业使用授权。
+原创代码、Shader、文档与截图以 MIT 发布，版权人 hou。游戏名称、角色、模型、贴图等权利归原权利人所有，详见 [NOTICE](NOTICE.md)。
